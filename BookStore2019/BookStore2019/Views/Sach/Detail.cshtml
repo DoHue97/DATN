@@ -1,0 +1,130 @@
+﻿@using BookStore2019.Services
+@using ValuesObject
+@model OSach
+@{
+    ViewBag.Title = "Chi tiết sản phẩm " + Model.TenSach;
+
+    var listTacGia = ViewBag.ListTacGia as List<OTacGia>;
+    var listImage = ViewBag.ListImages as List<OImageSach>;
+    var listOthers = ViewBag.ListOrther as List<OSach>;
+}
+
+<div class="content-top">
+    @Html.Partial("Categories")
+    <div class="col-sm-9">
+        <div class="img-product">
+            <ul class="slider_pro">
+                @if (listImage.Count > 0 && listImage != null)
+                {
+                    <li>
+                        <a href="#">
+                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="img-fluid" height="300" />
+                        </a>
+                    </li>
+                    foreach (var item in listImage)
+                    {
+                        <li>
+                            <a href="#">
+                                <img src="@Url.Content(item.DuongDan)" alt="Alternate Text" class="img-fluid" height="300" />
+                            </a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    <li>
+                        <a href="#">
+                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="img-fluid" height="300" />
+                        </a>
+                    </li>
+                }
+
+            </ul>
+            
+        </div>
+        <div class="info-detail">
+            <h2>@Model.TenSach</h2>
+            Tác giả:
+            @if (listTacGia.Count > 0 && listTacGia != null)
+            {
+                foreach (var item in listTacGia)
+                {
+                    <strong><a href="#">@item.Ten</a></strong>
+                }
+            }
+            <br />
+            <h3>@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h3>
+            <hr />
+            <div class="description-pro">
+                @Model.MoTa <br />
+            </div>
+            <div class="form-inline quality">
+                <input type="number" name="quality" value="1" min="1" max="100" class=" form-control" />
+                <a href="#" type="button" class="btn btn-danger">
+                    <i class="fas fa-cart-plus"></i>
+                    Chọn mua
+                </a>
+            </div>
+            <hr />
+            <div class="orther_policy">
+                <h3>Dịch vụ và khuyến mại liên quan</h3>
+                <ul>
+                    <li>
+                        - Hoàn tiền cho khách khi sản phẩm bị lỗi
+                    </li>
+                    <li>
+                        - Thanh toán khi giao hàng
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="orther_pro">
+            <h3>Sách cùng loại</h3>
+            @if (listOthers.Count > 0 && listOthers != null)
+            {
+                <ul class="slider_orthers">
+
+                    @foreach (var item in listOthers.Take(10))
+                    {
+                        <li class="item_other">
+                            <a href="@Url.Action("Detail", "Sach", new { shortname = item.TenVanTat })">
+                                <img src="@Url.Content(item.Anh)" alt="Alternate Text" height="200" />
+                            </a>
+                        </li>
+                    }
+                </ul>
+            }
+
+        </div>
+    </div>
+
+
+</div>
+<div class="clearfix"></div>
+<script>
+    setAdminCurrentUrl('@Url.Action("Detail", "Sach")', '@Url.Action("GetAll", "Sach")');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.slider_pro').bxSlider({
+            auto: true,
+            adaptiveHeight: true,
+            speed: 1000,
+            pause: 7000,
+            pager: false,
+        });
+        $('.slider_orthers').bxSlider({
+            auto: true,
+            adaptiveHeight: true,
+            speed: 1000,
+            pause: 7000,
+            pager: false,
+            minSlides: 4,
+            maxSlides: 4,
+            moveSlides: 4,
+            slideWidth: 200,
+            slideMargin: 5
+        });
+    });
+</script>

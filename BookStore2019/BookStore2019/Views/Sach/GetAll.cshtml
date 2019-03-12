@@ -1,0 +1,91 @@
+﻿@using ValuesObject
+@using PagedList.Mvc
+@using BookStore2019.Services
+@model List<OSach>
+@{
+    int pages = ViewBag.Page;
+    int pageCount = ViewBag.PageCount;
+    int pageSize = ViewBag.PageSize;
+    int fromAt = ViewBag.FromAt;
+    int total = (int)(Math.Ceiling(pageCount / (double)pageSize));
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ChuDeService chuDeService = new ChuDeService();
+    var listCate = chuDeService.GetAllActive();
+}
+<div class="product content-top">
+    <div class="container">
+        <div class="row">
+            @Html.Partial("Categories")
+
+            <div class="col-12 col-sm-9 all-pro">
+                @if (Model.Count > 0 && Model != null)
+                {
+                    var i = 1;
+                    foreach (var item in Model)
+                    {
+                        if (i % 4 == 0)
+                        {
+                            <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
+                                <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                    <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                </a>
+                                <div class="info_item">
+                                    <h3>@item.TenSach</h3>
+
+                                    <button type="button" class="btn btn-success">
+                                        <i class="fas fa-cart-plus"></i>
+                                        @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        }
+                        else
+                        {
+                            <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
+                                <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                    <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                </a>
+                                <div class="info_item">
+                                    <h3>@item.TenSach</h3>
+
+                                    <button type="button" class="btn btn-success">
+                                        <i class="fas fa-cart-plus"></i>
+                                        @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                        i++;
+                    }
+                }
+                else
+                {
+                    <div>
+                        <p>Đang cập nhật dữ liệu</p>
+                    </div>
+                }
+                <div class="clearfix"></div>
+                <div class="trang">
+                    <div class="pagination">
+                        <ul class="pagination">
+                            @for (int i = 1; i <= total; i++)
+                            {
+                                
+                                <li class="@(i == pages ? "active" : "")">
+                                    <a href="@Url.Action("GetAll","Sach",new { page=i})">@i</a>
+                                </li>
+                            }
+                        </ul>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

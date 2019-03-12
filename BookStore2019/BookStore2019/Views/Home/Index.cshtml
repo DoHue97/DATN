@@ -1,0 +1,292 @@
+﻿@using ValuesObject
+@using BookStore2019.Services
+@{
+    ViewBag.Title = "Home Page";
+    var list = ViewBag.ListChuDe as List<OChuDe>;
+    var listSlide = ViewBag.ListSlide as List<OSlide>;
+    var listHot = ViewBag.ListHot as List<OSach>;
+    var listHotByTag = ViewBag.ListHotByTag as List<OSach>;
+    SachService sachService = new SachService();
+    var listTruyenTranh = sachService.GetHotByTag("truyen-tranh");
+    var listDD = sachService.GetHot(false);
+}
+
+<div class="slide">
+    <ul class="bxslider">
+        @if (listSlide != null && listSlide.Count > 0)
+        {
+            foreach (var item in listSlide)
+            {
+                <li>
+                    <a href="#">
+                        <img src="@Url.Content(item.SlideImage)" alt="@item.SlideName" class="img-fluid" />
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+<div class="home-content">
+    @*<div class="popup hidden-lg" style="left:15px;" id="banner-left">
+            <a href="#">
+                <img src="@Url.Content("~/Uploads/Images/popup1.png")" alt="Alternate Text" width="35%" />
+            </a>
+        </div>
+        <div class="popup hidden-lg" id="banner-right" style="right:-25px;">
+            <a href="#">
+                <img src="@Url.Content("~/Uploads/Images/popup1.png")" alt="Alternate Text" width="35%" />
+            </a>
+        </div>*@
+    <div class="container">
+        <div class="content-top">
+            <h1> SÁCH NỔI BẬT</h1>
+            <div class="body-content">
+                @{
+                    var i = 1;
+                    if (listHot.Count > 0 && listHot != null)
+                    {
+                        <div class="row">
+                            @foreach (var item in listHot.Take(8))
+                            {
+                                if (i % 5 == 0)
+                                {
+                                    <div class="clearfix"></div>
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                        @*<input type="button" name="btnAddToCart" value="Thêm" />*@
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                i++;
+                            }
+                        </div>
+
+                    }
+                    else
+                    {
+                        <h2>Dữ liệu đang được cập nhật!</h2>
+                    }
+                }
+
+            </div>
+        </div>
+        <div class="content-top">
+            <h1> TIỂU THUYẾT HAY</h1>
+            <div class="body-content">
+                @{
+                    var j = 1;
+                    if (listHotByTag.Count > 0 && listHotByTag != null)
+                    {
+                        <div class="row">
+                            @foreach (var item in listHotByTag.Take(8))
+                            {
+                                if (j % 5 == 0)
+                                {
+                                    <div class="clearfix"></div>
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                j++;
+                            }
+                        </div>
+
+                    }
+                    else
+                    {
+                        <h2>Dữ liệu đang được cập nhật</h2>
+                    }
+                }
+
+            </div>
+        </div>
+        <div class="content-top">
+            <h1> TRUYỆN TRANH CHO BÉ</h1>
+            <div class="body-content">
+                @{
+                    var k = 1;
+                    if (listTruyenTranh.Count > 0 && listTruyenTranh != null)
+                    {
+                        <div class="row">
+                            @foreach (var item in listTruyenTranh.Take(8))
+                            {
+                                if (k % 5 == 0)
+                                {
+                                    <div class="clearfix"></div>
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                k++;
+                            }
+                        </div>
+
+                    }
+                    else
+                    {
+                        <h2>Dữ liệu đang được cập nhật!</h2>
+                    }
+                }
+
+            </div>
+        </div>
+        <div class="content-top">
+            <h1> ĐỒ DÙNG HỌC TẬP</h1>
+            <div class="body-content">
+                @{
+                    if (listDD.Count > 0 && listDD != null)
+                    {
+                        <div class="row">
+                            @foreach (var item in listDD)
+                            {
+                                if (j % 5 == 0)
+                                {
+                                    <div class="clearfix"></div>
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-12 col-sm-6 col-md-3 col-sm-3">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                        </a>
+                                        <div class="info_item">
+                                            <h3>@item.TenSach</h3>
+                                            <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
+                                        </div>
+                                    </div>
+                                }
+                                j++;
+                            }
+                        </div>
+
+                    }
+                    else
+                    {
+                        <h2>Dữ liệu đang được cập nhật!</h2>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    setAdminCurrentUrl('@Url.Action("Index", "Home")', '@Url.Action("Index", "Home")');
+</script>
+<script>
+    $(document).ready(function () {
+        $('.bxslider').bxSlider({
+            auto: true,
+            adaptiveHeight: true,
+            speed: 1000,
+            pause: 7000,
+            pager: true,
+        });
+    });
+</script>
+@*<script type="text/javascript">
+    var name = "#banner-left";
+    var menuYloc = null;
+    $(document).ready(function () {
+        if ($(window).width() > 900) {
+
+            menuYloc = parseInt($(name).css("top").substring(0, $(name).css("top").indexOf("px")));
+            $(window).scroll(function () {
+                if ($(document).scrollTop() > menuYloc + $(name).height()) {
+                    offset = $(document).scrollTop() - $(name).height() - 45 + "px";
+                    $(name).animate({ top: offset }, { duration: 500, queue: false });
+                }
+            });
+        }
+        else {
+            $(name).hide();
+        }
+    });
+</script>
+<script>
+    var name1 = "#banner-right";
+    var menuYloc1 = null;
+    $(document).ready(function () {
+        if ($(window).width() > 900) {
+            menuYloc1 = parseInt($(name1).css("top").substring(0, $(name1).css("top").indexOf("px")));
+            $(window).scroll(function () {
+                if ($(document).scrollTop() > menuYloc1 + $(name1).height()) {
+                    offset = $(document).scrollTop() - $(name1).height() - 45 + "px";
+                    $(name1).animate({ top: offset }, { duration: 500, queue: false });
+                }
+            });
+        }
+        else {
+            $(name).hide();
+        }
+    });
+    $(window).scroll(function () {
+        if ($(window).scrollTop() == $(window).scrollMaxY) {
+            $(name1).style.top = 10;
+        }
+    });
+</script>*@
+

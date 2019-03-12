@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Book Store Online</title>
+
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+
+    <link href="~/Content/bxslider/jquery.bxslider.css" rel="stylesheet" />
+
+    <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
+
+    <link href="~/Content/PagedList.css" rel="stylesheet" />
+
+    <script src="~/Content/fontawesome/js/fontawesome.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+
+    <script src="~/Content/bxslider/jquery.bxslider.js"></script>
+
+
+
+
+    
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <script>
+        function setAdminCurrentUrl(url, parenturl) {
+            //debugger;
+            $('a.item-li[href="' + url + '"]').each(function () {
+                $(this).addClass('active');
+            });
+            $('.navbar-nav a.hover-pa[href="' + parenturl + '"]').each(function () {
+                $(this).addClass('active');
+            });
+        }
+    </script>
+</head>
+<body>
+
+    @Html.Partial("Navbar")
+
+    @RenderBody()
+
+    @Html.Partial("Footer")
+
+
+    <script>
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 200) $('#goTop').stop().animate({ bottom: '50px' }, 500);
+            else $('#goTop').stop().animate({ bottom: '-60px' }, 500);
+        });
+        $(document).ready(function () {
+            $('#goTop').click(function (event) {
+                event.preventDefault();
+                $('html, body').animate({ scrollTop: 0 }, 500);
+            });
+        });
+    </script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

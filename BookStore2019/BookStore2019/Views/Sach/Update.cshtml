@@ -1,0 +1,254 @@
+﻿@using ValuesObject
+@using BookStore2019.Services
+@model OSach
+@{
+    ViewBag.Title = "Update";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+}
+<script src="~/ckfinder/ckfinder.js"></script>
+<script>
+    function Browser(){
+        debugger;
+
+        var finder = new CKFinder();
+        finder.selectActionFunction = function (url) {
+            $('#Anh').val(url);
+        };
+        finder.popup();
+    };
+    //var editor = CKEDITOR.replace('txtContent', {
+    //    customConfig: '/assets/admin/js/plugins/ckeditor/config.js',
+    //});
+</script>
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li><a href="@Url.Action("Admin", "Account")">Dashboard</a></li>
+            <li><a href="@Url.Action("Search", "Sach")">Danh sách slide</a></li>
+            @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
+            {
+                <li class="active">Edit @Model.MaSach</li>
+            }
+            else
+            {
+                <li class="active">Tạo mới sách</li>
+            }
+        </ul>
+
+    </div>
+
+    <div class="page-content">
+
+
+        <div class="page-header">
+
+            @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
+            {
+                <h1>
+                    Sửa sách id @Model.MaSach
+
+                </h1>
+            }
+            else
+            {
+                <h1>
+                    Tạo mới sách
+
+                </h1>
+            }
+
+        </div>
+        <!-- /.page-header -->
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "manageForm", @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
+                            {
+                                @Html.HiddenFor(mbox => mbox.MaSach)
+                            }
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Tên sách:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="text" name="TenSach" id="TenSach" class="col-xs-12 col-sm-6" value="@Model.TenSach" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Chủ đề:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.DropDownList("MaChuDe", (IEnumerable<SelectListItem>)ViewBag.ListCate, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.MaChuDe, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Keyword:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="text" name="Keyword" id="Keyword" class="col-xs-12 col-sm-6" value="@Model.Keyword" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Số lượng:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="number" name="SoLuong" id="SoLuong" class="col-xs-12 col-sm-6" value="@Model.SoLuong" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Giá bán:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="number" name="GiaBan" id="GiaBan" class="col-xs-12 col-sm-6" value="@Model.GiaBan" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Mô tả:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.TextAreaFor(m => m.MoTa)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Ghi chú:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.TextAreaFor(m => m.GhiChu)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageSummary">Ảnh:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.TextBoxFor(model => model.Anh)
+                                        <button type="button" id="btnBrowser" class="btn btn-success" onclick="Browser();">Browser...</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @{var full = (bool)Model.IsFull ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="IsActive">Hết hàng:</label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="IsFull" type="checkbox" class="ace" value="true" @full>
+
+                                        <span class="lbl"> Ẩn/Hiện danh mục</span>
+                                        <input name="IsFull" type="hidden" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @{var hot = (bool)Model.IsHot ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="IsActive">Sản phẩm Hot:</label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="IsHot" type="checkbox" class="ace" value="true" @hot>
+
+                                        <span class="lbl"> Ẩn/Hiện danh mục</span>
+                                        <input name="IsHot" type="hidden" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @{var check = (bool)Model.IsActive ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="IsActive">Trạng thái:</label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="IsActive" type="checkbox" class="ace" value="true" @check>
+
+                                        <span class="lbl"> Ẩn/Hiện danh mục</span>
+                                        <input name="IsActive" type="hidden" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @{var isSach = (bool)Model.IsSach ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="IsActive">Trạng thái:</label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="IsSach" type="checkbox" class="ace" value="true" @isSach>
+
+                                        <span class="lbl"> Ẩn/Hiện danh mục</span>
+                                        <input name="IsSach" type="hidden" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Lưu" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.page-content -->
+</div>
+<script type="text/javascript">
+    $('textarea[class*=autosize]').autosize({ append: "\n" });
+    $('textarea.limited').inputlimiter({
+        remText: '%n character%s remaining...',
+        limitText: 'max allowed : %n.'
+    });
+</script>
+
+<script type="text/javascript">
+    setAdminCurrentUrl('@Url.Action("Update", "Slide")');
+</script>
+
+<style type="text/css">
+
+
+    .pick-a-color-markup {
+        margin: 0px 0px;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(".pick-a-color").pickAColor({
+            showSpectrum: true,
+            showSavedColors: true,
+            saveColorsPerElement: true,
+            fadeMenuToggle: true,
+            showAdvanced: true,
+            showBasicColors: true,
+            showHexInput: true,
+            allowBlank: true,
+            inlineDropdown: true
+        });
+
+    });
+
+</script>

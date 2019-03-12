@@ -1,0 +1,76 @@
+﻿@using ValuesObject
+@using BookStore2019.Services
+
+@model List<OSach>
+@{
+    //Layout = "~/Views/Shared/_Layout.csthml";
+    int pages = ViewBag.Page;
+    int pageCount = ViewBag.PageCount;
+    int pageSize = ViewBag.PageSize;
+    int fromAt = ViewBag.FromAt;
+    int total = (int)(Math.Ceiling(pageCount / (double)pageSize));
+    var key = ViewBag.Key;
+    ViewBag.Title = "Kết quả tìm kiếm với từ khóa " + key;
+    var list = ViewBag.ListChuDe as List<OChuDe>;
+    var listHot = ViewBag.ListHot as List<OSach>;
+
+}
+
+@if (Model.Count > 0 && Model != null)
+{
+    <div class="content-top">
+        @Html.Partial("Categories")
+        <h1>Có @Model.Count kết quả</h1>
+        <div class="body-content">
+            @*<div class="row">*@
+                @if (Model.Count > 0 && Model != null)
+                {
+                    var i = 1;
+                    foreach (var item in Model)
+                    {
+                        <div class="col-12 col-md-3">
+                            <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                            </a>
+                            <h3>@item.TenSach</h3>
+
+                            <button type="button" class="btn btn-success">
+                                <i class="fas fa-cart-plus"></i>
+                                @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                            </button>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div>
+                        <p>Đang cập nhật dữ liệu</p>
+                    </div>
+                }
+                <div class="clearfix"></div>
+
+                <div class="pagination">
+                    <ul class="pagination">
+                        @if (pageCount > 1)
+                        {
+
+                            for (int i = 1; i <= total; i++)
+                            {
+                                <li class="@(i == pages ? "active" : "")">
+                                    <a href="@Url.Action("GetAll","Sach",new { page=i})">@i</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+                </div>
+            @*</div>*@
+
+        </div>
+
+    </div>
+}
+else
+{
+    <h2>Không có kết quả nào!</h2>
+}

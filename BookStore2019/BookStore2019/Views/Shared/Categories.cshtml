@@ -1,0 +1,65 @@
+﻿@using BookStore2019.Services
+@using ValuesObject
+@{
+    SachService sachService = new SachService();
+    ChuDeService chuDeService = new ChuDeService();
+    var listCate = chuDeService.GetAllByParentName("chu-de-sach");
+    var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
+    var listHot = sachService.GetHot(true);
+    Layout = null;
+}
+<div class="col-sm-3 cate-pro">
+    <div class="categories">
+        <div class="titleCate">
+            Danh mục
+        </div>
+        <ul class="menuCate">
+            @if (listCate.Count > 0 && listCate != null)
+            {
+                foreach (var item in listCate)
+                {
+                    <li><a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})">@item.Ten</a></li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="categories">
+        <div class="titleCate">
+            Đồ dùng học tập
+        </div>
+        <ul class="menuCate">
+            @if (listCateDD.Count > 0 && listCateDD != null)
+            {
+                foreach (var item in listCateDD)
+                {
+                    <li><a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})">@item.Ten</a></li>
+                }
+            }
+        </ul>
+    </div>
+    <div class="pro-hot">
+        <div class="titleCate">
+            Sách sale
+        </div>
+        @if (listHot.Count > 0 && listHot != null)
+        {
+            foreach (var item in listHot.Take(3))
+            {
+                <div class="pro-item">
+                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})">
+                        <div class="pro-item">
+                            <img src="@item.Anh" alt="Alternate Text" height="100" />
+                        </div>
+                        <div class="pro-des">
+                            <p>@item.TenSach</p>
+                            <h4>@String.Format("{0:#,##0.##}", item.GiaBan) VND</h4>
+                        </div>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+
+
