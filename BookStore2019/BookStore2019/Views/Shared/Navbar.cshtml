@@ -1,12 +1,15 @@
 ﻿@using BookStore2019.Services
 @using ValuesObject
+@using BookStore2019.Models
 @{
     ChuDeService chuDeService = new ChuDeService();
-    var listCate = chuDeService.GetAllByParentName("chu-de-sach");
-    var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
+    SachService sachService = new SachService();
+    LoaiTinService loaiTinService = new LoaiTinService();
+    var listCate = chuDeService.GetAllParent();
+    var listNewCates = loaiTinService.GetAllActive();
 }
 <div class="back-to-top">
-    <button type="button" class="btn btn-dark scrolltop" id="goTop" style="bottom:50px;">
+    <button type="button" class="btn btn-dark scrolltop" id="goTop" style="bottom:-50px;">
         <i class="fas fa-chevron-up scroll"></i>
     </button>
 </div>
@@ -17,7 +20,7 @@
                 <div class="search col-8">
                     @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-inline" }))
                     {
-                        <input type="text" name="Search" id="Search" placeholder="Tìn kiếm" class="form-control " />
+                        <input type="text" name="Search" id="Search" placeholder="Tìm theo tên sách,tác giả" class="form-control" />
                         <button type="submit" id="btnSearch" name="btnSearch" value="Go" class="btn btn-success">Go</button>
                     }
                     @*<form class="form-inline" id="form-search"></form>*@
@@ -37,7 +40,32 @@
                             <li><a href="@Url.Action("Register","Account")">Đăng ký</a></li>
                         }
 
-                        <li><a href="@Url.Action("Cart","Sach")"><i class="fas fa-cart-plus"></i></a></li>
+                            <li>
+                                <a href="@Url.Action("Order","ProductAction")">
+                                    <i class="fas fa-cart-plus"></i>
+
+                                </a>
+                                @{
+
+                                    ShoppingCartModels modelCarts = new ShoppingCartModels();
+                                    modelCarts.Cart = (Carts)Session["Cart"];
+                                    if (modelCarts.Cart != null)
+                                    {
+
+                                        if (modelCarts.Cart.ListItem.Count > 0 && modelCarts.Cart.ListItem != null)
+                                        {
+                                            var i = 0;
+                                            foreach (var item in modelCarts.Cart.ListItem)
+                                            {
+                                                i += item.Quantity;
+                                            }
+                                            <span id="totalItem">@i </span>
+                                        }
+
+                                    }
+
+                                }
+                            </li>
                     </ul>
                     <button type="button" class="navbar-toggle d-lg-none btnMenu" data-toggle="collapse" data-target=".h-menu">
                         <span class="sr-only">Toggle navigation</span>
@@ -57,40 +85,59 @@
                     <li>
                         <a href="@Url.Action("Index","Home")" class="hover-pa">Trang chủ</a>
                     </li>
-                    <li>
-                        <a href="@Url.Action("About","Home")" class="hover-pa">Giới thiệu</a>
-                    </li>
+
                     <li class="dropdown">
-                        <a href="@Url.Action("GetAll","Sach")" class="hover-pa">Sách</a>
+                        <a href="@Url.Action("GetAll","Sach",new { isSach=true})" class="hover-pa">Danh  mục sản phẩm</a>
                         <ul class="dropdown-menu" role="menu">
                             @if (listCate.Count > 0 && listCate != null)
                             {
                                 foreach (var item in listCate)
                                 {
-                                    <li class="">
-                                        <a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})" class="item-li">@item.Ten</a>
-                                    </li>
-                                }
-                            }
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a href="@Url.Action("GetAll","SanPham")" class="hover-pa">Đồ dùng học tập</a>
-                        <ul class="dropdown-menu" role="menu">
-                            @if (listCateDD.Count > 0 && listCateDD != null)
-                            {
-                                foreach (var item in listCateDD)
-                                {
-                                    <li class="">
-                                        <a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})" class="item-li">@item.Ten</a>
-                                    </li>
-                                }
-                            }
+                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { ParentId = item.MaChuDe });
+                                    if (list2.Count > 0 && list2 != null)
+                                    {
+                                        <li class="dropdown-level-2">
+                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li ">@item.Ten</a>
+                                            <ul class="dropdown-menu sub-menu-2">
+                                                @foreach (var item2 in list2)
+                                                {
+                                                    <li>
+                                                        <a href="@Url.Action("GetByCate", "Sach", new { id = item2.MaChuDe })">@item2.Ten</a>
+                                                    </li>
 
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown-level-2">
+                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li">@item.Ten</a>
+                                        </li>
+                                    }
+
+                                }
+                            }
                         </ul>
                     </li>
-                    <li>
+
+                    <li class=" dropdown">
                         <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức</a>
+
+                        @if (listNewCates.Count > 0 && listNewCates != null)
+                        {
+
+                            <ul class="dropdown-menu" role="menu">
+                                @foreach (var item in listNewCates)
+                                {
+                                    <li class="dropdown-level-2">
+                                        <a href="#" class="item-li">@item.Ten</a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    <li>
+                        <a href="@Url.Action("About","Home")" class="hover-pa">Giới thiệu</a>
                     </li>
                     <li>
                         <a href="@Url.Action("Contact","Home")" class="hover-pa">Liên hệ</a>

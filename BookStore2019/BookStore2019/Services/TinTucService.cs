@@ -17,22 +17,13 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("TinTuc_GetAll",conn.db);
             comm.CommandType = CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
+            
             List<OTinTuc> list = new List<OTinTuc>();
-            while (reader.Read())
-            {
-                OTinTuc item = new OTinTuc();
-                item.MaTin = Convert.ToInt32(reader["MaTin"].ToString());
-                item.TieuDe = reader["TieuDe"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.NoiDung = reader["NoiDung"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.NgayTao = DateTime.Parse(reader["NgayTao"].ToString());
-                item.TenLoai = reader["TenLoai"].ToString();
 
-                list.Add(item);
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OTinTuc>(dt);
+            conn.Close();
             return list;
         }
         public List<OTinTuc> GetAllByCateShortName(string shortname)
@@ -42,45 +33,27 @@ namespace BookStore2019.Services
             comm.CommandType = CommandType.StoredProcedure;
             comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = shortname;
 
-            SqlDataReader reader = comm.ExecuteReader();
+            
             List<OTinTuc> list = new List<OTinTuc>();
-            while (reader.Read())
-            {
-                OTinTuc item = new OTinTuc();
-                item.MaTin = Convert.ToInt32(reader["MaTin"].ToString());
-                item.TieuDe = reader["TieuDe"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.NoiDung = reader["NoiDung"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.NgayTao = DateTime.Parse(reader["NgayTao"].ToString());
-                item.TenLoai = reader["TenLoai"].ToString();
 
-                list.Add(item);
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OTinTuc>(dt);
+            conn.Close();
             return list;
         }
         public List<OTinTuc> GetAllActive()
         {
             conn.connect();
-            var comm = new SqlCommand("TinTuc_GetAllActive", conn.db);
+            var comm = new SqlCommand("TinTuc_GetAllAcitve", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
+            
             List<OTinTuc> list = new List<OTinTuc>();
-            while (reader.Read())
-            {
-                OTinTuc item = new OTinTuc();
-                item.MaTin = Convert.ToInt32(reader["MaTin"].ToString());
-                item.TieuDe = reader["TieuDe"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.NoiDung = reader["NoiDung"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.NgayTao = DateTime.Parse(reader["NgayTao"].ToString());
-                item.TenLoai = reader["TenLoai"].ToString();
 
-                list.Add(item);
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OTinTuc>(dt);
+
             return list;
         }
         public void Add (OTinTuc item)
@@ -89,12 +62,12 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("TinTuc_Add", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
             comm.Parameters.Add("@TieuDe", SqlDbType.NVarChar).Value = item.TieuDe;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@NoiDung", SqlDbType.NVarChar).Value = item.NoiDung;
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = item.Anh;
-            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
-            comm.Parameters.Add("@MaLoaiTin", SqlDbType.NVarChar).Value = item.MaLoaiTin;
-            comm.Parameters.Add("@NgayTao", SqlDbType.NVarChar).Value = item.NgayTao;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@MaLoaiTin", SqlDbType.Int).Value = item.MaLoaiTin;
+            
             comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.ShortName;
 
             comm.ExecuteNonQuery();
@@ -108,7 +81,7 @@ namespace BookStore2019.Services
 
             comm.Parameters.Add("@MaTin", SqlDbType.NVarChar).Value = item.MaTin;
             comm.Parameters.Add("@TieuDe", SqlDbType.NVarChar).Value = item.TieuDe;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@NoiDung", SqlDbType.NVarChar).Value = item.NoiDung;
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = item.Anh;
             comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
@@ -137,21 +110,13 @@ namespace BookStore2019.Services
             comm.CommandType = CommandType.StoredProcedure;
             comm.Parameters.Add("@MaTin", SqlDbType.Int).Value = id;
 
-            SqlDataReader reader = comm.ExecuteReader();
+            
             OTinTuc item = new OTinTuc();
-            while (reader.Read())
-            {
-                item.MaTin = Convert.ToInt32(reader["MaTin"].ToString());
-                item.TieuDe = reader["TieuDe"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.NoiDung = reader["NoiDung"].ToString();
-                item.Anh = reader["Anh"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.NgayTao = DateTime.Parse(reader["NgayTao"].ToString());
-                item.ShortName = reader["ShortName"].ToString();
-                item.TenLoai = reader["TenLoai"].ToString();
-            }
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            item = Help.DAL.ConvertDataTable<OTinTuc>(dt).FirstOrDefault();
+            conn.Close();
             return item;
         }
         public OTinTuc GetShortName(string shortname)
@@ -161,21 +126,13 @@ namespace BookStore2019.Services
             comm.CommandType = CommandType.StoredProcedure;
             comm.Parameters.Add("@ShortName", SqlDbType.Int).Value = shortname;
 
-            SqlDataReader reader = comm.ExecuteReader();
+            
             OTinTuc item = new OTinTuc();
-            while (reader.Read())
-            {
-                item.MaTin = Convert.ToInt32(reader["MaTin"].ToString());
-                item.TieuDe = reader["TieuDe"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.NoiDung = reader["NoiDung"].ToString();
-                item.Anh = reader["Anh"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.NgayTao = DateTime.Parse(reader["NgayTao"].ToString());
-                item.ShortName = reader["ShortName"].ToString();
-                item.TenLoai = reader["TenLoai"].ToString();
-            }
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            item = Help.DAL.ConvertDataTable<OTinTuc>(dt).FirstOrDefault();
+            conn.Close();
             return item;
         }
     }

@@ -34,7 +34,7 @@ namespace BookStore2019.Controllers
                 Session["Account"] = account;
                 if (account.MaQuyen == 1)
                 {
-                    return RedirectToAction("Admin", "Account");
+                    return RedirectToAction("Index", "Area");
                 }
                 else if(account.MaQuyen==3)
                 {

@@ -1,18 +1,17 @@
 ﻿@using BookStore2019.Services
 @using ValuesObject
-@using PagedList.Mvc
+
+@using BookStore2019.Help
+@using BookStore2019.Models
 @model List<OSach>
 @{
-    int pages = ViewBag.Page;
-    int pageCount = ViewBag.PageCount;
-    int pageSize = ViewBag.PageSize;
-    int fromAt = ViewBag.FromAt;
-    int total = (int)(Math.Ceiling(pageCount / (double)pageSize));
+
     var category = ViewBag.Category as OChuDe;
     ViewBag.Title = "Danh sách sách theo chủ đề " + category.Ten;
     Layout = "~/Views/Shared/_Layout.cshtml";
     ChuDeService chuDeService = new ChuDeService();
     var listCate = chuDeService.GetAllActive();
+    Pager pager = ViewBag.Pager;
 
 }
 <div class="product content-top">
@@ -24,7 +23,7 @@
                 @if (Model.Count > 0 && Model != null)
                 {
                     var i = 1;
-                    foreach (var item in Model.Skip(fromAt).Take(pageSize))
+                    foreach (var item in Model)
                     {
                         if (i % 4 == 0)
                         {
@@ -32,7 +31,7 @@
                                 <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
                                     <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                 </a>
-                                <h3>@item.TenSach</h3>
+                                <h3>@Helper.CutText(item.TenSach)</h3>
 
                                 <button type="button" class="btn btn-success">
                                     <i class="fas fa-cart-plus"></i>
@@ -47,7 +46,7 @@
                                 <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
                                     <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                 </a>
-                                <h3>@item.TenSach</h3>
+                                <h3>@Helper.CutText(item.TenSach)</h3>
 
                                 <button type="button" class="btn btn-success">
                                     <i class="fas fa-cart-plus"></i>
@@ -68,17 +67,37 @@
                 <div class="trang">
                     <div class="pagination">
                         <ul class="pagination">
-                            @if (pageCount >= 1)
+                            @if (pager.HasPreviousPage)
                             {
-                                for (int i = 1; i <= total; i++)
-                                {
-                                    <li class="@(i == pages ? "active" : "")">
-                                        <a href="@Url.Action("GetByCate","Sach",new {id=category.MaChuDe, page=i})">@i</a>
-                                    </li>
-                                }
+                                <li>
+                                    @Html.ActionLink("<<", "GetByCate", new {id=category.MaChuDe, page = pager.FirstPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("<", "GetByCate", new { id = category.MaChuDe, page = pager.PreviousPageIndex })
+                                </li>
+
 
                             }
 
+                            @foreach (int page in ViewBag.Pager)
+                            {
+                                <li>
+                                    @Html.ActionLink(page.ToString(), "GetByCate", new { id = category.MaChuDe, page = page })
+                                </li>
+
+                            }
+
+                            @if (pager.HasNextPage)
+                            {
+                                <li>
+                                    @Html.ActionLink(">", "GetByCate", new { id = category.MaChuDe, page = pager.NextPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink(">>", "GetByCate", new { id = category.MaChuDe, page = pager.LastPageIndex })
+                                </li>
+
+
+                            }
                         </ul>
 
 

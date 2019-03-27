@@ -1,5 +1,17 @@
-﻿
+﻿<div class="email-footer clearfix">
+    <div class="container">
+        <div class="col-4 img-email">
+            <img src="@Url.Content("/Images/icon_email.png")" alt="Alternate Text" height="40" />
+            Đăng ký nhận tin từ chúng tôi
+        </div>
+        <div class=" col-8 form-inline divFormMail">
+            <input type="email" name="email" id="email" value="" placeholder="Email " class="form-control col-6" />
+            <button type="submit" class="btn btn-success" onclick="_send()">Gửi</button>
+        </div>
+    </div>
+</div>
 <div class="footer">
+
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-4">
@@ -7,13 +19,13 @@
                 <div class="body-item">
                     <ul>
                         <li>
-                            <a href="@Url.Action("GetById","HtmlPages")">Chính sách bảo mật</a>
+                            <a href="@Url.Action("GetById","Html")">Chính sách bảo mật</a>
                         </li>
                         <li>
-                            <a href="@Url.Action("GetById","HtmlPages")">Điều khoản sử dụng</a>
+                            <a href="@Url.Action("GetById","Html")">Điều khoản sử dụng</a>
                         </li>
                         <li>
-                            <a href="@Url.Action("GetById","HtmlPages")">Giới thiệu SachHay</a>
+                            <a href="@Url.Action("GetById","Html")">Giới thiệu SachHay</a>
                         </li>
                     </ul>
                 </div>
@@ -23,10 +35,10 @@
                 <div class="body-item">
                     <ul>
                         <li>
-                            <a href="@Url.Action("GetById","HtmlPages")">Chính sách đổi - trả - hoàn tiền</a>
+                            <a href="@Url.Action("GetById","Html")">Chính sách đổi - trả - hoàn tiền</a>
                         </li>
                         <li>
-                            <a href="@Url.Action("GetById","HtmlPages")">Hình thức vận chuyển</a>
+                            <a href="@Url.Action("GetById","Html")">Hình thức vận chuyển</a>
                         </li>
 
                     </ul>
@@ -69,3 +81,34 @@
         <p>Copyright 2019 Sach Hay </p>
     </div>
 </div>
+<script>
+        function _send() {
+            //debugger;
+        var email = $("#email").val();
+        var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if (email == null && email == "") {
+            alert("Bạn cần nhập địa chỉ email");
+            return false;
+        }
+        if (reg.test(email) == false) {
+            alert("Email không đúng định dạng!");
+            return false;
+        }
+        $.ajax({
+                url: '@Url.Action("SendMail", "Home")',
+            data: {
+                email: email
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    if (data.Success) {
+                        alert("Cảm ơn bạn đã gửi email nhận tin cho chúng tôi!");
+                    } else {
+                        alert("Gửi email thất bại!");
+                    }
+                }
+            });
+    }
+</script>

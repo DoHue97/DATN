@@ -49,6 +49,7 @@ F:\DATN\BookStore2019\BookStore2019\bin\roslyn\vbc.rsp
 F:\DATN\BookStore2019\BookStore2019\bin\roslyn\VBCSCompiler.exe
 F:\DATN\BookStore2019\BookStore2019\bin\roslyn\VBCSCompiler.exe.config
 F:\DATN\BookStore2019\BookStore2019\bin\Antlr3.Runtime.dll
+F:\DATN\BookStore2019\BookStore2019\bin\CKFinder.dll
 F:\DATN\BookStore2019\BookStore2019\bin\Microsoft.AI.Agent.Intercept.dll
 F:\DATN\BookStore2019\BookStore2019\bin\Microsoft.AI.DependencyCollector.dll
 F:\DATN\BookStore2019\BookStore2019\bin\Microsoft.AI.PerfCounterCollector.dll
@@ -73,6 +74,7 @@ F:\DATN\BookStore2019\BookStore2019\bin\System.Web.WebPages.Razor.dll
 F:\DATN\BookStore2019\BookStore2019\bin\ValuesObject.dll
 F:\DATN\BookStore2019\BookStore2019\bin\WebGrease.dll
 F:\DATN\BookStore2019\BookStore2019\bin\ValuesObject.pdb
+F:\DATN\BookStore2019\BookStore2019\bin\CKFinder.pdb
 F:\DATN\BookStore2019\BookStore2019\bin\PagedList.xml
 F:\DATN\BookStore2019\BookStore2019\bin\PagedList.Mvc.xml
 F:\DATN\BookStore2019\BookStore2019\bin\System.Web.Helpers.xml

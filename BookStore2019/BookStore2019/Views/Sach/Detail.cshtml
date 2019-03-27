@@ -18,14 +18,14 @@
                 {
                     <li>
                         <a href="#">
-                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="img-fluid" height="300" />
+                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="" height="300" />
                         </a>
                     </li>
                     foreach (var item in listImage)
                     {
                         <li>
                             <a href="#">
-                                <img src="@Url.Content(item.DuongDan)" alt="Alternate Text" class="img-fluid" height="300" />
+                                <img src="@Url.Content(item.DuongDan)" alt="Alternate Text" class="" height="300" />
                             </a>
                         </li>
                     }
@@ -34,53 +34,86 @@
                 {
                     <li>
                         <a href="#">
-                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="img-fluid" height="300" />
+                            <img src="@Url.Content(Model.Anh)" alt="Alternate Text" class="" height="300" />
                         </a>
                     </li>
                 }
 
             </ul>
-            
+
         </div>
         <div class="info-detail">
             <h2>@Model.TenSach</h2>
-            Tác giả:
-            @if (listTacGia.Count > 0 && listTacGia != null)
+            @if (Model.IsSach == true)
             {
-                foreach (var item in listTacGia)
-                {
-                    <strong><a href="#">@item.Ten</a></strong>
-                }
+                <span>
+                    Tác giả:
+                    @if (listTacGia.Count > 0 && listTacGia != null)
+                    {
+                        foreach (var item in listTacGia)
+                        {
+                            <strong><a href="#"> @item.Ten </a></strong>
+                        }
+                    }
+                    else
+                    {
+                        <strong><a href="#"> Đang cập nhật </a></strong>
+                    }
+                </span>
+                <br />
+                <span>Nhà xuất bản: <strong>@Model.TenNXB</strong></span>
             }
-            <br />
-            <h3>@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h3>
-            <hr />
-            <div class="description-pro">
-                @Model.MoTa <br />
-            </div>
+            @if (Model.Sale > 0)
+            {
+                <h4 class="price-old">@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
+                <h4 class="price-sale">
+                    <strong>
+
+                        @String.Format("{0:#,##0.##}", Model.GiaBan - Model.GiaBan * Model.Sale / 100) VND
+                    </strong>
+                </h4>
+
+            }
+            else
+            {
+                <h4 class="">@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
+            }
+
             <div class="form-inline quality">
+                <input type="hidden" name="idpro" value="@Model.MaSach" />
                 <input type="number" name="quality" value="1" min="1" max="100" class=" form-control" />
-                <a href="#" type="button" class="btn btn-danger">
+                <button type="button" class="btn btn-danger" id="addToCart" onclick="updateCart()">
                     <i class="fas fa-cart-plus"></i>
                     Chọn mua
-                </a>
+                </button>
             </div>
             <hr />
-            <div class="orther_policy">
-                <h3>Dịch vụ và khuyến mại liên quan</h3>
-                <ul>
-                    <li>
-                        - Hoàn tiền cho khách khi sản phẩm bị lỗi
-                    </li>
-                    <li>
-                        - Thanh toán khi giao hàng
-                    </li>
-                </ul>
-            </div>
+
         </div>
         <div class="clearfix"></div>
+        <div class="description-pro">
+            <h3>Giới thiệu</h3>
+            @MvcHtmlString.Create(Model.MoTa) <br />
+        </div>
+        <hr />
+        <div class="orther_policy">
+            <h3>Dịch vụ và khuyến mại liên quan</h3>
+            <ul>
+                <li>
+                    - Hoàn tiền cho khách khi sản phẩm bị lỗi
+                </li>
+                <li>
+                    - Thanh toán khi giao hàng
+                </li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+    <div class="clearfix"></div>
+    <div class="col-md-12 divOrther">
         <div class="orther_pro">
-            <h3>Sách cùng loại</h3>
+            <h3>Sản phẩm cùng loại</h3>
             @if (listOthers.Count > 0 && listOthers != null)
             {
                 <ul class="slider_orthers">
@@ -98,8 +131,6 @@
 
         </div>
     </div>
-
-
 </div>
 <div class="clearfix"></div>
 <script>
@@ -120,11 +151,50 @@
             speed: 1000,
             pause: 7000,
             pager: false,
-            minSlides: 4,
-            maxSlides: 4,
-            moveSlides: 4,
+            maxSlides: 6,
+            moveSlides: 6,
             slideWidth: 200,
             slideMargin: 5
         });
     });
+</script>
+<script>
+    function updateCart() {
+        //debugger;
+        var quanlity = $("input[name='quality']").val();
+        var idpro = $("input[name='idpro']").val();
+        
+            $.ajax({
+                url: '@Url.Action("AddToCart", "ProductAction")',
+                data: {
+                    proid: idpro,
+                    quanlity: quanlity
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    if (data.Success) {
+                        if (data.Flag === "0") {
+                            var totalItems = 0;
+                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                                var Item = data.Cart.ListItem[i];
+                                totalItems += i;
+                            }
+                            $("#totalItem").text(i);
+                            alert("Đã thêm sản phẩm vào giỏ hàng!");
+                        } else {
+                            alert("Sản phẩm chỉ còn lại");
+                        }
+                    } else {
+                        alert("Thêm sản phẩm thất bại");
+                    }
+                }
+            });
+        }
+    //$(document).ready(function () {
+    //    debugger;
+
+    //}
+
 </script>

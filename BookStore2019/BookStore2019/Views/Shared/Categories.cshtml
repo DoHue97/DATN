@@ -3,15 +3,15 @@
 @{
     SachService sachService = new SachService();
     ChuDeService chuDeService = new ChuDeService();
-    var listCate = chuDeService.GetAllByParentName("chu-de-sach");
-    var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
+    var listCate = chuDeService.GetAllByParentId(new OChuDe { ParentId = 1 });
+    //var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
     var listHot = sachService.GetHot(true);
     Layout = null;
 }
 <div class="col-sm-3 cate-pro">
     <div class="categories">
         <div class="titleCate">
-            Danh mục
+            <h4>Danh mục</h4>
         </div>
         <ul class="menuCate">
             @if (listCate.Count > 0 && listCate != null)
@@ -23,23 +23,23 @@
             }
         </ul>
     </div>
-    <div class="categories">
-        <div class="titleCate">
-            Đồ dùng học tập
-        </div>
-        <ul class="menuCate">
-            @if (listCateDD.Count > 0 && listCateDD != null)
-            {
-                foreach (var item in listCateDD)
+    @*<div class="categories">
+            <div class="titleCate">
+                Đồ dùng học tập
+            </div>
+            <ul class="menuCate">
+                @if (listCateDD.Count > 0 && listCateDD != null)
                 {
-                    <li><a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})">@item.Ten</a></li>
+                    foreach (var item in listCateDD)
+                    {
+                        <li><a href="@Url.Action("GetByCate","Sach",new { id=item.MaChuDe})">@item.Ten</a></li>
+                    }
                 }
-            }
-        </ul>
-    </div>
+            </ul>
+        </div>*@
     <div class="pro-hot">
         <div class="titleCate">
-            Sách sale
+            <h4>Sản phẩm HOT</h4>
         </div>
         @if (listHot.Count > 0 && listHot != null)
         {
@@ -52,7 +52,13 @@
                         </div>
                         <div class="pro-des">
                             <p>@item.TenSach</p>
-                            <h4>@String.Format("{0:#,##0.##}", item.GiaBan) VND</h4>
+                            <h4 class="price-old">@String.Format("{0:#,##0.##}", item.GiaBan) VND</h4>
+                            <h4 class="price-sale">
+                                <strong>
+                                  
+                                    @String.Format("{0:#,##0.##}",item.GiaBan- item.GiaBan * item.Sale / 100) VND
+                                </strong>
+                            </h4>
                         </div>
                     </a>
                 </div>

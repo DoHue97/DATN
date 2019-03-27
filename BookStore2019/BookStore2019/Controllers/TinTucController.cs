@@ -11,18 +11,37 @@ namespace BookStore2019.Controllers
     public class TinTucController : Controller
     {
         LoaiTinService loaiTinService = new LoaiTinService();
+        TinTucService tinTucService = new TinTucService();
         // GET: TinTuc
+        #region user
+        public ActionResult GetAll()
+        {
+            var list = tinTucService.GetAllActive();
+            return View(list);
+        }
+        public ActionResult GetByCate()
+        {
+            return View();
+        }
+        public ActionResult Detail()
+        {
+            return View();
+        }
+        #endregion
+        #region Admin
+        [Authorize]
         public ActionResult SearchCate()
         {
             var listCate = loaiTinService.GetAll();
             return View(listCate);
         }
+        [Authorize]
         [HttpGet]
         public ActionResult CreateCate()
         {
             OLoaiTin data = new OLoaiTin();
             data.IsActive = false;
-            
+
             return View("UpdateCate", data);
         }
         [HttpPost, ValidateInput(false)]
@@ -43,18 +62,18 @@ namespace BookStore2019.Controllers
 
                 }
             }
-            
+
             ViewBag.IsEdit = true;
-            return View("Update", model);
+            return View("UpdateCate", model);
         }
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult UpdateCate(int? id)
         {
             if (id.HasValue)
             {
                 var obj = loaiTinService.Get((int)id);
-                
+
                 ViewBag.IsEdit = true;
                 return View(obj);
             }
@@ -83,7 +102,7 @@ namespace BookStore2019.Controllers
                     }
                 }
             }
-            
+
             ViewBag.IsEdit = true;
             return View(model);
         }
@@ -94,5 +113,99 @@ namespace BookStore2019.Controllers
             loaiTinService.Delete(new OLoaiTin { MaLoaiTin = id });
             return RedirectToAction("SearchCate", "TinTuc");
         }
+
+        //tin tuc
+        [Authorize]
+        [HttpGet]
+        public ActionResult Search()
+        {
+            var listCate = loaiTinService.GetAllActive();
+            ViewBag.ListCates = new SelectList(listCate, "MaLoaiTin", "Ten");
+            var list = tinTucService.GetAll();
+            return View(list);
+        }
+        [Authorize]
+        [HttpGet]
+        public ActionResult Create()
+        {
+            OTinTuc data = new OTinTuc();
+            data.IsActive = false;
+            var listCate = loaiTinService.GetAllActive();
+            ViewBag.ListCates = new SelectList(listCate, "MaLoaiTin", "Ten");
+            return View("Update", data);
+        }
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(OTinTuc model)
+        {
+            if (ModelState.IsValid)
+            {
+                // var pro = ServiceFactory.NewsgoryManager.Get(new Newsgories { NewsgoryId = model.NewsgoryId });
+                try
+                {
+                    model.ShortName = Help.Helper.convertToUnSign3(model.TieuDe);
+                    tinTucService.Add(model);
+                    return RedirectToAction("Search", "TinTuc");
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            var listCate = loaiTinService.GetAllActive();
+            ViewBag.ListCates = new SelectList(listCate, "MaLoaiTin", "Ten");
+            ViewBag.IsEdit = true;
+            return View("Update", model);
+        }
+        [Authorize]
+        [HttpGet]
+        public ActionResult Update(int? id)
+        {
+            if (id.HasValue)
+            {
+                var obj = tinTucService.Get((int)id);
+
+                ViewBag.IsEdit = true;
+                return View(obj);
+            }
+            var listCate = new SelectList(loaiTinService.GetAllActive(), "MaLoaiTin", "Ten");
+            ViewBag.ListCates = listCate;
+            return View();
+        }
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(OTinTuc model)
+        {
+            if (ModelState.IsValid)
+            {
+                var pro = tinTucService.Get(model.MaTin);
+                if (pro != null)
+                {
+                    try
+                    {
+                        model.ShortName = Help.Helper.convertToUnSign3(model.TieuDe);
+                        tinTucService.Update(model);
+                        return RedirectToAction("Search", "TinTuc");
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+
+            ViewBag.IsEdit = true;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            tinTucService.Delete(new OTinTuc { MaTin = id });
+            return RedirectToAction("Search", "TinTuc");
+        }
+        #endregion
+
+
     }
 }

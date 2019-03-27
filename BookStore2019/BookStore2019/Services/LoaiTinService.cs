@@ -18,18 +18,10 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("LoaiTin_GetAll", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OLoaiTin loaiTin = new OLoaiTin();
-                loaiTin.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                loaiTin.Ten = reader["Ten"].ToString();
-                loaiTin.MoTa = reader["MoTa"].ToString() ;
-                loaiTin.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                loaiTin.ShortName = reader["ShortName"].ToString();
 
-                list.Add(loaiTin);
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OLoaiTin>(dt);
             conn.Close();
             return list;
         }
@@ -37,20 +29,12 @@ namespace BookStore2019.Services
         {
             List<OLoaiTin> list = new List<OLoaiTin>();
             conn.connect();
-            var comm = new SqlCommand("LoaiTin_GetActive", conn.db);
+            var comm = new SqlCommand("LoaiTin_GetAllActive", conn.db); 
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OLoaiTin loaiTin = new OLoaiTin();
-                loaiTin.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                loaiTin.Ten = reader["Ten"].ToString();
-                loaiTin.MoTa = reader["MoTa"].ToString();
-                loaiTin.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                loaiTin.ShortName = reader["ShortName"].ToString();
-                list.Add(loaiTin);
 
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OLoaiTin>(dt);
             conn.Close();
             return list;
         }
@@ -59,12 +43,12 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("LoaiTin_Add", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Ten", SqlDbType.NVarChar).Value = item.Ten;
-            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
-            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.ShortName;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
             comm.ExecuteNonQuery();
-            conn.Close();            
+            conn.Close();
         }
         public void Update(OLoaiTin item)
         {
@@ -72,10 +56,11 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("LoaiTin_Update", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.NVarChar).Value = item.MaLoaiTin;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
+            //comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Ten", SqlDbType.NVarChar).Value = item.Ten;
             comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
-            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.ShortName;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
             comm.ExecuteNonQuery();
             conn.Close();
         }
@@ -87,7 +72,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.NVarChar).Value = item.MaLoaiTin;
             
             comm.ExecuteNonQuery();
-            conn.Close();
+            
         }
         public OLoaiTin Get(int id)
         {
@@ -98,16 +83,10 @@ namespace BookStore2019.Services
             OLoaiTin item = new OLoaiTin();
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.Int).Value = id;
 
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.Ten = reader["Ten"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.ShortName = reader["ShortName"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            item = Help.DAL.ConvertDataTable<OLoaiTin>(dt).FirstOrDefault();
+            conn.Close();
             return item;
         }
         public OLoaiTin GetShortName(string shortname)
@@ -119,16 +98,10 @@ namespace BookStore2019.Services
             OLoaiTin item = new OLoaiTin();
             comm.Parameters.Add("@ShortName", SqlDbType.Int).Value = shortname;
 
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                item.MaLoaiTin = Convert.ToInt32(reader["MaLoaiTin"].ToString());
-                item.Ten = reader["Ten"].ToString();
-                item.MoTa = reader["MoTa"].ToString();
-                item.ShortName = reader["ShortName"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            item = Help.DAL.ConvertDataTable<OLoaiTin>(dt).FirstOrDefault();
+            conn.Close();
             return item;
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -18,6 +19,13 @@ namespace BookStore2019.Help
             string temp = s.Normalize(NormalizationForm.FormD);
             string lowerStr = regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D').ToLower();
             return Regex.Replace(lowerStr, "[^a-zA-Z0-9_.-]", "-");
+        }
+        public static string convertLower(string s)
+        {
+            Regex regex = new Regex("\\p{IsCombiningDiacriticalMarks}+");
+            string temp = s.Normalize(NormalizationForm.FormD);
+            string lowerStr = regex.Replace(temp, String.Empty).Replace('\u0111', 'd').Replace('\u0110', 'D').ToLower();
+            return lowerStr;
         }
         public static string EncodeSHA1(string pass)
         {
@@ -42,6 +50,15 @@ namespace BookStore2019.Help
 
             return pass;
 
+        }
+        public static string CutText(string text)
+        {
+            if (text.Length > 30)
+            {
+                text = text.Substring(0, 29) + "...";
+                return text;
+            }
+            return text;
         }
         
         //public static MvcHtmlString DropDownListDefault(this HtmlHelper htmlHelper, string name, IEnumerable<SelectListItem> selectList, object defaultValue, string defaultText, object htmAttribute = null)

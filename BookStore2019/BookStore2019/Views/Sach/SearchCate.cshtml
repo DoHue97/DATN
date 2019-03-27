@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "Danh sách chủ đề";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    ChuDeService chuDeService = new ChuDeService();
 }
 
 <div class="main-content-inner">
@@ -17,9 +18,11 @@
             <li class="active">Danh sách chủ đề</li>
         </ul>
     </div>
+    
     <div class="page-content">
         <div class="page-header">
             <h1>Danh sách chủ đề </h1>
+            
         </div>
         <div class="row">
             <div class="col-xs-12">
@@ -33,6 +36,7 @@
                                     <tr role="row">
 
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tên</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tên danh mục cha</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Ghi chú</th>
                                         <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
                                         <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
@@ -44,6 +48,17 @@
                                         <tr role="row" class="odd">
 
                                             <td>@item.Ten</td>
+                                            <td>
+                                                @if (item.ParentId != 0)
+                                                {
+                                                    var parent = chuDeService.Get(new OChuDe { MaChuDe = item.ParentId });
+                                                    <span>@parent.Ten</span>
+                                                }
+                                                else
+                                                {
+                                                    <span></span>
+                                                }
+                                            </td>
                                             <td>@item.GhiChu</td>
                                             <th class="hidden-480">
                                                 @if (item.IsActive == true)
@@ -65,7 +80,7 @@
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
                                                     </a>
                                                 </div>
-                                                
+
                                             </td>
 
                                         </tr>
@@ -96,7 +111,7 @@
                 .dataTable({
                     bAutoWidth: false,
                     "aoColumns": [
-                        null, null, null,
+                        null, null, null,null,
                         { "bSortable": false }
                     ],
                     "aaSorting": [],

@@ -51,7 +51,6 @@
     <Compile Include="ONhaCungCap.cs" />
     <Compile Include="ONhaXuatBan.cs" />
     <Compile Include="OSach.cs" />
-    <Compile Include="OSach_NXB.cs" />
     <Compile Include="OSach_TacGia.cs" />
     <Compile Include="OSlide.cs" />
     <Compile Include="OTacGia.cs" />

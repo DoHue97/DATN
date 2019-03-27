@@ -1,12 +1,10 @@
 ﻿@model BookStore2019.Models.Login
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Đăng nhập";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-
-    <h2>Login</h2>
 
     @using (Html.BeginForm())
     {
@@ -35,7 +33,7 @@
                 <div class="col-md-offset-2 col-md-10">
                     <div class="checkbox">
                         @Html.CheckBoxFor(m => m.IsRemember, new { htmlAttributes = new { @class = "form-control", @id = "IsRemember" } })
-                        @Html.LabelFor(m => m.IsRemember)
+                        @Html.Label("Nhớ tài khoản")
                     </div>
                 </div>
             </div>

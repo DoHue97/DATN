@@ -4,6 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BookStore2019.Services;
+using BookStore2019.Help;
+using System.Configuration;
+using System.Net.Mail;
+using System.Text;
+using System.Net;
+
 namespace BookStore2019.Controllers
 {
     public class HomeController : Controller
@@ -39,6 +45,7 @@ namespace BookStore2019.Controllers
         public ActionResult Search(FormCollection f, int? page = 1)
         {
             string key = f["Search"].ToString();
+            key = Helper.convertLower(key);
             if (key == null || key == "")
             {
                 return RedirectToAction("GetAll", "Sach");
@@ -55,15 +62,45 @@ namespace BookStore2019.Controllers
             ViewBag.Key = key;
             return View(list);
         }
-        //[HttpPost]
-        //public ActionResult Search(FormCollection f)
-        //{
-        //    string key = f["Search"].ToString();
-        //    var totalCount = 0;
-            
-        //    var list = sachService.Search();
-            
-        //    return View(new StaticPagedList<OSach>(list, page, pageSize, totalCount).ToPagedList(page, pageSize));
-        //}
+        [HttpPost]
+        public ActionResult SendMail(string email)
+        {
+            string emailsend = ConfigurationManager.AppSettings["emailsend"];
+            string pass = ConfigurationManager.AppSettings["pass"];
+            MailAddress mailCompany = new MailAddress("dieuhoanhapkhau.test@gmail.com");
+            MailMessage mail = new MailMessage();
+            mail.To.Add(mailCompany);
+
+            mail.From = new MailAddress(email, "Sách hay");
+            mail.Subject = "Nhận tin từ Điều hòa chính hãng";
+            mail.SubjectEncoding = Encoding.GetEncoding("utf-8");
+            mail.BodyEncoding = Encoding.GetEncoding("utf-8");
+
+            mail.Bcc.Add(emailsend);
+            mail.IsBodyHtml = true;
+            mail.Body = "<div><p>Email: " + email + " đăng ký nhận tin !</p> <br></div>";
+            mail.Priority = MailPriority.High;
+            SmtpClient client = new SmtpClient();
+            NetworkCredential mailAuthentication = new NetworkCredential();
+            mailAuthentication.UserName = emailsend;
+            mailAuthentication.Password = pass;
+
+            client.Port = 587;
+            client.Host = "smtp.gmail.com";
+
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = mailAuthentication;
+
+            try
+            {
+                client.Send(mail);
+                return Json(new { Success = true });
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Error = "Lỗi không gửi được mail!" });
+            }
+        }
     }
 }

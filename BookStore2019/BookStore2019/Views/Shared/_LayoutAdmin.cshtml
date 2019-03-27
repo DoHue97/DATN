@@ -19,7 +19,7 @@
     <link rel="icon" href="@Url.Content("~/images/favicon.ico")" type="image/x-icon" />
 
 
-    <link rel="stylesheet" href="@Url.Content("~/Content/color/pick-a-color-1.2.3.min.css")">
+    @*<link rel="stylesheet" href="@Url.Content("~/Content/color/pick-a-color-1.2.3.min.css")">*@
     <!-- page specific plugin styles -->
     <!-- text fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
@@ -62,9 +62,9 @@
         if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/admin/Script/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
     <!-- ace settings handler -->
-    <script src="~/Content/color/jquery-1.9.1.min.js"></script>
+    @*<script src="~/Content/color/jquery-1.9.1.min.js"></script>
     <script src="~/Content/color/tinycolor-0.9.15.min.js"></script>
-    <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>
+    <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>*@
 
 
 
@@ -203,7 +203,7 @@
                         </li>
 
                         <li class="">
-                            <a href="@Url.Action("Search", "Sach")">
+                            <a href="@Url.Action("Search", "Sach",new { isSach=true})">
                                 <i class="menu-icon fas fa-caret-right"></i>
                                 Danh sách sách
                             </a>
@@ -211,7 +211,14 @@
                             <b class="arrow"></b>
                         </li>
 
+                        <li class="">
+                            <a href="@Url.Action("Search", "Sach",new { isSach=false})">
+                                <i class="menu-icon fas fa-caret-right"></i>
+                                Danh sách đồ dùng học tập
+                            </a>
 
+                            <b class="arrow"></b>
+                        </li>
                     </ul>
                 </li>
                 <li class="">
@@ -226,7 +233,7 @@
 
                     <ul class="submenu">
                         <li class="">
-                            <a href="@Url.Action("SearchCate", "News")">
+                            <a href="@Url.Action("SearchCate", "TinTuc")">
                                 <i class="menu-icon fas fa-caret-right"></i>
                                 Danh mục tin tức
                             </a>
@@ -235,7 +242,7 @@
                         </li>
 
                         <li class="">
-                            <a href="@Url.Action("Search", "News")">
+                            <a href="@Url.Action("Search", "TinTuc")">
                                 <i class="menu-icon fas fa-caret-right"></i>
                                 Danh sách tin tức
                             </a>
@@ -247,41 +254,7 @@
                     </ul>
                 </li>
 
-                <li class="">
-                    <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fa fa-book-reader"></i>
-
-                        <span class="menu-text">
-                            Library
-
-                            @*<span class="badge badge-primary">5</span>*@
-
-                        </span>
-                        <b class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <ul class="submenu">
-                        <li class="">
-                            <a href="@Url.Action("ImageSearch", "Library")">
-                                <i class="menu-icon fas fa-caret-right"></i>
-                                Danh mục ảnh
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-
-                        <li class="">
-                            <a href="@Url.Action("VideoSearch", "Library")">
-                                <i class="menu-icon fas fa-caret-right"></i>
-                                Danh sách video
-                            </a>
-
-                            <b class="arrow"></b>
-                        </li>
-
-
-                    </ul>
-                </li>
+                
                 <li class="">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon fa fa-newspaper"></i>
@@ -345,10 +318,10 @@
         <div class="footer">
             <div class="footer-inner">
                 <div class="footer-content">
-                    <span class="bigger-120">
+                    @*<span class="bigger-120">
                         <span class="blue">idoc</span><span class="red">Net</span>
                         Application &copy; 2018
-                    </span>
+                    </span>*@
 
                     &nbsp; &nbsp;
                     <span class="action-buttons">

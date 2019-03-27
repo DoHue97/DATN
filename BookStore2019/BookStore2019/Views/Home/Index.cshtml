@@ -1,5 +1,6 @@
 ﻿@using ValuesObject
 @using BookStore2019.Services
+@using BookStore2019.Help
 @{
     ViewBag.Title = "Home Page";
     var list = ViewBag.ListChuDe as List<OChuDe>;
@@ -56,7 +57,9 @@
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>
+                                                @Helper.CutText(item.TenSach)
+                                            </h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                         @*<input type="button" name="btnAddToCart" value="Thêm" />*@
@@ -69,7 +72,9 @@
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>
+                                                @Helper.CutText(item.TenSach)
+                                            </h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -248,45 +253,45 @@
     });
 </script>
 @*<script type="text/javascript">
-    var name = "#banner-left";
-    var menuYloc = null;
-    $(document).ready(function () {
-        if ($(window).width() > 900) {
+        var name = "#banner-left";
+        var menuYloc = null;
+        $(document).ready(function () {
+            if ($(window).width() > 900) {
 
-            menuYloc = parseInt($(name).css("top").substring(0, $(name).css("top").indexOf("px")));
-            $(window).scroll(function () {
-                if ($(document).scrollTop() > menuYloc + $(name).height()) {
-                    offset = $(document).scrollTop() - $(name).height() - 45 + "px";
-                    $(name).animate({ top: offset }, { duration: 500, queue: false });
-                }
-            });
-        }
-        else {
-            $(name).hide();
-        }
-    });
-</script>
-<script>
-    var name1 = "#banner-right";
-    var menuYloc1 = null;
-    $(document).ready(function () {
-        if ($(window).width() > 900) {
-            menuYloc1 = parseInt($(name1).css("top").substring(0, $(name1).css("top").indexOf("px")));
-            $(window).scroll(function () {
-                if ($(document).scrollTop() > menuYloc1 + $(name1).height()) {
-                    offset = $(document).scrollTop() - $(name1).height() - 45 + "px";
-                    $(name1).animate({ top: offset }, { duration: 500, queue: false });
-                }
-            });
-        }
-        else {
-            $(name).hide();
-        }
-    });
-    $(window).scroll(function () {
-        if ($(window).scrollTop() == $(window).scrollMaxY) {
-            $(name1).style.top = 10;
-        }
-    });
-</script>*@
+                menuYloc = parseInt($(name).css("top").substring(0, $(name).css("top").indexOf("px")));
+                $(window).scroll(function () {
+                    if ($(document).scrollTop() > menuYloc + $(name).height()) {
+                        offset = $(document).scrollTop() - $(name).height() - 45 + "px";
+                        $(name).animate({ top: offset }, { duration: 500, queue: false });
+                    }
+                });
+            }
+            else {
+                $(name).hide();
+            }
+        });
+    </script>
+    <script>
+        var name1 = "#banner-right";
+        var menuYloc1 = null;
+        $(document).ready(function () {
+            if ($(window).width() > 900) {
+                menuYloc1 = parseInt($(name1).css("top").substring(0, $(name1).css("top").indexOf("px")));
+                $(window).scroll(function () {
+                    if ($(document).scrollTop() > menuYloc1 + $(name1).height()) {
+                        offset = $(document).scrollTop() - $(name1).height() - 45 + "px";
+                        $(name1).animate({ top: offset }, { duration: 500, queue: false });
+                    }
+                });
+            }
+            else {
+                $(name).hide();
+            }
+        });
+        $(window).scroll(function () {
+            if ($(window).scrollTop() == $(window).scrollMaxY) {
+                $(name1).style.top = 10;
+            }
+        });
+    </script>*@
 

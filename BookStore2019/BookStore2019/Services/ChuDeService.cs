@@ -18,19 +18,12 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("ChuDe_GetAll", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OChuDe chuDe = new OChuDe();
-                chuDe.MaChuDe = Convert.ToInt32(reader["MaChuDe"].ToString());
-                chuDe.Ten = reader["Ten"].ToString();
-                chuDe.ParentId = Convert.ToInt32(reader["ParentId"]);
-                chuDe.GhiChu = reader["GhiChu"].ToString();
-                chuDe.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                chuDe.TenVanTat = reader["TenVanTat"].ToString();
-                list.Add(chuDe);
 
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
+
             conn.Close();
             return list;            
         }
@@ -40,19 +33,11 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("ChuDe_GetAllActive", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OChuDe chuDe = new OChuDe();
-                chuDe.MaChuDe = Convert.ToInt32(reader["MaChuDe"].ToString());
-                chuDe.Ten = reader["Ten"].ToString();
-                chuDe.ParentId = Convert.ToInt32(reader["ParentId"]);
-                chuDe.GhiChu = reader["GhiChu"].ToString();
-                chuDe.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                chuDe.TenVanTat = reader["TenVanTat"].ToString();
-                list.Add(chuDe);
 
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
             conn.Close();
             return list;
         }
@@ -60,22 +45,14 @@ namespace BookStore2019.Services
         {
             List<OChuDe> list = new List<OChuDe>();
             conn.connect();
-            var comm = new SqlCommand("ChuDe_GetAllByParent", conn.db);
+            var comm = new SqlCommand("ChuDe_GetAllParent", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = oChuDe.ParentId;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OChuDe chuDe = new OChuDe();
-                chuDe.MaChuDe = Convert.ToInt32(reader["MaChuDe"].ToString());
-                chuDe.Ten = reader["Ten"].ToString();
-                chuDe.ParentId = Convert.ToInt32(reader["ParentId"]);
-                chuDe.GhiChu = reader["GhiChu"].ToString();
-                chuDe.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                chuDe.TenVanTat = reader["TenVanTat"].ToString();
-                list.Add(chuDe);
 
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
             conn.Close();
             return list;
         }
@@ -86,19 +63,25 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("ChuDe_GetAllByParentName", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = name;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OChuDe chuDe = new OChuDe();
-                chuDe.MaChuDe = Convert.ToInt32(reader["MaChuDe"].ToString());
-                chuDe.Ten = reader["Ten"].ToString();
-                chuDe.ParentId = Convert.ToInt32(reader["ParentId"]);
-                chuDe.GhiChu = reader["GhiChu"].ToString();
-                chuDe.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                chuDe.TenVanTat = reader["TenVanTat"].ToString();
-                list.Add(chuDe);
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
 
-            }
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
+            conn.Close();
+            return list;
+        }
+
+        public List<OChuDe> GetAllParent()
+        {
+            List<OChuDe> list = new List<OChuDe>();
+            conn.connect();
+            var comm = new SqlCommand("ChuDe_GetByParent", conn.db);
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+            
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
             conn.Close();
             return list;
         }
@@ -146,17 +129,12 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@MaChuDe", SqlDbType.Int).Value = chuDe.MaChuDe;
             
-            SqlDataReader reader = comm.ExecuteReader();
+            
             OChuDe item = new OChuDe();
-            while (reader.Read())
-            {                
-                item.MaChuDe = Convert.ToInt32(reader["MaChuDe"]);
-                item.Ten = reader["Ten"].ToString();
-                item.GhiChu = reader["GhiChu"].ToString();
-                item.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                item.ParentId = Convert.ToInt32(reader["ParentId"]);
-                item.TenVanTat = reader["TenVanTat"].ToString();
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            item = Help.DAL.ConvertDataTable<OChuDe>(dt).FirstOrDefault();
             conn.Close();
             return item;
         }
@@ -164,21 +142,12 @@ namespace BookStore2019.Services
         {
             List<OChuDe> list = new List<OChuDe>();
             conn.connect();
-            var comm = new SqlCommand("ChuDe_GetByParentId", conn.db);
+            var comm = new SqlCommand("ChuDe_GetByParent", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
-            while (reader.Read())
-            {
-                OChuDe chuDe = new OChuDe();
-                chuDe.MaChuDe = Convert.ToInt32(reader["MaChuDe"].ToString());
-                chuDe.Ten = reader["Ten"].ToString();
-                chuDe.ParentId = Convert.ToInt32(reader["ParentId"]);
-                chuDe.GhiChu = reader["GhiChu"].ToString();
-                chuDe.IsActive = Boolean.Parse(reader["IsActive"].ToString());
-                chuDe.TenVanTat = reader["TenVanTat"].ToString();
-                list.Add(chuDe);
 
-            }
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OChuDe>(dt);
             conn.Close();
             return list;
         }
