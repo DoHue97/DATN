@@ -11,105 +11,113 @@
             decimal totalMoney = 0;
 
         }
-        @if (Model.Cart.ListItem.Count > 0 && Model.Cart.ListItem != null)
+        @if (Model.Cart != null)
         {
-            var count = 0;
-            foreach (var item in Model.Cart.ListItem)
+            if (Model.Cart.ListItem.Count > 0 && Model.Cart.ListItem != null)
             {
-                count += item.Quantity;
-            }
+                var count = 0;
+                foreach (var item in Model.Cart.ListItem)
+                {
+                    count += item.Quantity;
+                }
 
-            <h2 class="title-cart">Giỏ hàng <span class="total-item">(@count  sản phẩm)</span> </h2>
-            <div class="col-md-9 box-cart">
-                <table class="table">
-                    <tr class="header-tr">
-                        <td>Ảnh sản phẩm</td>
-                        <td>Tên sản phẩm</td>
-                        <td>Giá bán</td>
-                        <td>Số lượng</td>
-                        <td>Tổng tiền</td>
-                    </tr>
-                    @foreach (var item in Model.Cart.ListItem)
-                    {
-                        <tr>
-                            <td>
-                                <div class="img-item">
-                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">
-                                        <img src="@Url.Content(item.ProductImage)" height="150" alt="Alternate Text" />
-                                    </a>
-
-                                </div>
-                            </td>
-                            <td>
-                                <div class="item-name">
-                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">@item.ProductName</a>
-                                    <br />
-                                    <br />
-                                    <a href="@Url.Action("Remove","ProductAction",new { id=item.ProductId})" class="delete-item">
-                                        <i class="fas fa-trash-alt"></i>
-                                        Bỏ sản phẩm
-                                    </a>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="item-price">
-                                    <span class="price-value-@item.ProductId">@String.Format("{0:#,##0.##}", item.Price) đ</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="item-quanlity">
-                                    <input type="number" min="1" max="10" name="quanlity" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
-                                </div>
-                            </td>
-                            <td>
-                                <div class="total-price">
-                                    <span class="total-value-@item.ProductId">@String.Format("{0:#,##0.##}", item.Total) đ</span>
-                                </div>
-                            </td>
+                <h2 class="title-cart">Giỏ hàng <span class="total-item">(@count  sản phẩm)</span> </h2>
+                <div class="col-md-9 box-cart">
+                    <table class="table">
+                        <tr class="header-tr">
+                            <td>Ảnh sản phẩm</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Giá bán</td>
+                            <td>Số lượng</td>
+                            <td>Tổng tiền</td>
                         </tr>
-                        totalMoney += item.Total;
+                        @foreach (var item in Model.Cart.ListItem)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="img-item">
+                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">
+                                            <img src="@Url.Content(item.ProductImage)" height="150" alt="Alternate Text" />
+                                        </a>
 
-                    }
-                </table>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="item-name">
+                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">@item.ProductName</a>
+                                        <br />
+                                        <br />
+                                        <a href="@Url.Action("Remove","ProductAction",new { id=item.ProductId})" class="delete-item">
+                                            <i class="fas fa-trash-alt"></i>
+                                            Bỏ sản phẩm
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="item-price">
+                                        <span class="price-value-@item.ProductId">@String.Format("{0:#,##0.##}", item.Price) đ</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="item-quanlity">
+                                        <input type="number" min="1" max="10" name="quanlity" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="total-price">
+                                        <span class="total-value-@item.ProductId">@String.Format("{0:#,##0.##}", item.Total) đ</span>
+                                    </div>
+                                </td>
+                            </tr>
+                            totalMoney += item.Total;
+
+                        }
+                    </table>
 
 
-            </div>
-            <div class="col-md-3 box-total">
-                <div class="totals">
-                    <div class="row sum-price">
-                        <div class="col-md-6">
-                            Tạm tính:
+                </div>
+                <div class="col-md-3 box-total">
+                    <div class="totals">
+                        <div class="row sum-price">
+                            <div class="col-md-6">
+                                Tạm tính:
+                            </div>
+                            <div class="col-md-6 price-value">
+                                @String.Format("{0:#,##0.##}", totalMoney) đ
+                            </div>
                         </div>
-                        <div class="col-md-6 price-value">
-                            @String.Format("{0:#,##0.##}", totalMoney) đ
+                        <div class="row sale-value">
+                            <div class="col-md-6">
+                                Giảm giá:
+                            </div>
+                            <div class="col-md-6 price-sale">
+                                0 đ
+                            </div>
                         </div>
-                    </div>
-                    <div class="row sale-value">
-                        <div class="col-md-6">
-                            Giảm giá:
-                        </div>
-                        <div class="col-md-6 price-sale">
-                            0 đ
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row total-money">
-                        <div class="col-md-6">
-                            Thành tiền:
-                        </div>
-                        <div class="col-md-6 price-total">
-                            @String.Format("{0:#,##0.##}", totalMoney) đ
+                        <hr />
+                        <div class="row total-money">
+                            <div class="col-md-6">
+                                Thành tiền:
+                            </div>
+                            <div class="col-md-6 price-total">
+                                @String.Format("{0:#,##0.##}", totalMoney) đ
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <h3>Giỏ hàng đang trống</h3>
+                <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
+            }
         }
+
         else
         {
             <h3>Giỏ hàng đang trống</h3>
             <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
         }
-
     </div>
 </div>
 <script>
@@ -128,7 +136,7 @@
     function myFunction(thiz,proid) {
         //debugger;
         var quanlity = $(thiz).val();
-        
+
             $.ajax({
                 url: '@Url.Action("UpdateCart", "ProductAction")',
                 data: {
@@ -150,13 +158,13 @@
                                 var totalPrice = ".total-value-" + Item.ProductId;
                                 totalMoney += total;
                                 $(totalPrice).text(formatPrice(total) + " đ");
-                                
+
                             }
                             $(".price-value").text(formatPrice(totalMoney) + " đ");
                             $(".price-total").text(formatPrice(totalMoney) + " đ");
                             $("#totalItem").text(totalItems);
                             $(".total-item").text("("+totalItems +" sản phẩm)");
-                            
+
                         } else {
                             alert("Sản phẩm chỉ còn lại");
                         }

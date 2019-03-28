@@ -61,7 +61,11 @@
                                             }
                                             <span id="totalItem">@i </span>
                                         }
-
+                                        else
+                                        {
+                                            <span id="totalItem">0 </span>
+                                            
+                                        }
                                     }
 
                                 }
@@ -121,7 +125,7 @@
                         </ul>
                     </li>
 
-                    <li class=" dropdown">
+                    @*<li class=" dropdown">
                         <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức</a>
 
                         @if (listNewCates.Count > 0 && listNewCates != null)
@@ -135,7 +139,7 @@
                                     </li>
                                 }
                             </ul>
-                        }
+                        }*@
                     <li>
                         <a href="@Url.Action("About","Home")" class="hover-pa">Giới thiệu</a>
                     </li>

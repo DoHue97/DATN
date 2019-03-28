@@ -12,7 +12,7 @@ namespace BookStore2019.Controllers
     {
         SachService sachService = new SachService();
         // GET: ProductAction
-        
+
         public ActionResult Order()
         {
             ShoppingCartModels model = new ShoppingCartModels();
@@ -28,17 +28,21 @@ namespace BookStore2019.Controllers
                 var product = sachService.Get(new OSach { MaSach = proid });
                 if (product.SoLuong >= quanlity)
                 {
+                    if(product.Sale>0)
+                    {
+                        product.GiaBan = product.GiaBan - product.GiaBan * product.Sale / 100;
+                    }
                     if (objCart != null)
                     {
                         objCart.UpdateCart(proid, quanlity);
                         Session["Cart"] = objCart;
                     }
-                    
+
                     return Json(new { Success = true, Flag = "0", Cart = objCart });
-                    
+
                 }
                 else
-                {                    
+                {
                     return Json(new { Success = false, Flag = "1", Message = "Sản phẩm " + product.TenSach + " còn  " + product.SoLuong + " sản phẩm" });
                 }
             }
@@ -56,12 +60,17 @@ namespace BookStore2019.Controllers
             {
                 Carts objCart = (Carts)Session["Cart"];
                 var product = sachService.Get(new OSach { MaSach = proid });
-                if (product!=null && product.SoLuong >= quanlity)
+                if (product != null && product.SoLuong >= quanlity)
                 {
+                    
                     if (objCart == null)
                     {
                         objCart = new Carts();
-                    }                    
+                    }
+                    if (product.Sale > 0)
+                    {
+                        product.GiaBan = product.GiaBan - product.GiaBan * product.Sale / 100;
+                    }
                     CartItem cartItem = new CartItem
                     {
                         ProductId = proid,

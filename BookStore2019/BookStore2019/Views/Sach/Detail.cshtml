@@ -61,19 +61,28 @@
                     }
                 </span>
                 <br />
-                <span>Nhà xuất bản: <strong>@Model.TenNXB</strong></span>
+                <span>Nhà xuất bản: <strong>@Model.TenNXB</strong></span><br />
+                <span>Năm xuất bản: @Model.NamXB</span><br />
+                <span>Số trang: @Model.SoTrang</span><br />
+                if (Model.DichGia != null || Model.DichGia != "")
+                {
+                    <p>Dịch giả: @Model.DichGia</p>
+                }
             }
+
+
             @if (Model.Sale > 0)
             {
-                <h4 class="price-old">@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
+                <h4 class="price-old"> Giá bán: @String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
                 <h4 class="price-sale">
                     <strong>
 
-                        @String.Format("{0:#,##0.##}", Model.GiaBan - Model.GiaBan * Model.Sale / 100) VND
+                        Giá khuyến mại:  @String.Format("{0:#,##0.##}", Model.GiaBan - Model.GiaBan * Model.Sale / 100) VND
                     </strong>
                 </h4>
 
             }
+
             else
             {
                 <h4 class="">@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
@@ -154,7 +163,8 @@
             maxSlides: 6,
             moveSlides: 6,
             slideWidth: 200,
-            slideMargin: 5
+            slideMargin: 5,
+            infiniteLoop: false
         });
     });
 </script>
@@ -179,10 +189,10 @@
                             var totalItems = 0;
                             for (var i = 0; i < data.Cart.ListItem.length; i++) {
                                 var Item = data.Cart.ListItem[i];
-                                totalItems += i;
+                                totalItems += Item.Quantity;
                             }
-                            $("#totalItem").text(i);
-                            alert("Đã thêm sản phẩm vào giỏ hàng!");
+                            $("#totalItem").text(totalItems);
+                            //alert("Đã thêm sản phẩm vào giỏ hàng!");
                         } else {
                             alert("Sản phẩm chỉ còn lại");
                         }

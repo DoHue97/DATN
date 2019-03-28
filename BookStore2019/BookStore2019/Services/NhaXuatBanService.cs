@@ -18,7 +18,7 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("NXB_GetAll", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            SqlDataReader reader = comm.ExecuteReader();
+            
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
