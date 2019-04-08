@@ -161,10 +161,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Area\AreaAreaRegistration.cs" />
     <Compile Include="Areas\Area\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Area\Controllers\QuanLyNguoiDungController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLyNXBController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLySanPhamController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLySlideController.cs" />
+    <Compile Include="Areas\Area\Controllers\QuanLyTacGiaController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLyTinTucController.cs" />
+    <Compile Include="Areas\Area\Controllers\QuanLyTrangTinhController.cs" />
     <Compile Include="ConnectDb\DatabaseConnect.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -172,7 +175,6 @@
     <Compile Include="Controllers\NhaXuatBanController.cs" />
     <Compile Include="Controllers\ProductActionController.cs" />
     <Compile Include="Controllers\SachController.cs" />
-    <Compile Include="Controllers\SlideController.cs" />
     <Compile Include="Controllers\TacGiaController.cs" />
     <Compile Include="Controllers\TinTucController.cs" />
     <Compile Include="Global.asax.cs">
@@ -187,11 +189,18 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AccountService.cs" />
     <Compile Include="Services\ChuDeService.cs" />
+    <Compile Include="Services\CTHDBService.cs" />
+    <Compile Include="Services\HDBService.cs" />
     <Compile Include="Services\HtmlPageService.cs" />
+    <Compile Include="Services\KhachHangService.cs" />
     <Compile Include="Services\LoaiTinService.cs" />
+    <Compile Include="Services\LoaiTrangTinhService.cs" />
+    <Compile Include="Services\NhaCungCapService.cs" />
     <Compile Include="Services\NhaXuatBanService.cs" />
-    <Compile Include="Services\SachService.cs" />
+    <Compile Include="Services\SanPhamService.cs" />
+    <Compile Include="Services\Sach_TacGiaService.cs" />
     <Compile Include="Services\SlideService.cs" />
+    <Compile Include="Services\TacGiaService.cs" />
     <Compile Include="Services\TinTucService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1365,6 +1374,7 @@
     <Content Include="Content\admin\Script\typeahead.jquery.min.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-multiselect.css" />
     <Content Include="Content\bootstrap-reboot.css" />
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -2979,6 +2989,7 @@
     <Content Include="Content\fontawesome\webfonts\fa-solid-900.ttf" />
     <Content Include="Content\fontawesome\webfonts\fa-solid-900.woff" />
     <Content Include="Content\fontawesome\webfonts\fa-solid-900.woff2" />
+    <Content Include="Scripts\bootstrap-multiselect.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -3013,6 +3024,18 @@
     <Content Include="Areas\Area\Views\QuanLyTinTuc\Search.cshtml" />
     <Content Include="Areas\Area\Views\QuanLyTinTuc\Update.cshtml" />
     <Content Include="Areas\Area\Views\QuanLyTinTuc\UpdateCate.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyTrangTinh\Search.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyTrangTinh\Update.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyTrangTinh\SearchCate.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyTrangTinh\UpdateCate.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyNXB\Search.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyNXB\Update.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLySlide\Search.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLySlide\Update.cshtml" />
+    <Content Include="Content\bootstrap-multiselect.less" />
+    <Content Include="Areas\Area\Views\QuanLyTacGia\Search.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyTacGia\Update.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLyNguoiDung\Search.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -3057,8 +3080,7 @@
     <Content Include="Views\Sach\Update.cshtml" />
     <Content Include="Views\Shared\Categories.cshtml" />
     <Content Include="Views\Sach\Detail.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Admin.cshtml" />
+    <Content Include="Views\Account\Shipping.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Sach\GetByCate.cshtml" />
     <Content Include="Views\TinTuc\SearchCate.cshtml" />
@@ -3079,15 +3101,16 @@
     <Content Include="Views\TinTuc\Update.cshtml" />
     <Content Include="Views\ProductAction\Order.cshtml" />
     <Content Include="Views\TinTuc\GetByCate.cshtml" />
+    <Content Include="Views\Html\Detail.cshtml" />
+    <Content Include="Views\TinTuc\Detail.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Area\Models\" />
-    <Folder Include="Areas\Area\Views\QuanLyNXB\" />
-    <Folder Include="Areas\Area\Views\QuanLySlide\" />
     <Folder Include="Views\NhaXuatBan\" />
-    <Folder Include="Views\Slide\" />
-    <Folder Include="Views\TacGia\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

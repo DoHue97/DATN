@@ -1,0 +1,251 @@
+﻿@using ValuesObject
+@using BookStore2019.Services
+@model OAccount
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    KhachHangService khachHangService = new KhachHangService();
+    var customer = khachHangService.GetById((int)Model.MaKhach);
+}
+
+<div class="container info-user">
+    <span class="message"></span>
+    <div class="form-group row">
+        <label for="UserName">Tên đăng nhập</label>
+        <div class="clearfix col-sm-6">
+            <p>@Model.UserName</p>
+        </div>
+        <input type="hidden" name="user_name" value="@Model.UserName" />
+    </div>
+    <div class="form-group row">
+        <label for="UserName">Tên khách</label>
+        <div class="clearfix col-sm-6">
+            <p>@Model.TenKhach</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="UserName">EMail</label>
+        <div class="clearfix col-sm-6">
+            <p>@Model.Email</p>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="UserName">Địa chỉ</label>
+        <div class="clearfix col-sm-6">
+            <p>@customer.DiaChi</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="UserName">Điện thoại</label>
+        <div class="clearfix col-sm-6">
+            <p>@customer.DienThoai</p>
+        </div>
+    </div>
+    <div class="form-group row">
+        <button data-target="#password_modal" data-toggle="modal" class="btn btn-primary btnChange">Đổi mật khẩu</button>
+        <button data-target="#modal_edit" data-toggle="modal" class="btn btn-primary">Sửa đổi thông tin</button>
+    </div>
+</div>
+
+<div class="modal fade" id="password_modal" tabindex="-1" role="dialog" aria-labelledby="password_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="control-group">
+                        <label for="current_password" class="control-label">Nhập mật khẩu cũ</label>
+                        <div class="controls">
+                            <input type="password" name="current_password" class="form-control">
+                            <span class="error mess_old"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="new_password" class="control-label">Nhập mật khẩu mới</label>
+                        <div class="controls">
+                            <input type="password" name="new_password" class="form-control">
+                            <span class="error mess_new"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="confirm_password" class="control-label">Nhập lại mật khẩu mới</label>
+                        <div class="controls">
+                            <input type="password" name="confirm_password" class="form-control">
+                            <span class="error mess_con"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChange()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="password_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin cá nhân</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="MaKhach" value="@customer.MaKhach" />
+                    <div class="control-group">
+                        <label for="fullname" class="control-label">Họ tên</label>
+                        <span class="error mess_full"></span>
+                        <div class="controls">
+                            <input type="text" name="fullname" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="address" class="control-label">Địa chỉ</label>
+                        <span class="error mess_address"></span>
+                        <div class="controls">
+                            <input type="text" name="address" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="Email" class="control-label">Email</label>
+                        <span class="error mess_email"></span>
+                        <div class="controls">
+                            <input type="email" name="email" class="form-control">
+
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="phone" class="control-label">Điện thoại</label>
+                        <span class="error mess_phone"></span>
+                        <div class="controls">
+                            <input type="text" name="phone" class="form-control">
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveEdit()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function saveChange() {
+        debugger;
+        var oldpass = $("input[name='current_password']").val();
+        var new_password = $("input[name='new_password']").val();
+        var comfirmpass = $("input[name='confirm_password']").val();
+        var makhach = $("input[name='MaKhach']").val();
+        var username = $("input[name='user_name']").val();
+
+        if (oldpass == null || oldpass=="") {
+            $(".mess_old").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (new_password == null || new_password == "") {
+            $(".mess_new").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (comfirmpass == null || comfirmpass == "") {
+            $(".mess_con").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (new_password != comfirmpass) {
+            alert("Mật khẩu và xác thực mật khẩu không khớp nhau!");
+            return false;
+        }
+        $.ajax({
+            url: '@Url.Action("ChangePass", "Account")',
+            data: {
+                oldpass: oldpass,
+                newpass: new_password,
+                username: username,
+                makhach: makhach,
+            },
+            type: 'post',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+                //debugger;
+                if (data.Success) {
+                    //alert(data.Message);
+                    $(".message").text(data.Message);
+                    //window.location.href = window.location.href;
+                } else {
+                    $(".message").text(data.Message);
+                    //window.location.href = url;
+                }
+            },
+        });
+    }
+    function saveEdit() {
+        debugger;
+        var email = $("input[name='email']").val();
+        var address = $("input[name='address']").val();
+        var fullname = $("input[name='fullname']").val();
+        var makhach = $("input[name='MaKhach']").val();
+        var phone = $("input[name='phone']").val();
+        var username = $("input[name='user_name']").val();
+        var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+        if (fullname == null || fullname == "") {
+            $(".mess_full").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (address == null || address == "") {
+            $(".mess_address").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (email == null || email == "") {
+            $(".mess_email").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (reg.test(email)) {
+            $(".mess_email").text("Email sai định dạng!");
+        }
+        
+        if (phone == null || phone == "") {
+            $(".mess_phone").text("Bạn phải nhập trường này");
+            return false;
+        }
+        
+        $.ajax({
+            url: '@Url.Action("Update", "Account")',
+            data: {
+                makhach: makhach,
+                fullname: fullname,
+                address: address,
+                phone: phone,
+                email: email,
+            },
+            type: 'post',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+                //debugger;
+                if (data.Success) {
+                    //alert(data.Message);
+                    $(".message").text(data.Message);
+                    window.location.href = window.location.href;
+                } else {
+                    $(".message").text(data.Message);
+                    //window.location.href = url;
+                }
+            },
+        });
+    }
+</script>

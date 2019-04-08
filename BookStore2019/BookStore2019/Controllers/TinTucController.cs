@@ -17,15 +17,21 @@ namespace BookStore2019.Controllers
         public ActionResult GetAll()
         {
             var list = tinTucService.GetAllActive();
+            ViewBag.ListHot = tinTucService.GetHot();
             return View(list);
         }
-        public ActionResult GetByCate()
+        public ActionResult GetByCate(string shortname)
         {
-            return View();
+            var list = tinTucService.GetAllByCateShortName(shortname);
+            ViewBag.Cate = loaiTinService.GetShortName(shortname);
+            ViewBag.ListHot = tinTucService.GetHot();
+            return View(list);
         }
-        public ActionResult Detail()
+        public ActionResult Detail(string shortname)
         {
-            return View();
+            var item = tinTucService.GetShortName(shortname);
+            ViewBag.ListHot = tinTucService.GetHot();
+            return View(item);
         }
         #endregion
         #region Admin

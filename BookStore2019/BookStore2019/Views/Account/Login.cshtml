@@ -1,8 +1,7 @@
 ﻿@model BookStore2019.Models.Login
 
 @{
-    ViewBag.Title = "Đăng nhập";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title="Đăng nhập";
 }
 <div class="container">
 
@@ -10,38 +9,40 @@
     {
         @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-
+        <div class="form-horizontal col-sm-8">
+            <h4 class="title_login">Đăng nhập</h4>
+            <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @id = "UserName" } })
+            <div class="form-group row">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", @name = "UserName", @id = "UserName" } })
                     @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-6">
-                    @Html.PasswordFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @id = "Password" } })
+            <div class="form-group row">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @name = "Password", @id = "Password" } })
                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
+            <div class="form-group row">
+                <label for="IsRemember" class="col-md-3">Ghi nhớ tài khoản</label>
+                <div class="col-md-9">
                     <div class="checkbox">
-                        @Html.CheckBoxFor(m => m.IsRemember, new { htmlAttributes = new { @class = "form-control", @id = "IsRemember" } })
-                        @Html.Label("Nhớ tài khoản")
+                        <input type="checkbox" name="IsRemember" value="" class="check-box"/>
+                        
                     </div>
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Đăng nhập" class="btn btn-default" />
-                    <button type="button" class="btn btn-default" onclick="location.href='@Url.Action("Đăng ký", "Account")'">Đăng ký</button>
+            <div class="form-group row">
+                <div class="col-md-offset-2 col-md-9">
+                    <input type="submit" value="Đăng nhập" class="btn btn-success" />
+                    <p>Nếu bạn chưa có tài khoản hãy đăng nhập <a class="btnRegister" href='@Url.Action("Register", "Account")'>Đăng ký</a></p>
                 </div>
             </div>
         </div>

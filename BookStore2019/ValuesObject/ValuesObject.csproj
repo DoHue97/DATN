@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,15 +49,19 @@
     <Compile Include="OImageSach.cs" />
     <Compile Include="OKhachHang.cs" />
     <Compile Include="OLoaiTin.cs" />
+    <Compile Include="OLoaiTrangTinh.cs" />
     <Compile Include="ONhaCungCap.cs" />
     <Compile Include="ONhaXuatBan.cs" />
-    <Compile Include="OSach.cs" />
+    <Compile Include="OSanPham.cs" />
     <Compile Include="OSach_TacGia.cs" />
     <Compile Include="OSlide.cs" />
     <Compile Include="OTacGia.cs" />
     <Compile Include="OTinTuc.cs" />
     <Compile Include="OTrangTinh.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

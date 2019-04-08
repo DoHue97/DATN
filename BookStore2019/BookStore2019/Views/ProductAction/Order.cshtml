@@ -105,18 +105,23 @@
                         </div>
                     </div>
                 </div>
+                <a class="btn btn-primary btnOrder" @*href="@Url.Action("DatHang","ProductAction")"*@>Đặt hàng</a>
             }
             else
             {
-                <h3>Giỏ hàng đang trống</h3>
-                <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
+                <div class="empty-cart">
+                    <h3>Giỏ hàng đang trống</h3>
+                    <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
+                </div>
             }
         }
 
         else
         {
-            <h3>Giỏ hàng đang trống</h3>
-            <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
+            <div class="empty-cart">
+                <h3>Giỏ hàng đang trống</h3>
+                <a href="@Url.Action("Index","Home")" class="btn btnBack">Tiếp tục mua sắm</a>
+            </div>
         }
     </div>
 </div>
@@ -129,7 +134,7 @@
 
         str = typeof str != 'string' ? str.toString() : parseFloat(str).toString();
 
-        return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+        return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
 </script>
 <script>
@@ -174,4 +179,26 @@
                 }
             });
     }
+</script>
+<script>
+    $(".btnOrder").click(function () {
+        //debugger;
+        $.ajax({
+            url: '@Url.Action("DatHang","ProductAction")',
+            data: {  },
+            type: 'post',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+                //debugger;
+                if (data.Success) {
+                    alert(data.Message);
+                    window.location.href = window.location.href;
+                } else {
+                    var url = data.Url;
+                    window.location.href = url;
+                }
+            },
+        });
+    });
 </script>

@@ -4,3 +4,9 @@ F:\DATN\BookStore2019\ValuesObject\obj\Debug\ValuesObject.csproj.CoreCompileInpu
 F:\DATN\BookStore2019\ValuesObject\obj\Debug\ValuesObject.dll
 F:\DATN\BookStore2019\ValuesObject\obj\Debug\ValuesObject.pdb
 F:\DATN\BookStore2019\ValuesObject\obj\Debug\ValuesObject.csprojAssemblyReference.cache
+E:\DoAn\BookStore2019\ValuesObject\bin\Debug\ValuesObject.dll
+E:\DoAn\BookStore2019\ValuesObject\bin\Debug\ValuesObject.pdb
+E:\DoAn\BookStore2019\ValuesObject\obj\Debug\ValuesObject.csproj.CoreCompileInputs.cache
+E:\DoAn\BookStore2019\ValuesObject\obj\Debug\ValuesObject.dll
+E:\DoAn\BookStore2019\ValuesObject\obj\Debug\ValuesObject.pdb
+E:\DoAn\BookStore2019\ValuesObject\obj\Debug\ValuesObject.csprojAssemblyReference.cache

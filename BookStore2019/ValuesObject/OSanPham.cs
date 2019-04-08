@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Web;
 namespace ValuesObject
 {
-    public class OSach
+    public class OSanPham
     {
-        public int MaSach { get; set; }
-        public string TenSach { get; set; }
+        public int MaSanPham { get; set; }
+        public string TenSanPham { get; set; }
         public Nullable<int> MaChuDe { get; set; }
         public string MoTa { get; set; }
         public string Anh { get; set; }
@@ -34,5 +34,10 @@ namespace ValuesObject
         public string DichGia { get; set; }
         public string KichThuoc { get; set; }
         public Nullable<int>  NamXB { get; set; }
+        public Nullable<int> MaNCC { get; set; }
+        public string TenNCC { get; set; }
+
+        public List<OTacGia> ListTacGia { get; set; }
+        public int[] MaTacGia { get; set; }
     }
 }

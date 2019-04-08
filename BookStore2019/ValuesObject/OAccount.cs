@@ -14,5 +14,10 @@ namespace ValuesObject
         public string Email { get; set; }
         public Nullable<int> MaQuyen { get; set; }
         public Nullable<int> MaKhach { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public string TenQuyen { get; set; }
+        public string TenKhach { get; set; }
+
+        public string NewPassword { get; set; }
     }
 }

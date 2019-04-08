@@ -153,7 +153,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="@Url.Action("LogOff", "Account")">
+                                <a href="@Url.Action("LogOff", "Account",new { area=""})">
                                     <i class="ace-icon fa fa-power-off"></i>
                                     Logout
                                 </a>
@@ -184,7 +184,9 @@
                 </li>
                 <li class="">
                     <a href="#" class="dropdown-toggle">
-                        <i class="menu-icon fas fa-building"></i>
+                        @*<i class="menu-icon fas fa-building"></i>*@
+                        <i class="menu-icon fas fa-book"></i>
+
                         <span class="menu-text">Sản phẩm </span>
 
                         <b class="arrow fa fa-angle-down"></b>
@@ -267,7 +269,16 @@
                     <b class="arrow"></b>
                     <ul class="submenu">
                         <li class="">
-                            <a href="@Url.Action("Search", "Introductions")">
+                            <a href="@Url.Action("SearchCate", "QuanLyTrangTinh")">
+                                <i class="menu-icon fas fa-caret-right"></i>
+                                
+                                Danh mục loại trang tĩnh
+                            </a>
+
+                            <b class="arrow"></b>
+                        </li>
+                        <li class="">
+                            <a href="@Url.Action("Search", "QuanLyTrangTinh")">
                                 <i class="menu-icon fas fa-caret-right"></i>
                                 Danh mục trang tĩnh
                             </a>
@@ -278,7 +289,7 @@
                     </ul>
                 </li>
                 <li class="">
-                    <a href="@Url.Action("Search", "Slide")">
+                    <a href="@Url.Action("Search", "QuanLySlide")">
                         <i class="menu-icon far fa-image"></i>
 
                         <span class="menu-text">
@@ -288,7 +299,28 @@
 
                     <b class="arrow"></b>
                 </li>
+                <li class="">
+                    <a href="@Url.Action("Search", "QuanLyNXB")">
+                        @*<i class="menu-icon far fa-image"></i>*@
+                        <i class="menu-icon fas fa-building"></i>
+                        <span class="menu-text">
+                            Nhà xuất bản
+                        </span>
+                    </a>
 
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("Search", "QuanLyTacGia")">
+                        @* <i class="menu-icon far fa-image"></i>*@
+                        <i class="menu-icon fas fa-user-shield"></i>
+                        <span class="menu-text">
+                            Tác giả
+                        </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
                 <li class="">
                     <a href="@Url.Action("Search", "User")">
                         <i class="menu-icon fa fa-users"></i>

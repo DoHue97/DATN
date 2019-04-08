@@ -91,7 +91,7 @@ namespace BookStore2019.Services
             var comm =new SqlCommand("ChuDe_Add",conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@name", SqlDbType.NVarChar).Value = chuDe.Ten;
-            comm.Parameters.Add("@ghichu", SqlDbType.NVarChar).Value = chuDe.GhiChu;
+            comm.Parameters.Add(new SqlParameter("@ghichu", chuDe.GhiChu ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.IsActive;
             comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.ParentId;
             comm.Parameters.Add("@TenVanTat",SqlDbType.NVarChar).Value=Helper.convertToUnSign3(chuDe.Ten);
@@ -105,7 +105,7 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@ma", SqlDbType.Int).Value = chuDe.MaChuDe;
             comm.Parameters.Add("@name", SqlDbType.NVarChar).Value = chuDe.Ten;
-            comm.Parameters.Add("@ghichu", SqlDbType.NVarChar).Value = chuDe.GhiChu;
+            comm.Parameters.Add(new SqlParameter("@ghichu", chuDe.GhiChu ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.IsActive;
             comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.ParentId;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Helper.convertToUnSign3(chuDe.Ten);

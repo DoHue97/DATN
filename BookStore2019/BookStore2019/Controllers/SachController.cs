@@ -14,7 +14,7 @@ namespace BookStore2019.Controllers
     public class SachController : Controller
     {
         int pageSize = 20;
-        SachService sachService = new SachService();
+        SanPhamService sachService = new SanPhamService();
         ChuDeService chuDeService = new ChuDeService();
         NhaXuatBanService nxbService = new NhaXuatBanService();
         // GET: Sach
@@ -33,8 +33,8 @@ namespace BookStore2019.Controllers
         public ActionResult Detail(string shortname)
         {
             var pro = sachService.GetByShortName(shortname);
-            ViewBag.ListImages = sachService.GetById(pro.MaSach);
-            var listTacGia = sachService.GetNameTacgia(pro.MaSach);
+            ViewBag.ListImages = sachService.GetById(pro.MaSanPham);
+            var listTacGia = sachService.GetNameTacgia(pro.MaSanPham);
             ViewBag.ListTacGia = listTacGia;
             ViewBag.ListOrther = sachService.GetOrther(pro);
             return View(pro);
@@ -157,7 +157,7 @@ namespace BookStore2019.Controllers
         [HttpGet]
         public ActionResult Create()
         {
-            OSach data = new OSach();
+            OSanPham data = new OSanPham();
             data.IsActive = false;
             
             data.IsHot = false;
@@ -170,14 +170,14 @@ namespace BookStore2019.Controllers
         }
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OSach model)
+        public ActionResult Create(OSanPham model)
         {
             if (ModelState.IsValid)
             {
                 // var pro = ServiceFactory.NewsgoryManager.Get(new Newsgories { NewsgoryId = model.NewsgoryId });
                 try
                 {
-                    model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSach);
+                    model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
                     sachService.Add(model);
                     return RedirectToAction("Search", "Sach",new { isSach=model.IsSach});
                 }
@@ -199,7 +199,7 @@ namespace BookStore2019.Controllers
         {
             if (id.HasValue)
             {
-                var obj = sachService.Get(new OSach { MaSach = (int)id });
+                var obj = sachService.Get(new OSanPham { MaSanPham = (int)id });
                 List<OChuDe> listCate = chuDeService.GetAll();
                 ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten");
                 List<ONhaXuatBan> listNXB = nxbService.GetAll();
@@ -212,16 +212,16 @@ namespace BookStore2019.Controllers
         }
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(OSach model)
+        public ActionResult Update(OSanPham model)
         {
             if (ModelState.IsValid)
             {
-                var pro = sachService.Get(new OSach { MaSach = model.MaSach });
+                var pro = sachService.Get(new OSanPham { MaSanPham = model.MaSanPham });
                 if (pro != null)
                 {
                     try
                     {
-                        model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSach);
+                        model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
                         //model.CreateBy = CurrentUser.Name;
                         sachService.Update(model);
                         return RedirectToAction("Search", "Sach", new { isSach = model.IsSach });
@@ -243,9 +243,9 @@ namespace BookStore2019.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var pro = sachService.Get(new OSach { MaSach = id });
+            var pro = sachService.Get(new OSanPham { MaSanPham = id });
             bool isSach = (bool)pro.IsSach;
-            sachService.Delete(new OSach { MaSach = id });
+            sachService.Delete(new OSanPham { MaSanPham = id });
             return RedirectToAction("Search", "Sach", new { isSach = isSach });
         }
         #endregion

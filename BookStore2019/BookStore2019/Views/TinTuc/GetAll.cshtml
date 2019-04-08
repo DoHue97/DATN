@@ -1,45 +1,89 @@
 ﻿@using BookStore2019.Models
 @using ValuesObject
+@using BookStore2019.Help
 @model List<OTinTuc>
 @{
-    
+    ViewBag.Title = "Tin tức chung";
+    var listHot = ViewBag.ListHot as List<OTinTuc>;
 }
 <div class="container">
-    <div class="news">
+    <div class="row news">
         <div class="col-12 col-md-9">
-            <div class="new-box">
-                <div class="new-img">
-                    <a href="#">
-                        <img src="@Url.Content("")" alt="Alternate Text" class="img-fluid"/>
-                    </a>
-                </div>
-                <div class="new-summary">
-                    <a href="#">
-                        <div class="summary">
-
+            <h2 class="title_news">Tin tức chung</h2>
+            @if (Model != null && Model.Count>0)
+            {
+                foreach (var item in Model)
+                {
+                    <div class="row new-box">
+                        <div class="col-5 new-img">
+                            <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                            </a>
                         </div>
-                    </a>
-                </div>
-            </div>
+                        <div class="col-7 new-summary">
+
+                            <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                <div class="title_new">
+                                    @item.TieuDe
+                                </div>
+                            </a>
+                            <div class="new_date">
+                                Ngày tạo: @item.NgayTao.ToString("dd/MM/yyyy")
+                            </div>
+                            <div class="summary">
+                                @if (item.MoTa != null)
+                                {
+                                    <div>
+                                        @Helper.CutText(item.MoTa)
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
         </div>
         <div class="col-12 col-md-3">
-            <h2>Tin nổi bật</h2>
+            <h2 class="title_news">Tin nổi bật</h2>
             <div class="new-hot">
-                <div class="new-box">
-                    <div class="new-img">
-                        <a href="#">
-                            <img src="@Url.Content("")" alt="Alternate Text" class="img-fluid" />
-                        </a>
-                    </div>
-                    <div class="new-summary">
-                        <a href="#">
-                            <div class="summary">
-
+                @if (listHot.Count > 0 && listHot != null)
+                {
+                    foreach (var item in listHot.Take(6))
+                    {
+                        <div class="row new-box">
+                            <div class="hot-img">
+                                <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                    <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                </a>
                             </div>
-                        </a>
-                    </div>
-                </div>
+                            <div class="new-summary">
+                                <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                    <div class="title_new">
+                                        @item.TieuDe
+                                    </div>
+                                </a>
+                                <div class="new_date">
+                                    Ngày tạo: @item.NgayTao.ToString("dd/MM/yyyy")
+                                </div>
+                                <div class="summary">
+                                    @if (item.MoTa != null)
+                                    {
+                                        <div>
+                                            @Helper.CutText(item.MoTa)
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    setAdminCurrentUrl('@Url.Action("GetAll", "TinTuc")', '@Url.Action("GetAll", "TinTuc")');
+</script>

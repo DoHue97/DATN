@@ -9,7 +9,7 @@ namespace BookStore2019.ConnectDb
     public class DatabaseConnect
     {
         
-        string strConnect = "Server = ADMIN-PC\\SQLEXPRESS; Database = BanSach; User ID = sa;PASSWORD = 123456; Trusted_Connection = True; ";
+        string strConnect = "Server = DESKTOP-H2ET7F5\\SQLEXPRESS; Database = BanSach; User ID = sa;PASSWORD = 1234; Trusted_Connection = True; ";
         public SqlConnection db;
         public DatabaseConnect()
         {

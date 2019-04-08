@@ -44,7 +44,7 @@
                                     @foreach (OSach item in Model)
                                     {
                                         <tr role="row" class="odd">
-                                            <td>@item.TenSach</td>
+                                            <td>@item.TenSanPham</td>
                                             <td style="text-align:center"><img src="@Url.Content(item.Anh)" height="150" alt="Alternate Text" class="img-fluid" /></td>
                                             <td>@item.SoLuong</td>
 
@@ -70,10 +70,10 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("Update", "Sach", new { id = item.MaSach })" title="Update" class="btn btn-xs btn-info">
+                                                    <a href="@Url.Action("Update", "Sach", new { id = item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSach')">
+                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSanPham')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
                                                     </a>

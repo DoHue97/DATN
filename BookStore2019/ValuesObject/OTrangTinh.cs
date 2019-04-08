@@ -9,11 +9,14 @@ namespace ValuesObject
    public class OTrangTinh
     {
         public int MaTrangTinh { get; set; }
-        public string MaTrang { get; set; }
+        public string TenVanTat { get; set; }
         public string TenTrang { get; set; }
         public string MoTa { get; set; }
         public string Body { get; set; }
         public Nullable<System.DateTime> NgayTao { get; set; }
         public Nullable<bool> IsActive { get; set; }
+
+        public string TenLoai { get; set; }
+        public int MaLoai { get; set; }
     }
 }

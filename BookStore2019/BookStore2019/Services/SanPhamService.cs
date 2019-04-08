@@ -9,27 +9,28 @@ using ValuesObject;
 
 namespace BookStore2019.Services
 {
-    public class SachService
+    public class SanPhamService
     {
         DatabaseConnect conn = new DatabaseConnect();
-        public void Delete(OSach sach)
+        public void Delete(OSanPham sach)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_Delete", conn.db);
+            var comm = new SqlCommand("SanPham_Delete", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = sach.MaSach;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = sach.MaSanPham;
             comm.ExecuteNonQuery();
         }
-        public void Add(OSach sach)
+        public void Add(OSanPham sach)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_Insert", conn.db);
+            var comm = new SqlCommand("SanPham_Insert", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
 
-            comm.Parameters.Add("@TenSach", SqlDbType.NVarChar).Value = sach.TenSach;
+            comm.Parameters.Add("@TenSanPham", SqlDbType.NVarChar).Value = sach.TenSanPham;
 
             comm.Parameters.Add("@MaChuDe", SqlDbType.Int).Value = sach.MaChuDe;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = sach.MoTa;
+            //comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = sach.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", sach.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = sach.Anh;
             comm.Parameters.Add("@GiaBan", SqlDbType.Decimal).Value = sach.GiaBan;
             comm.Parameters.Add("@GiaNhap", SqlDbType.Decimal).Value = sach.GiaNhap;
@@ -41,30 +42,34 @@ namespace BookStore2019.Services
 
             comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.IsActive;
             comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.Keyword;
-            comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
+            //comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
+            comm.Parameters.Add(new SqlParameter("@Sale", sach.Sale ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = sach.IsSach;
-            comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
-
+            //comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
+            comm.Parameters.Add(new SqlParameter("@MaNXB", sach.MaNXB ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@MaNCC", sach.MaNCC ?? (object)DBNull.Value));
 
             comm.Parameters.Add(new SqlParameter("@DichGia", sach.DichGia ?? (object)DBNull.Value));
             //comm.Parameters.Add("@KichThuoc", SqlDbType.NVarChar).Value = sach.KichThuoc;
             comm.Parameters.Add(new SqlParameter("@KichThuoc", sach.KichThuoc ?? (object)DBNull.Value));
-            comm.Parameters.Add("@NamXB", SqlDbType.Int).Value = sach.NamXB;
+            //comm.Parameters.Add("@NamXB", SqlDbType.Int).Value = sach.NamXB;
+            comm.Parameters.Add(new SqlParameter("@NamXB", sach.NamXB ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@SoTrang", sach.SoTrang ?? (object)DBNull.Value));
 
             comm.ExecuteNonQuery();
         }
-        public void Update(OSach sach)
+        public void Update(OSanPham sach)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_Update", conn.db);
+            var comm = new SqlCommand("SanPham_Update", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
 
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = sach.MaSach;
-            comm.Parameters.Add("@TenSach", SqlDbType.NVarChar).Value = sach.TenSach;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = sach.MaSanPham;
+            comm.Parameters.Add("@TenSanPham", SqlDbType.NVarChar).Value = sach.TenSanPham;
 
             comm.Parameters.Add("@MaChuDe", SqlDbType.Int).Value = sach.MaChuDe;
-            comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = sach.MoTa;
+            //comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = sach.MoTa;
+            comm.Parameters.Add(new SqlParameter("@MoTa", sach.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = sach.Anh;
             comm.Parameters.Add("@GiaBan", SqlDbType.Decimal).Value = sach.GiaBan;
             comm.Parameters.Add("@GiaNhap", SqlDbType.Decimal).Value = sach.GiaNhap;
@@ -76,53 +81,56 @@ namespace BookStore2019.Services
 
             comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.IsActive;
             comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.Keyword;
-            comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
+            //comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
+            comm.Parameters.Add(new SqlParameter("@Sale", sach.Sale ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = sach.IsSach;
-            comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
+            //comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
+            comm.Parameters.Add(new SqlParameter("@MaNXB", sach.MaNXB ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@MaNCC", sach.MaNCC ?? (object)DBNull.Value));
 
-
-            comm.Parameters.Add("@DichGia", SqlDbType.NVarChar).Value = sach.DichGia;
+            comm.Parameters.Add(new SqlParameter("@DichGia", sach.DichGia ?? (object)DBNull.Value));
             //comm.Parameters.Add("@KichThuoc", SqlDbType.NVarChar).Value = sach.KichThuoc;
-            comm.Parameters.Add(new SqlParameter("@KichThuoc", sach.KichThuoc ??(object)DBNull.Value));
-            comm.Parameters.Add("@NamXB", SqlDbType.Int).Value = sach.NamXB;
+            comm.Parameters.Add(new SqlParameter("@KichThuoc", sach.KichThuoc ?? (object)DBNull.Value));
+            //comm.Parameters.Add("@NamXB", SqlDbType.Int).Value = sach.NamXB;
+            comm.Parameters.Add(new SqlParameter("@NamXB", sach.NamXB ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@SoTrang", sach.SoTrang ?? (object)DBNull.Value));
 
             comm.ExecuteNonQuery();
         }
-        public OSach Get(OSach sach)
+        public OSanPham Get(OSanPham sach)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_Get", conn.db);
+            var comm = new SqlCommand("SanPham_Get", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = sach.MaSach;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = sach.MaSanPham;
            
-            OSach item = new OSach();
+            OSanPham item = new OSanPham();
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
             
-            item = Help.DAL.ConvertDataTable<OSach>(dt).FirstOrDefault();
+            item = Help.DAL.ConvertDataTable<OSanPham>(dt).FirstOrDefault();
             return item;
         }
                 
-        public List<OSach> GetAll(bool? isSach = true)
+        public List<OSanPham> GetAll(bool? isSach = true)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetAll", conn.db);
+            var comm = new SqlCommand("SanPham_GetAll", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
 
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
         }
-        public List<OSach> GetAllActive(int startIndex, int length, ref int total)
+        public List<OSanPham> GetAllActive(int startIndex, int length, ref int total)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetAllActive", conn.db);
+            var comm = new SqlCommand("SanPham_GetAllActive", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
 
             //comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
@@ -132,43 +140,43 @@ namespace BookStore2019.Services
 
             comm.Parameters.Add("@TotalItems",SqlDbType.Int).Direction = ParameterDirection.Output;
 
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
 
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             int output = Convert.ToInt32(comm.Parameters["@TotalItems"].Value);
             total = output;
             return list;
         }
-        public List<OSach> GetHot(bool isSach)
+        public List<OSanPham> GetHot(bool isSach)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetAllHot", conn.db);
+            var comm = new SqlCommand("SanPham_GetAllHot", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
         }
-        public List<OSach> GetHotByTag(string shortname)
+        public List<OSanPham> GetHotByTag(string shortname)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetAllHotByTag", conn.db);
+            var comm = new SqlCommand("SanPham_GetAllHotByTag", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = shortname;
             //comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
         }
-        public List<OSach> Search(int startIndex, int length, ref int total, string key)
+        public List<OSanPham> Search(int startIndex, int length, ref int total, string key)
         {
             conn.connect();
             var comm = new SqlCommand("Search_Product", conn.db);
@@ -183,17 +191,17 @@ namespace BookStore2019.Services
                 total = Convert.ToInt32(totalItems.Value);
             }
             comm.Parameters.Add("@Key", SqlDbType.NVarChar).Value = key;
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
         }
-        public List<OSach> GetAllByCate(int startIndex, int length, ref int total, int id)
+        public List<OSanPham> GetAllByCate(int startIndex, int length, ref int total, int id)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetAllByCate", conn.db);
+            var comm = new SqlCommand("SanPham_GetAllByCate", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@MaChuDe", SqlDbType.Int).Value = id;
             comm.Parameters.Add("@StartIndex", SqlDbType.Int).Value = startIndex;
@@ -201,34 +209,34 @@ namespace BookStore2019.Services
 
             comm.Parameters.Add("@TotalItems", SqlDbType.Int).Direction = ParameterDirection.Output;
 
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             total = Convert.ToInt32(comm.Parameters["@TotalItems"].Value);
             return list;
         }
-        public OSach GetByShortName(string shortname)
+        public OSanPham GetByShortName(string shortname)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetByShortName", conn.db);
+            var comm = new SqlCommand("SanPham_GetByShortName", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = shortname;
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
             
-            OSach item = new OSach();
-            item = Help.DAL.ConvertDataTable<OSach>(dt).FirstOrDefault();
+            OSanPham item = new OSanPham();
+            item = Help.DAL.ConvertDataTable<OSanPham>(dt).FirstOrDefault();
             return item;
         }
-        public List<OTacGia> GetNameTacgia(int masach)
+        public List<OTacGia> GetNameTacgia(int MaSanPham)
         {
             conn.connect();
             var comm = new SqlCommand("Sach_TacGia_GetName", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = masach;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = MaSanPham;
             List<OTacGia> list = new List<OTacGia>();
 
             DataTable dt = new DataTable();
@@ -248,9 +256,9 @@ namespace BookStore2019.Services
         public List<OImageSach> GetById(int id)
         {
             conn.connect();
-            var comm = new SqlCommand("Image_Sach_GetByMaSach", conn.db);
+            var comm = new SqlCommand("Image_SanPham_GetByMaSanPham", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = id;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = id;
             //comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
             List<OImageSach> list = new List<OImageSach>();
             DataTable dt = new DataTable();
@@ -266,21 +274,39 @@ namespace BookStore2019.Services
             }
             return list;
         }
-        public List<OSach> GetOrther(OSach model)
+        public List<OSanPham> GetOrther(OSanPham model)
         {
             conn.connect();
-            var comm = new SqlCommand("Sach_GetOrther", conn.db);
+            var comm = new SqlCommand("SanPham_GetOrther", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@MaSach", SqlDbType.Int).Value = model.MaSach;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = model.MaSanPham;
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = model.IsSach;
             comm.Parameters.Add("@MaChuDe", SqlDbType.Int).Value = model.MaChuDe;
 
-            List<OSach> list = new List<OSach>();
+            List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            list = Help.DAL.ConvertDataTable<OSach>(dt);
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
+        }
+
+        public int GetLastId()
+        {
+            conn.connect();
+            var comm = new SqlCommand("SanPham_GetLastId", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+            if (comm == null) return 0;
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            int id = 0;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                id = dt.Rows[i].Field<int>("LastId");
+            }
+            return id;
         }
     }
 }

@@ -1,0 +1,189 @@
+﻿@using BookStore2019.Models
+
+@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_LayoutLogin.cshtml";
+}
+@{
+    decimal totalMoney = 0;
+    ShoppingCartModels modelCarts = new ShoppingCartModels();
+
+}
+<div class="container order">
+    <div class="header_login">
+        <div class="logo">
+            <a href="@Url.Action("Index","Home")"><img src="@Url.Content("~/Images/logo1.png")" class="" /></a>
+        </div>
+        <h3>Đăng nhập hoặc đăng ký để tiếp tục thanh toán</h3>
+    </div>
+    <div class="row cart">
+        <div class="col-3 model_lr">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#login" role="tab" aria-controls="login">Đăng nhập</a>
+                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#register" role="tab" aria-controls="profile">Đăng ký</a>
+            </div>
+        </div>
+        <div class="col-6 content_account">
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="list-home-list">
+                    <div class="login_model">
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "login_form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label for="UserName">Tên đăng nhập</label>
+                                    <div class="">
+                                        <input type="text" name="UserName" value="" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Password">Mật khẩu</label>
+                                    <div class="">
+                                        <input type="password" name="Password" value="" class="form-control" />
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <div class="checkbox">
+                                            @Html.CheckBoxFor(m => m.IsRemember, new { @id = "IsRemember" })
+                                            @Html.Label("Nhớ tài khoản")
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Đăng nhập" class="btn btn-primary" />
+                                        @*<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Đăng ký", "Account")'">Đăng ký</button>*@
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="list-profile-list">
+                    <div class="register_model">
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @id = "register_form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label for="FullName">Họ và tên</label>
+                                    <div class="">
+                                        <input type="text" name="FullName" value="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="UserName">Tên đăng nhập</label>
+                                    <div class="">
+                                        <input type="text" name="UserName" value="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Phone">Điện thoại</label>
+                                    <div class="">
+                                        <input type="text" name="Phone" value="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Email">Email</label>
+                                    <div class="">
+                                        <input type="email" name="Email" value="" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="Password">Mật khẩu</label>
+                                    <div class="">
+                                        <input type="password" name="Password" value="" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="">
+                                        <button type="submit" value="Đăng ký" class="btn btn-primary btnRegister">Đăng ký</button>
+                                        @*<button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Đăng ký", "Account")'">Đăng ký</button>*@
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        @if (Session["Cart"] != null)
+        {
+            modelCarts.Cart = (Carts)Session["Cart"];
+        }
+        @if (modelCarts.Cart != null)
+        {
+            <div class="col-3 box-total">
+
+                <div class="totals">
+                    <div class="b_totals">
+                        @if (modelCarts.Cart.ListItem.Count > 0 && modelCarts.Cart.ListItem != null)
+                        {
+                            var count = 0;
+                            foreach (var item in modelCarts.Cart.ListItem)
+                            {
+                                count += item.Quantity;
+
+                            }
+                            <div class="row no-margin">
+                                <h2 class="title-cart">Giỏ hàng <span class="total-item">(@count  sản phẩm)</span> </h2>
+                                &nbsp; <a href="@Url.Action("Order","ProductAction")" class="btn btn-primary btnEdit">Sửa</a>
+                            </div>
+                            <hr />
+                        }
+                        @if (modelCarts.Cart.ListItem.Count > 0 && modelCarts.Cart.ListItem != null)
+                        {
+                            foreach (var item in modelCarts.Cart.ListItem)
+                            {
+                                <div class="row item_row">
+                                    <div class="col-sm-8 no-padding">
+                                        <span>@item.Quantity x </span>
+                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">@item.ProductName</a>
+                                    </div>
+                                    <div class="col-sm-4 no-padding">
+                                        <p class="price">@String.Format("{0:#,##0.##}", item.Total) đ</p>
+                                    </div>
+                                </div>
+                                totalMoney += item.Total;
+                            }
+                        }
+                        <hr />
+                        <div class="row sum-price item_row">
+                            <div class="col-md-6">
+                                Tạm tính:
+                            </div>
+                            <div class="col-md-6 price-value">
+                                <span class="price">@String.Format("{0:#,##0.##}", totalMoney) đ</span>
+                            </div>
+                        </div>
+
+                        <hr />
+                        <div class="row total-money item_row">
+                            <div class="col-md-6">
+                                Thành tiền:
+                            </div>
+                            <div class="col-md-6 price-total">
+                                <span class="price">@String.Format("{0:#,##0.##}", totalMoney) đ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</div>

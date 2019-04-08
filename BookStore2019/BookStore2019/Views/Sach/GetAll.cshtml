@@ -3,10 +3,10 @@
 @using BookStore2019.Services
 @using BookStore2019.Help
 @using BookStore2019.Models
-@model List<OSach>
+@model List<OSanPham>
 @{
     
-    ViewBag.Title = "GetAll";
+    ViewBag.Title = "Danh sách sản phẩm";
     
     ChuDeService chuDeService = new ChuDeService();
     var listCate = chuDeService.GetAllActive();
@@ -27,13 +27,13 @@
                             if (i % 4 == 0)
                             {
                                 <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
-                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                         <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                     </a>
                                     <div class="info_item">
-                                        <h3>@Helper.CutText(item.TenSach)</h3>
+                                        <h3>@Helper.CutText(item.TenSanPham)</h3>
 
-                                        <button type="button" class="btn btn-success">
+                                        <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
                                             <i class="fas fa-cart-plus"></i>
                                             @String.Format("{0:#,##0.##}", item.GiaBan) VND
                                         </button>
@@ -44,13 +44,13 @@
                             else
                             {
                                 <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
-                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                         <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                     </a>
                                     <div class="info_item">
-                                        <h3>@Helper.CutText(item.TenSach)</h3>
+                                        <h3>@Helper.CutText(item.TenSanPham)</h3>
 
-                                        <button type="button" class="btn btn-success">
+                                        <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
                                             <i class="fas fa-cart-plus"></i>
                                             @String.Format("{0:#,##0.##}", item.GiaBan) VND
                                         </button>
@@ -115,4 +115,45 @@
 </div>
 <script>
     setAdminCurrentUrl('@Url.Action("GetAll", "Sach")', '@Url.Action("GetAll", "Sach")');
+</script>
+<script>
+    function updateCart(id) {
+        //debugger;
+        var quanlity = 1;
+        var idpro = id;
+
+            $.ajax({
+                url: '@Url.Action("AddToCart", "ProductAction")',
+                data: {
+                    proid: idpro,
+                    quanlity: quanlity
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    if (data.Success) {
+                        if (data.Flag === "0") {
+                            var totalItems = 0;
+                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                                var Item = data.Cart.ListItem[i];
+                                totalItems += Item.Quantity;
+                            }
+                            $("#totalItem").text(totalItems);
+                            $("#totalItem").load(window.location.href + " #totalItem");
+                            //alert("Đã thêm sản phẩm vào giỏ hàng!");
+                        } else {
+                            alert("Sản phẩm chỉ còn lại");
+                        }
+                    } else {
+                        alert("Thêm sản phẩm thất bại");
+                    }
+                }
+            });
+        }
+    //$(document).ready(function () {
+    //    debugger;
+
+    //}
+
 </script>

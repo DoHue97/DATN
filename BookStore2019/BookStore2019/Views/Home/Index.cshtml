@@ -5,9 +5,9 @@
     ViewBag.Title = "Home Page";
     var list = ViewBag.ListChuDe as List<OChuDe>;
     var listSlide = ViewBag.ListSlide as List<OSlide>;
-    var listHot = ViewBag.ListHot as List<OSach>;
-    var listHotByTag = ViewBag.ListHotByTag as List<OSach>;
-    SachService sachService = new SachService();
+    var listHot = ViewBag.ListHot as List<OSanPham>;
+    var listHotByTag = ViewBag.ListHotByTag as List<OSanPham>;
+    SanPhamService sachService = new SanPhamService();
     var listTruyenTranh = sachService.GetHotByTag("truyen-tranh");
     var listDD = sachService.GetHot(false);
 }
@@ -38,6 +38,10 @@
                 <img src="@Url.Content("~/Uploads/Images/popup1.png")" alt="Alternate Text" width="35%" />
             </a>
         </div>*@
+    @if (ViewBag.Message != null)
+    {
+        <p class="mess">ViewBag.Message</p>
+    }
     <div class="container">
         <div class="content-top">
             <h1> SÁCH NỔI BẬT</h1>
@@ -53,12 +57,12 @@
                                 {
                                     <div class="clearfix"></div>
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
                                             <h3>
-                                                @Helper.CutText(item.TenSach)
+                                                @Helper.CutText(item.TenSanPham)
                                             </h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
@@ -68,12 +72,12 @@
                                 else
                                 {
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
                                             <h3>
-                                                @Helper.CutText(item.TenSach)
+                                                @Helper.CutText(item.TenSanPham)
                                             </h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
@@ -106,11 +110,11 @@
                                 {
                                     <div class="clearfix"></div>
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -118,11 +122,11 @@
                                 else
                                 {
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -154,11 +158,11 @@
                                 {
                                     <div class="clearfix"></div>
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -166,11 +170,11 @@
                                 else
                                 {
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -201,11 +205,11 @@
                                 {
                                     <div class="clearfix"></div>
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -213,11 +217,11 @@
                                 else
                                 {
                                     <div class="col-12 col-sm-6 col-md-3 col-sm-3">
-                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSach">
+                                        <a href="@Url.Action("Detail","Sach", new { shortname=item.TenVanTat})" title="@item.TenSanPham">
                                             <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                         </a>
                                         <div class="info_item">
-                                            <h3>@item.TenSach</h3>
+                                            <h3>@item.TenSanPham</h3>
                                             <p>@String.Format("{0:#,##0.##}", item.GiaBan) VND</p>
                                         </div>
                                     </div>
@@ -240,6 +244,14 @@
 
 <script>
     setAdminCurrentUrl('@Url.Action("Index", "Home")', '@Url.Action("Index", "Home")');
+</script>
+<script>
+    $(document).ready(function () {
+        setTimeout(function () {
+            $('.mess').show();
+        }, 10000);
+    });
+    
 </script>
 <script>
     $(document).ready(function () {

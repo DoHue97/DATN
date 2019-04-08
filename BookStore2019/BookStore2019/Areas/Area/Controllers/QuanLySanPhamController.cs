@@ -11,8 +11,11 @@ namespace BookStore2019.Areas.Area.Controllers
     public class QuanLySanPhamController : Controller
     {
         ChuDeService chuDeService = new ChuDeService();
-        SachService sachService = new SachService();
+        SanPhamService sachService = new SanPhamService();
         NhaXuatBanService nxbService = new NhaXuatBanService();
+        TacGiaService tacGiaService = new TacGiaService();
+        Sach_TacGiaService sach_TacGiaService = new Sach_TacGiaService();
+        NhaCungCapService nccService = new NhaCungCapService();
         #region admin
         // GET: Default
         
@@ -30,7 +33,7 @@ namespace BookStore2019.Areas.Area.Controllers
             data.IsActive = false;
 
             List<OChuDe> listCate = chuDeService.GetByParentId();
-
+            ViewBag.ListTacGia = new SelectList(tacGiaService.GetAll(), "MaTacGia", "Ten");
             ViewBag.ListCate = new SelectList(listCate, "ParentId", "Ten"); ;
 
             return View("UpdateCate", data);
@@ -43,6 +46,8 @@ namespace BookStore2019.Areas.Area.Controllers
             try
             {
                 chuDeService.Add(model);
+                var idSach = sachService.GetLastId();
+                
                 return RedirectToAction("SearchCate", "QuanLySanPham");
             }
             catch (Exception e)
@@ -50,7 +55,8 @@ namespace BookStore2019.Areas.Area.Controllers
 
             }
             List<OChuDe> listCate = chuDeService.GetByParentId();
-            ViewBag.ListCate = new SelectList(listCate, "ParentId", "Ten"); ;
+            ViewBag.ListCate = new SelectList(listCate, "ParentId", "Ten");
+            
             ViewBag.IsEdit = true;
             return View("UpdateCate", model);
         }
@@ -64,6 +70,7 @@ namespace BookStore2019.Areas.Area.Controllers
                 var categories = chuDeService.GetByParentId();
                 var listCate = new SelectList(categories, "ParentId", "Ten");
                 ViewBag.ListCate = listCate;
+                
                 ViewBag.IsEdit = true;
                 return View(obj);
             }
@@ -111,34 +118,49 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Search(bool isSach)
         {
             var listSach = sachService.GetAll(isSach);
+            ViewBag.IsSach = isSach;
             return View(listSach);
         }
         
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(bool isSach)
         {
-            OSach data = new OSach();
+            OSanPham data = new OSanPham();
             data.IsActive = false;
 
             data.IsHot = false;
-            data.IsSach = false;
+            data.IsSach = isSach;
             List<OChuDe> listCate = chuDeService.GetAll();
             ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten"); ;
             List<ONhaXuatBan> listNXB = nxbService.GetAll();
             ViewBag.ListNXB = new SelectList(listNXB, "MaNXB", "TenNXB");
+            ViewBag.ListTacGia = new SelectList(tacGiaService.GetAll(), "MaTacGia", "Ten");
+            ViewBag.ListNCC = new SelectList(nccService.GetAllActive(), "MaNCC", "TenNCC");
             return View("Update", data);
         }
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OSach model)
+        public ActionResult Create(OSanPham model)
         {
             if (ModelState.IsValid)
             {
                 // var pro = ServiceFactory.NewsgoryManager.Get(new Newsgories { NewsgoryId = model.NewsgoryId });
                 try
                 {
-                    model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSach);
+                    model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
                     sachService.Add(model);
+                    var idSach = sachService.GetLastId();
+                    if(model.MaTacGia.ToList() !=null && model.MaTacGia.ToList().Count > 0)
+                    {
+                        foreach (int item in model.MaTacGia)
+                        {
+                            sach_TacGiaService.Add(new OSach_TacGia
+                            {
+                                MaTacGia = item,
+                                MaSanPham = idSach,
+                            });
+                        }
+                    }
                     return RedirectToAction("Search", "QuanLySanPham", new { isSach = model.IsSach });
                 }
                 catch (Exception e)
@@ -150,6 +172,8 @@ namespace BookStore2019.Areas.Area.Controllers
             ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten");
             List<ONhaXuatBan> listNXB = nxbService.GetAll();
             ViewBag.ListNXB = new SelectList(listNXB, "MaNXB", "TenNXB");
+            ViewBag.ListTacGia = new SelectList(tacGiaService.GetAll(), "MaTacGia", "Ten");
+            ViewBag.ListNCC = new SelectList(nccService.GetAllActive(), "MaNCC", "TenNCC");
             ViewBag.IsEdit = true;
             return View("Update", model);
         }
@@ -159,11 +183,16 @@ namespace BookStore2019.Areas.Area.Controllers
         {
             if (id.HasValue)
             {
-                var obj = sachService.Get(new OSach { MaSach = (int)id });
+                var obj = sachService.Get(new OSanPham { MaSanPham = (int)id });
                 List<OChuDe> listCate = chuDeService.GetAll();
                 ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten");
                 List<ONhaXuatBan> listNXB = nxbService.GetAll();
                 ViewBag.ListNXB = new SelectList(listNXB, "MaNXB", "TenNXB");
+
+                ViewBag.ListSelected = tacGiaService.GetByMaSanPham((int)id);
+
+                ViewBag.ListTacGia = tacGiaService.GetAll();
+                ViewBag.ListNCC = new SelectList(nccService.GetAllActive(), "MaNCC", "TenNCC");
                 ViewBag.IsEdit = true;
                 return View(obj);
             }
@@ -172,18 +201,32 @@ namespace BookStore2019.Areas.Area.Controllers
         }
         [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(OSach model)
+        public ActionResult Update(OSanPham model)
         {
             if (ModelState.IsValid)
             {
-                var pro = sachService.Get(new OSach { MaSach = model.MaSach });
+                var pro = sachService.Get(new OSanPham { MaSanPham = model.MaSanPham });
                 if (pro != null)
                 {
                     try
                     {
-                        model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSach);
+                        model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
                         //model.CreateBy = CurrentUser.Name;
                         sachService.Update(model);
+                        sach_TacGiaService.Delete(model.MaSanPham);
+                        if(model.MaTacGia!=null && model.MaTacGia.ToList().Count > 0)
+                        {
+                            foreach (int item in model.MaTacGia)
+                            {
+                                sach_TacGiaService.Add(new OSach_TacGia
+                                {
+                                    MaTacGia = item,
+                                    MaSanPham = model.MaSanPham,
+                                });
+                            }
+                            
+                        }
+
                         return RedirectToAction("Search", "QuanLySanPham", new { isSach = model.IsSach });
                     }
                     catch (Exception e)
@@ -196,6 +239,8 @@ namespace BookStore2019.Areas.Area.Controllers
             ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten");
             List<ONhaXuatBan> listNXB = nxbService.GetAll();
             ViewBag.ListNXB = new SelectList(listNXB, "MaNXB", "TenNXB");
+            ViewBag.ListTacGia = tacGiaService.GetAllActive();
+            ViewBag.ListNCC = new SelectList(nccService.GetAllActive(), "MaNCC", "TenNCC");
             ViewBag.IsEdit = true;
             return View(model);
         }
@@ -203,10 +248,38 @@ namespace BookStore2019.Areas.Area.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var pro = sachService.Get(new OSach { MaSach = id });
+            var pro = sachService.Get(new OSanPham { MaSanPham = id });
             bool isSach = (bool)pro.IsSach;
-            sachService.Delete(new OSach { MaSach = id });
+            sachService.Delete(new OSanPham { MaSanPham = id });
             return RedirectToAction("Search", "QuanLySanPham", new { isSach = isSach });
+        }
+
+
+        [HttpPost]
+        public ActionResult AddAuthor(string tacgia)
+        {
+            try
+            {
+                var item = tacGiaService.GetByShortName(Help.Helper.convertToUnSign3(tacgia));
+                if (item!=null)
+                {
+                    return Json(new { Success = false, Flag = 1, Message = "Tác giả này đã tồn tại!" });
+                }
+                else
+                {
+                    tacGiaService.Add(new OTacGia
+                    {
+                        Ten = tacgia,
+                        TenVanTat = Help.Helper.convertToUnSign3(tacgia),
+                    });
+                    return Json(new { Success = true });
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            return Json(new { Success = false,Flag=0, Error="Thêm thất bại" });
         }
         #endregion
         #endregion

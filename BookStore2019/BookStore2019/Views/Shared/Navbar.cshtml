@@ -3,7 +3,7 @@
 @using BookStore2019.Models
 @{
     ChuDeService chuDeService = new ChuDeService();
-    SachService sachService = new SachService();
+    SanPhamService sachService = new SanPhamService();
     LoaiTinService loaiTinService = new LoaiTinService();
     var listCate = chuDeService.GetAllParent();
     var listNewCates = loaiTinService.GetAllActive();
@@ -31,8 +31,8 @@
                         @if (Session["Account"] != null)
                         {
                             OAccount account = (OAccount)Session["Account"];
-                            <li><a href="@Url.Action("Info", "Account")">@account.UserName</a></li>
-                            <li><a href="@Url.Action("Logout", "Account")">Đăng xuất</a></li>
+                            <li><a href="@Url.Action("Info", "Account",new { username=account.UserName})">@account.UserName</a></li>
+                            <li><a href="@Url.Action("LogOff", "Account")">Đăng xuất</a></li>
                         }
                         else
                         {
@@ -91,7 +91,7 @@
                     </li>
 
                     <li class="dropdown">
-                        <a href="@Url.Action("GetAll","Sach",new { isSach=true})" class="hover-pa">Danh  mục sản phẩm</a>
+                        <a href="@Url.Action("GetAll","Sach")" class="hover-pa">Danh  mục sản phẩm</a>
                         <ul class="dropdown-menu" role="menu">
                             @if (listCate.Count > 0 && listCate != null)
                             {
@@ -101,7 +101,7 @@
                                     if (list2.Count > 0 && list2 != null)
                                     {
                                         <li class="dropdown-level-2">
-                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li ">@item.Ten</a>
+                                            <a href="" class="item-li ">@item.Ten</a>
                                             <ul class="dropdown-menu sub-menu-2">
                                                 @foreach (var item2 in list2)
                                                 {
@@ -125,7 +125,7 @@
                         </ul>
                     </li>
 
-                    @*<li class=" dropdown">
+                    <li class=" dropdown">
                         <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức</a>
 
                         @if (listNewCates.Count > 0 && listNewCates != null)
@@ -135,11 +135,11 @@
                                 @foreach (var item in listNewCates)
                                 {
                                     <li class="dropdown-level-2">
-                                        <a href="#" class="item-li">@item.Ten</a>
+                                        <a href="@Url.Action("GetByCate", "TinTuc", new {shortname=item.ShortName })" class="item-li">@item.Ten</a>
                                     </li>
                                 }
                             </ul>
-                        }*@
+                        }
                     <li>
                         <a href="@Url.Action("About","Home")" class="hover-pa">Giới thiệu</a>
                     </li>

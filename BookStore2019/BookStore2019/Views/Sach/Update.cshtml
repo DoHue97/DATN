@@ -1,6 +1,6 @@
 ﻿@using ValuesObject
 @using BookStore2019.Services
-@model OSach
+@model OSanPham
 @{
     ViewBag.Title = "Update";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -33,7 +33,7 @@
             <li><a href="@Url.Action("Search", "Sach",new { isSach=Model.IsSach})">Danh sản phẩm sản phẩm</a></li>
             @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
             {
-                <li class="active">Edit @Model.MaSach</li>
+                <li class="active">Edit @Model.MaSanPham</li>
             }
             else
             {
@@ -51,7 +51,7 @@
             @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
             {
                 <h1>
-                    Sửa sản phẩm id @Model.MaSach
+                    Sửa sản phẩm id @Model.MaSanPham
 
                 </h1>
             }
@@ -75,14 +75,14 @@
                             @Html.AntiForgeryToken()
                             if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
                             {
-                                @Html.HiddenFor(mbox => mbox.MaSach)
+                                @Html.HiddenFor(mbox => mbox.MaSanPham)
                             }
                             <div class="form-group">
                                 <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Tên sản phẩm:</label>
 
                                 <div class="col-xs-12 col-sm-10">
                                     <div class="clearfix">
-                                        <input type="text" name="TenSach" id="TenSach" class="col-xs-12 col-sm-6" value="@Model.TenSach" required />
+                                        <input type="text" name="TenSanPham" id="TenSanPham" class="col-xs-12 col-sm-6" value="@Model.TenSanPham" required />
                                     </div>
                                 </div>
                             </div>

@@ -1,0 +1,31 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    
+    <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
+
+    <script src="~/Content/fontawesome/js/fontawesome.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+
+    <link href="~/Content/Site.css" rel="stylesheet" />
+</head>
+<body>
+    
+    @RenderBody()
+
+    @Html.Partial("Footer")
+
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

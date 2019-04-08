@@ -15,7 +15,7 @@ namespace BookStore2019.Models
         [Required]
         [Display(Name ="Mật khẩu")]
         [DataType(DataType.Password)]
-        [MinLength(length:6)]
+        //[MinLength(length:4)]
         public string Password { get; set; }
 
         public bool IsRemember { get; set; }

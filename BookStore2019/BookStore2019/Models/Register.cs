@@ -33,5 +33,7 @@ namespace BookStore2019.Models
         [Display(Name = "Email")]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        [Display(Name ="Điện thoại")]
+        public string Phone { get; set; }
     }
 }

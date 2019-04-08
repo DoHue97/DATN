@@ -1,12 +1,12 @@
 ﻿@using BookStore2019.Services
 @using ValuesObject
-@model OSach
+@model OSanPham
 @{
-    ViewBag.Title = "Chi tiết sản phẩm " + Model.TenSach;
+    ViewBag.Title = "Chi tiết sản phẩm " + Model.TenSanPham;
 
     var listTacGia = ViewBag.ListTacGia as List<OTacGia>;
     var listImage = ViewBag.ListImages as List<OImageSach>;
-    var listOthers = ViewBag.ListOrther as List<OSach>;
+    var listOthers = ViewBag.ListOrther as List<OSanPham>;
 }
 
 <div class="content-top">
@@ -43,7 +43,7 @@
 
         </div>
         <div class="info-detail">
-            <h2>@Model.TenSach</h2>
+            <h2>@Model.TenSanPham</h2>
             @if (Model.IsSach == true)
             {
                 <span>
@@ -52,7 +52,7 @@
                     {
                         foreach (var item in listTacGia)
                         {
-                            <strong><a href="#"> @item.Ten </a></strong>
+                            <strong><a href="#"> @item.Ten , </a></strong>
                         }
                     }
                     else
@@ -69,11 +69,22 @@
                     <p>Dịch giả: @Model.DichGia</p>
                 }
             }
-
+            @if (Model.SoLuong <= 0)
+            {
+                <p style="color:red;font-weight:bold;">Hết hàng</p>
+            }
+            @if (Model.TenNCC != null && Model.TenNCC != "")
+            {
+                <p>Nhà cung cấp: @Model.TenNCC</p>
+            }
+            else
+            {
+                <p>Nhà cung cấp: <strong>Đang cập nhật</strong></p>
+            }
 
             @if (Model.Sale > 0)
             {
-                <h4 class="price-old"> Giá bán: @String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
+                <h4 class="price-old"> Giá bán: @String.Format("{0:#,##0.##}", Model.GiaBan)  VND</h4>
                 <h4 class="price-sale">
                     <strong>
 
@@ -85,11 +96,11 @@
 
             else
             {
-                <h4 class="">@String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
+                <h4 class="">Giá bán: @String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
             }
 
             <div class="form-inline quality">
-                <input type="hidden" name="idpro" value="@Model.MaSach" />
+                <input type="hidden" name="idpro" value="@Model.MaSanPham" />
                 <input type="number" name="quality" value="1" min="1" max="100" class=" form-control" />
                 <button type="button" class="btn btn-danger" id="addToCart" onclick="updateCart()">
                     <i class="fas fa-cart-plus"></i>
@@ -125,11 +136,11 @@
             <h3>Sản phẩm cùng loại</h3>
             @if (listOthers.Count > 0 && listOthers != null)
             {
-                <ul class="slider_orthers">
+                <ul class="slider_orthers clearfix">
 
-                    @foreach (var item in listOthers.Take(10))
+                    @foreach (var item in listOthers.Take(6))
                     {
-                        <li class="item_other">
+                        <li class="col-2 item_other">
                             <a href="@Url.Action("Detail", "Sach", new { shortname = item.TenVanTat })">
                                 <img src="@Url.Content(item.Anh)" alt="Alternate Text" height="200" />
                             </a>
@@ -154,18 +165,18 @@
             pause: 7000,
             pager: false,
         });
-        $('.slider_orthers').bxSlider({
-            auto: true,
-            adaptiveHeight: true,
-            speed: 1000,
-            pause: 7000,
-            pager: false,
-            maxSlides: 6,
-            moveSlides: 6,
-            slideWidth: 200,
-            slideMargin: 5,
-            infiniteLoop: false
-        });
+        //$('.slider_orthers').bxSlider({
+        //    auto: true,
+        //    adaptiveHeight: true,
+        //    speed: 1000,
+        //    pause: 7000,
+        //    pager: false,
+        //    maxSlides: 6,
+        //    moveSlides: 6,
+        //    slideWidth: 200,
+        //    slideMargin: 5,
+        //    infiniteLoop: false
+        //});
     });
 </script>
 <script>
@@ -192,6 +203,7 @@
                                 totalItems += Item.Quantity;
                             }
                             $("#totalItem").text(totalItems);
+                            $("#totalItem").load(window.location.href + " #totalItem");
                             //alert("Đã thêm sản phẩm vào giỏ hàng!");
                         } else {
                             alert("Sản phẩm chỉ còn lại");

@@ -14,7 +14,7 @@ namespace BookStore2019.Controllers
 {
     public class HomeController : Controller
     {
-        SachService sachService = new SachService();
+        SanPhamService sachService = new SanPhamService();
         SlideService slideService = new SlideService();
         public ActionResult Index()
         {

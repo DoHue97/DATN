@@ -29,7 +29,7 @@ namespace BookStore2019.Services
         public List<OTinTuc> GetAllByCateShortName(string shortname)
         {
             conn.connect();
-            var comm = new SqlCommand("TinTuc_GetAll", conn.db);
+            var comm = new SqlCommand("TinTuc_GetAllByCateShortName", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
             comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = shortname;
 
@@ -48,6 +48,20 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("TinTuc_GetAllAcitve", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
             
+            List<OTinTuc> list = new List<OTinTuc>();
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<OTinTuc>(dt);
+
+            return list;
+        }
+        public List<OTinTuc> GetHot()
+        {
+            conn.connect();
+            var comm = new SqlCommand("TinTuc_GetHot", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+
             List<OTinTuc> list = new List<OTinTuc>();
 
             DataTable dt = new DataTable();
@@ -123,8 +137,9 @@ namespace BookStore2019.Services
         {
             conn.connect();
             var comm = new SqlCommand("TinTuc_GetShortName", conn.db);
+            if (comm == null) return null;
             comm.CommandType = CommandType.StoredProcedure;
-            comm.Parameters.Add("@ShortName", SqlDbType.Int).Value = shortname;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = shortname;
 
             
             OTinTuc item = new OTinTuc();

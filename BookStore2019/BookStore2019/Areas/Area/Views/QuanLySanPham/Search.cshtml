@@ -1,9 +1,10 @@
 ﻿@using BookStore2019.Services
 @using ValuesObject
-@model List<OSach>
+@model List<OSanPham>
 @{
     ViewBag.Title = "Danh sách sản phẩm";
     Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+    var isSach = ViewBag.IsSach;
 }
 
 <div class="main-content-inner">
@@ -41,10 +42,10 @@
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (OSach item in Model)
+                                    @foreach (OSanPham item in Model)
                                     {
                                         <tr role="row" class="odd">
-                                            <td>@item.TenSach</td>
+                                            <td>@item.TenSanPham</td>
                                             <td style="text-align:center"><img src="@Url.Content(item.Anh)" height="150" alt="Alternate Text" class="img-fluid" /></td>
                                             <td>@item.SoLuong</td>
 
@@ -70,10 +71,10 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("Update", "QuanLySanPham", new { id = item.MaSach })" title="Update" class="btn btn-xs btn-info">
+                                                    <a href="@Url.Action("Update", "QuanLySanPham", new { id = item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSach')">
+                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSanPham')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
                                                     </a>
@@ -130,7 +131,7 @@
                 </div>
                 <div class="row">
                     <div class="col-xs-12">
-                        <a href="@Url.Action("Create","QuanLySanPham")" class="btn btn-success">Tạo mới</a>
+                        <a href="@Url.Action("Create","QuanLySanPham",new { isSach=isSach})" class="btn btn-success">Tạo mới</a>
                     </div>
                 </div>
             </div>

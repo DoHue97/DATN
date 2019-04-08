@@ -9,7 +9,7 @@ namespace ValuesObject
   public  class OSach_TacGia
     {
         public int MaTacGia { get; set; }
-        public int MaSach { get; set; }
+        public int MaSanPham { get; set; }
         public string GhiChu { get; set; }
     }
 }

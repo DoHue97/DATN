@@ -1,5 +1,5 @@
 ﻿@using ValuesObject
-@using  BookStore2019.Services
+@using BookStore2019.Services
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -63,8 +63,8 @@
     </script>
     <!-- ace settings handler -->
     @*<script src="~/Content/color/jquery-1.9.1.min.js"></script>
-    <script src="~/Content/color/tinycolor-0.9.15.min.js"></script>
-    <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>*@
+        <script src="~/Content/color/tinycolor-0.9.15.min.js"></script>
+        <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>*@
 
 
 
@@ -153,10 +153,11 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="@Url.Action("LogOff", "Account")">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    Logout
-                                </a>
+                                @*<a href="@Url.Action("LogOff", "Account")">
+                                        <i class="ace-icon fa fa-power-off"></i>
+                                        Logout
+                                    </a>*@
+                                @Html.ActionLink("Log Off", "LogOff", "Account", new { area = "" }, null)
                             </li>
                         </ul>
                     </li>
@@ -254,7 +255,7 @@
                     </ul>
                 </li>
 
-                
+
                 <li class="">
                     <a href="#" class="dropdown-toggle">
                         <i class="menu-icon fa fa-newspaper"></i>
@@ -267,7 +268,7 @@
                     <b class="arrow"></b>
                     <ul class="submenu">
                         <li class="">
-                            <a href="@Url.Action("Search", "Introductions")">
+                            <a href="@Url.Action("Search", "QuanLyTrangTinh")">
                                 <i class="menu-icon fas fa-caret-right"></i>
                                 Danh mục trang tĩnh
                             </a>
@@ -319,9 +320,9 @@
             <div class="footer-inner">
                 <div class="footer-content">
                     @*<span class="bigger-120">
-                        <span class="blue">idoc</span><span class="red">Net</span>
-                        Application &copy; 2018
-                    </span>*@
+                            <span class="blue">idoc</span><span class="red">Net</span>
+                            Application &copy; 2018
+                        </span>*@
 
                     &nbsp; &nbsp;
                     <span class="action-buttons">

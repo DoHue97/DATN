@@ -1,7 +1,7 @@
 ﻿@using BookStore2019.Services
 @using ValuesObject
 @{
-    SachService sachService = new SachService();
+    SanPhamService sachService = new SanPhamService();
     ChuDeService chuDeService = new ChuDeService();
     var listCate = chuDeService.GetAllByParentId(new OChuDe { ParentId = 1 });
     //var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
@@ -9,7 +9,7 @@
     Layout = null;
 }
 <div class="col-sm-3 cate-pro">
-    <div class="categories">
+    @*<div class="categories">
         <div class="titleCate">
             <h4>Danh mục</h4>
         </div>
@@ -22,7 +22,7 @@
                 }
             }
         </ul>
-    </div>
+    </div>*@
     @*<div class="categories">
             <div class="titleCate">
                 Đồ dùng học tập
@@ -51,7 +51,7 @@
                             <img src="@item.Anh" alt="Alternate Text" height="100" />
                         </div>
                         <div class="pro-des">
-                            <p>@item.TenSach</p>
+                            <p>@item.TenSanPham</p>
                             <h4 class="price-old">@String.Format("{0:#,##0.##}", item.GiaBan) VND</h4>
                             <h4 class="price-sale">
                                 <strong>

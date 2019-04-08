@@ -92,11 +92,11 @@ namespace BookStore2019.Services
         public OLoaiTin GetShortName(string shortname)
         {
             conn.connect();
-            var comm = new SqlCommand("LoaiTin_Get", conn.db);
+            var comm = new SqlCommand("LoaiTin_GetShortName", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
 
             OLoaiTin item = new OLoaiTin();
-            comm.Parameters.Add("@ShortName", SqlDbType.Int).Value = shortname;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = shortname;
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
