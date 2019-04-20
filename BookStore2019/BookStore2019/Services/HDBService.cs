@@ -27,6 +27,22 @@ namespace BookStore2019.Services
             conn.Close();
             return list;
         }
+        public List<OHoaDonBan> GetByMaKhach(int makhach)
+        {
+            List<OHoaDonBan> list = new List<OHoaDonBan>();
+            conn.connect();
+            var comm = new SqlCommand("HDB_GetByMaKhach", conn.db);
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+            if (comm == null) return null;
+            comm.Parameters.Add("@MaKhach",SqlDbType.Int).Value=makhach;
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OHoaDonBan>(dt);
+
+            conn.Close();
+            return list;
+        }
         public void Add(OHoaDonBan item)
         {
             conn.connect();
@@ -47,7 +63,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@MaHDB", SqlDbType.Int).Value = item.MaHDB;
             comm.Parameters.Add("@NgayGiao", SqlDbType.DateTime).Value = item.NgayGiao;
             
-            comm.Parameters.Add("@TrangThai", SqlDbType.Bit).Value = item.TrangThai;
+            comm.Parameters.Add("@TrangThai", SqlDbType.Int).Value = item.TrangThai;
 
             comm.ExecuteNonQuery();
         }

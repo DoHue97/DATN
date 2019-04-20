@@ -5,45 +5,117 @@
     ViewBag.Title = "Thông tin tài khoản";
     KhachHangService khachHangService = new KhachHangService();
     var customer = khachHangService.GetById((int)Model.MaKhach);
+    var list = ViewBag.ListOrders as List<OHoaDonBan>;
+    CTHDBService cTHDBService = new CTHDBService();
 }
 
 <div class="container info-user">
-    <span class="message"></span>
-    <div class="form-group row">
-        <label for="UserName">Tên đăng nhập</label>
-        <div class="clearfix col-sm-6">
-            <p>@Model.UserName</p>
-        </div>
-        <input type="hidden" name="user_name" value="@Model.UserName" />
-    </div>
-    <div class="form-group row">
-        <label for="UserName">Tên khách</label>
-        <div class="clearfix col-sm-6">
-            <p>@Model.TenKhach</p>
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="UserName">EMail</label>
-        <div class="clearfix col-sm-6">
-            <p>@Model.Email</p>
-        </div>
-    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Thông tin </h3>
+            <span class="message"></span>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Tên đăng nhập</label>
+                <div class="clearfix col-sm-6">
+                    <p>@Model.UserName</p>
+                </div>
+                <input type="hidden" name="user_name" value="@Model.UserName" />
+            </div>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Tên khách</label>
+                <div class="clearfix col-sm-6">
+                    <p>@customer.TenKhach</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">EMail</label>
+                <div class="clearfix col-sm-6">
+                    <p>@Model.Email</p>
+                </div>
+            </div>
 
-    <div class="form-group row">
-        <label for="UserName">Địa chỉ</label>
-        <div class="clearfix col-sm-6">
-            <p>@customer.DiaChi</p>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Địa chỉ</label>
+                <div class="clearfix col-sm-6">
+                    <p>@customer.DiaChi</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Điện thoại</label>
+                <div class="clearfix col-sm-6">
+                    <p>@customer.DienThoai</p>
+                </div>
+            </div>
+            <div class="form-group row">
+                <button data-target="#password_modal" data-toggle="modal" class="btn btn-primary btnChange">Đổi mật khẩu</button>
+                <button data-target="#modal_edit" data-toggle="modal" class="btn btn-primary">Sửa đổi thông tin</button>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="UserName">Điện thoại</label>
-        <div class="clearfix col-sm-6">
-            <p>@customer.DienThoai</p>
+        <div class="col-sm-8">
+            <h3>Danh sách đơn hàng</h3>
+            @if (list.Count > 0 && list != null)
+            {
+                decimal total = 0;
+                <span class="mess_detail"></span>
+                <table class="table">
+                    <tr class="header_name">
+                        <td>Mã hóa đơn</td>
+                        <td>Tên sản phẩm</td>
+                        <td>Số lượng</td>
+                        <td>Giá</td>
+                        <td>Thành tiền</td>
+                        <td>Trạng thái</td>
+                        <td></td>
+                    </tr>
+
+                    @foreach (var item in list.OrderBy(m => m.TrangThai))
+                    {
+                        var listDetail = cTHDBService.GetAll(item.MaHDB) as List<OCTHDB>;
+                        if (listDetail.Count > 0 && listDetail != null)
+                        {
+                            foreach (var detail in listDetail)
+                            {
+                                <tr>
+                                    <td>@detail.MaHDB</td>
+                                    <td>
+                                        <a href="@Url.Action("Detail","Product",new { shortname=detail.ShortName})">@detail.TenSanPham</a>
+                                    </td>
+                                    <td>@detail.SoLuong</td>
+                                    <td>@detail.GiaBan.ToString("#,##") đ</td>
+                                    <td>@detail.ThanhTien.ToString("#,##") đ</td>
+                                    <td>
+                                        @if (item.TrangThai == 0)
+                                        {
+                                            <label class="progress-bar bg-danger">Chưa giao</label>
+                                        }
+                                        else if (item.TrangThai == 1)
+                                        {
+                                            <label class="progress-bar bg-warning">Đang giao</label>
+                                        }
+                                        else
+                                        {
+                                            <label class="progress-bar bg-success">Đã giao</label>
+                                        }
+
+                                    </td>
+                                    <td>
+                                        <a href="" onclick="delete_detail('@item.MaHDB','@detail.MaSanPham','@detail.SoLuong')">Xóa mặt hàng</a>
+                                    </td>
+                                </tr>
+                                total += detail.ThanhTien;
+                            }
+
+                        }
+                    }
+
+                    <tr class="red_total">
+                        <td>Tổng tiền</td>
+                        <td colspan="6">@total.ToString("#,##") đ</td>
+                    </tr>
+                </table>
+            }
+
         </div>
-    </div>
-    <div class="form-group row">
-        <button data-target="#password_modal" data-toggle="modal" class="btn btn-primary btnChange">Đổi mật khẩu</button>
-        <button data-target="#modal_edit" data-toggle="modal" class="btn btn-primary">Sửa đổi thông tin</button>
     </div>
 </div>
 
@@ -105,7 +177,7 @@
                         <label for="fullname" class="control-label">Họ tên</label>
                         <span class="error mess_full"></span>
                         <div class="controls">
-                            <input type="text" name="fullname" class="form-control">
+                            <input type="text" name="fullname" class="form-control" value="@customer.TenKhach">
 
                         </div>
                     </div>
@@ -113,7 +185,7 @@
                         <label for="address" class="control-label">Địa chỉ</label>
                         <span class="error mess_address"></span>
                         <div class="controls">
-                            <input type="text" name="address" class="form-control">
+                            <input type="text" name="address" class="form-control" value="@customer.DiaChi">
 
                         </div>
                     </div>
@@ -121,7 +193,7 @@
                         <label for="Email" class="control-label">Email</label>
                         <span class="error mess_email"></span>
                         <div class="controls">
-                            <input type="email" name="email" class="form-control">
+                            <input type="email" name="email" class="form-control" value="@customer.Email">
 
                         </div>
                     </div>
@@ -129,7 +201,7 @@
                         <label for="phone" class="control-label">Điện thoại</label>
                         <span class="error mess_phone"></span>
                         <div class="controls">
-                            <input type="text" name="phone" class="form-control">
+                            <input type="text" name="phone" class="form-control" value="@customer.DienThoai">
 
                         </div>
                     </div>
@@ -142,10 +214,9 @@
         </div>
     </div>
 </div>
-
 <script>
     function saveChange() {
-        debugger;
+
         var oldpass = $("input[name='current_password']").val();
         var new_password = $("input[name='new_password']").val();
         var comfirmpass = $("input[name='confirm_password']").val();
@@ -180,26 +251,29 @@
             dataType: 'json',
             traditional: true,
             success: function (data) {
-                //debugger;
+
                 if (data.Success) {
-                    //alert(data.Message);
+
                     $(".message").text(data.Message);
-                    //window.location.href = window.location.href;
+
                 } else {
                     $(".message").text(data.Message);
-                    //window.location.href = url;
+
                 }
             },
         });
     }
+</script>
+<script>
+
     function saveEdit() {
-        debugger;
+
         var email = $("input[name='email']").val();
         var address = $("input[name='address']").val();
         var fullname = $("input[name='fullname']").val();
         var makhach = $("input[name='MaKhach']").val();
         var phone = $("input[name='phone']").val();
-        var username = $("input[name='user_name']").val();
+
         var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 
         if (fullname == null || fullname == "") {
@@ -217,12 +291,12 @@
         if (reg.test(email)) {
             $(".mess_email").text("Email sai định dạng!");
         }
-        
+
         if (phone == null || phone == "") {
             $(".mess_phone").text("Bạn phải nhập trường này");
             return false;
         }
-        
+
         $.ajax({
             url: '@Url.Action("Update", "Account")',
             data: {
@@ -236,16 +310,68 @@
             dataType: 'json',
             traditional: true,
             success: function (data) {
-                //debugger;
+
                 if (data.Success) {
-                    //alert(data.Message);
+
                     $(".message").text(data.Message);
                     window.location.href = window.location.href;
                 } else {
                     $(".message").text(data.Message);
-                    //window.location.href = url;
+
                 }
             },
         });
+    }
+</script>
+
+<script>
+    function delete_detail(mahdb, masp, soluong) {
+        if (mahdb != null && masp != null && soluong != null) {
+            //debugger;
+            bootbox.confirm({
+                title: "Thông báo!",
+                message: "Đồng ý xóa đơn hàng có mã : '" + mahdb + "' và mã sản phẩm '" + masp + "' ?",
+                buttons: {
+                    'cancel': {
+                        label: 'Cancel',
+                        className: 'btn mybtn-Button btnButton'
+                    },
+                    'confirm': {
+                        label: 'OK',
+                        className: 'btn mybtn-Button btnButton'
+                    }
+                },
+                callback: function (result) {
+                    //debugger;
+                    if (result) {
+                        $.ajax({
+                            url: '@Url.Action("Delete", "ProductAction")',
+                            data: {
+                                mahdb: mahdb,
+                                masp: masp,
+                                soluong: soluong,
+                            },
+                            type: 'post',
+                            dataType: 'json',
+                            traditional: true,
+                            success: function (data) {
+
+                                if (data.Success) {
+
+                                    //$(".mess_detail").text(data.Message);
+                                    alert(data.Message);
+                                } else {
+                                    alert(data.Message);
+                                }
+                            },
+                        });
+                    }
+                }
+            });
+        } else {
+            alert("Chưa chọn bản ghi cần xóa!");
+            return;
+
+        }
     }
 </script>

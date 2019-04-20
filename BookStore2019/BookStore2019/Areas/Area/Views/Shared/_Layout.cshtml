@@ -9,65 +9,27 @@
     <meta name="description" content="overview &amp; stats" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-    <!-- bootstrap & fontawesome -->
-    @*  <link rel="stylesheet" href="~/Content/color/bootstrap-3.0.0.min.css">*@
     <link rel="stylesheet" href="~/Content/admin/Css/bootstrap.min.css" />
 
+    @*<link rel="icon" href="@Url.Content("~/images/favicon.ico")" type="image/x-icon" />*@
 
-    <link href="~/Content/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
-
-    <link rel="icon" href="@Url.Content("~/images/favicon.ico")" type="image/x-icon" />
-
-
-    @*<link rel="stylesheet" href="@Url.Content("~/Content/color/pick-a-color-1.2.3.min.css")">*@
-    <!-- page specific plugin styles -->
-    <!-- text fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
-
-    <!-- ace styles -->
-    @*<link rel="stylesheet" href="~/Content/admin/Css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />*@
 
     <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/admin/Css/ace.min.css")" rel="stylesheet" id="main-ace-style" />
 
-    <!--[if lte IE 9]>
-            <link rel="stylesheet" href="~/Content/admin/Css/ace-part2.min.css" class="ace-main-stylesheet" />
-        <![endif]-->
-    <!--[if lte IE 9]>
-          <link rel="stylesheet" href="~/Content/admin/Css/ace-ie.min.css" />
-        <![endif]-->
-    <!-- inline styles related to this page -->
-    <!--[if !IE]> -->
     <script src="~/Content/fontawesome/js/all.js"></script>
 
     <script src="~/Content/admin/Script/jquery.min.js"></script>
 
-    @*<script src="~/Content/admin/Script/jquery2.1.1/jquery.min.js"></script>*@
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script src="~/Content/admin/Script/jquery1.11.1/jquery.min.js"></script>
-    <![endif]-->
-    <!--[if !IE]> -->
     <script type="text/javascript">
         window.jQuery || document.write("<script src='~/Content/admin/Script/jquery.min.js'>" + "<" + "/script>");
     </script>
 
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script type="text/javascript">
-     window.jQuery || document.write("<script src='/Content/admin/Script/jquery1x.min.js'>"+"<"+"/script>");
-    </script>
-    <![endif]-->
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/admin/Script/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
-    <!-- ace settings handler -->
-    @*<script src="~/Content/color/jquery-1.9.1.min.js"></script>
-        <script src="~/Content/color/tinycolor-0.9.15.min.js"></script>
-        <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>*@
-
-
-
+    
     <script src="~/Content/admin/Script/ace-extra.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.bootstrap.min.js"></script>
@@ -78,13 +40,6 @@
     <script src="~/Content/admin/Script/jquery.inputlimiter.1.3.1.min.js"></script>
     <script src="~/Content/admin/Script/jquery.autosize.min.js"></script>
 
-    @*<script src="~/Scripts/ckeditor/ckeditor.js"></script>*@
-
-    <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-    <!--[if lte IE 8]>
-        <script src="~/Content/admin/Script/html5shiv.min.js"></script>
-        <script src="~/Content/admin/Script/respond.min.js"></script>
-        <![endif]-->
     <script type="text/javascript">
 
         function setAdminCurrentUrl(url) {
@@ -112,12 +67,14 @@
             </button>
 
             <div class="navbar-header pull-left">
-                <a href="@Url.Action("Admin", "Account")" class="navbar-brand">
+                <a href="@Url.Action("Index", "Default",new {areas="Area" })" class="navbar-brand">
                     <small>
                         Administrators
                     </small>
                 </a>
-                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="/" title="Go to front site"><i class="ace-icon fa fa-external-link-square  bigger-120"></i></a>
+                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="@Url.Action("Index","Home", new { area=""})" title="Go to front site">
+                    <i class="ace-icon fas fa-external-link-square-alt"></i>
+                </a>
             </div>
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">
@@ -175,7 +132,7 @@
             <ul class="nav nav-list">
 
                 <li class="">
-                    <a href="@Url.Action("Admin", "Account")">
+                    <a href="@Url.Action("Index", "Default")">
                         <i class="menu-icon fa fa-home"></i>
                         <span class="menu-text">Dashboard </span>
                     </a>
@@ -271,7 +228,7 @@
                         <li class="">
                             <a href="@Url.Action("SearchCate", "QuanLyTrangTinh")">
                                 <i class="menu-icon fas fa-caret-right"></i>
-                                
+
                                 Danh mục loại trang tĩnh
                             </a>
 
@@ -322,7 +279,17 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="@Url.Action("Search", "User")">
+                    <a href="@Url.Action("Search", "HoaDonBan")" >
+                        <i class="menu-icon fa fa-newspaper"></i>
+
+                        <span class="menu-text">
+                            Đơn hàng
+                        </span>
+                        @*<b class="arrow fa fa-angle-down"></b>*@
+                    </a>
+                </li>
+                <li class="">
+                    <a href="@Url.Action("Search", "QuanLyNguoiDung")">
                         <i class="menu-icon fa fa-users"></i>
                         <span class="menu-text">Người dùng </span>
                     </a>

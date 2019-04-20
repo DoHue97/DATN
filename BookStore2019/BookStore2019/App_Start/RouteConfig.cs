@@ -13,11 +13,11 @@ namespace BookStore2019
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "admin",
-                url: "admin",
-                defaults: new { controller = "Account", action = "Admin"}
-            );
+            //routes.MapRoute(
+            //    name: "admin",
+            //    url: "admin",
+            //    defaults: new { controller = "Default", action = "Index"}
+            //);
             routes.MapRoute(
                name: "login",
                url: "login",

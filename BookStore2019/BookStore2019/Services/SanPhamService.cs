@@ -263,15 +263,7 @@ namespace BookStore2019.Services
             List<OImageSach> list = new List<OImageSach>();
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-            foreach (DataRow dr in dt.Rows)
-            {
-                OImageSach item = new OImageSach();
-                item.ImageId = Convert.ToInt32(dr["IdImage"].ToString());
-                item.MoTa = dr["MoTa"].ToString();
-                item.DuongDan = dr["DuongDan"].ToString();
-
-                list.Add(item);
-            }
+            list = Help.DAL.ConvertDataTable<OImageSach>(dt);
             return list;
         }
         public List<OSanPham> GetOrther(OSanPham model)
@@ -307,6 +299,21 @@ namespace BookStore2019.Services
                 id = dt.Rows[i].Field<int>("LastId");
             }
             return id;
+        }
+        public bool UpdateQuantity(int masp,int soluong)
+        {
+            conn.connect();
+            var comm = new SqlCommand("SanPham_UpdateQuantity", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+            if (comm == null) return false;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = masp;
+            comm.Parameters.Add("@SoLuong", SqlDbType.Int).Value = soluong;
+            if (comm.ExecuteNonQuery() != 0)
+            {
+                return true;
+            }
+            return false;
+
         }
     }
 }

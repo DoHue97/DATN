@@ -19,9 +19,20 @@ ul {
 .error{
     color:red;
 }
-.message{
-    font-size:20px;
+.btnOrder{
+    color:white!important;
+}
+.message {
+    font-size: 20px;
+    color: red;
+}
+.red_total{
     color:red;
+    font-weight:bold;
+}
+.header_name{
+    font-weight:bold;
+    font-size:18px;
 }
 a {
     text-decoration: none;

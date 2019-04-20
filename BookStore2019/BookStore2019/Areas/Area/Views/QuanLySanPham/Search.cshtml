@@ -74,6 +74,9 @@
                                                     <a href="@Url.Action("Update", "QuanLySanPham", new { id = item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
+                                                    <a href="@Url.Action("Images", "QuanLySanPham", new { masp = item.MaSanPham })" title="Images" class="btn btn-xs btn-info">
+                                                        <i class="ace-icon fas fa-list bigger-120"></i>
+                                                    </a>
                                                     <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSanPham')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>

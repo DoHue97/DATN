@@ -81,7 +81,7 @@
 
                             @foreach (int page in ViewBag.Pager)
                             {
-                                <li>
+                                <li class="@((pager.CurrentPageIndex==page)?"active":"")">
                                     @Html.ActionLink(page.ToString(), "GetByCate", new { id = category.MaChuDe, page = page })
                                 </li>
 
@@ -134,20 +134,19 @@
                 success: function (data) {
                     debugger;
                     if (data.Success) {
-                        if (data.Flag === "0") {
-                            var totalItems = 0;
-                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
-                                var Item = data.Cart.ListItem[i];
-                                totalItems += Item.Quantity;
-                            }
-                            $("#totalItem").text(totalItems);
-                            $("#totalItem").load(window.location.href + " #totalItem");
-                            //alert("Đã thêm sản phẩm vào giỏ hàng!");
-                        } else {
-                            alert("Sản phẩm chỉ còn lại");
+                        var totalItems = 0;
+                        for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                            var Item = data.Cart.ListItem[i];
+                            totalItems += Item.Quantity;
                         }
+                        $("#totalItem").text(totalItems);
+                        $("#totalItem").load(window.location.href + " #totalItem");
                     } else {
-                        alert("Thêm sản phẩm thất bại");
+                        if (data.Flag === "0") {
+                            alert(data.Message);
+                        } else {
+                            alert(data.Message);
+                        }
                     }
                 }
             });

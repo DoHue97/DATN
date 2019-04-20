@@ -8,6 +8,7 @@ using ValuesObject;
 
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class TinTucController : Controller
     {
         LoaiTinService loaiTinService = new LoaiTinService();

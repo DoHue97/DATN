@@ -4,11 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BookStore2019.Controllers
+namespace BookStore2019.Areas.Area.Controllers
 {
-    public class TacGiaController : Controller
+
+    public class HoaDonNhapController : Controller
     {
-        // GET: TacGia
+        // GET: Area/HoaDonNhap
         public ActionResult Index()
         {
             return View();

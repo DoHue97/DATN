@@ -1,0 +1,158 @@
+﻿@using ValuesObject
+@model List<OCTHDB>
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content-inner">
+    <div class="breadcrumb" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li><a href="@Url.Action("Index","Default")">Dashboard</a></li>
+            <li><a href="@Url.Action("Search","HoaDonBan")">Danh sách đơn hàng</a></li>
+            <li class="active">Danh sách chi tiết đơn hàng</li>
+        </ul>
+    </div>
+    <div class="page-content">
+        <div class="page-header">
+            <h1>Danh sách slider </h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "manageForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            <table id="dynamic-table" class="table table-striped table-bordered table-hover dataTable no-footer" role="grid" aria-describedby="table_info">
+                                <thead>
+                                    <tr role="row">
+
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Mã hóa đơn: activate to sort column ascending">Mã hóa đơn </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên sản phẩm: activate to sort column ascending">Tên sản phẩm </th>
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Số lượng: activate to sort column ascending">Số lượng</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Thành tiền: activate to sort column ascending">Thành tiền</th>
+                                        @*<th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>*@
+                                        <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="myTable">
+                                    @foreach (OCTHDB item in Model)
+                                    {
+                                        <tr role="row" class="odd">
+
+                                            <td>@item.MaHDB</td>
+                                            <td>@item.TenSanPham</td>
+                                            <td>@item.SoLuong</td>
+                                            <td>@item.ThanhTien.ToString("#,##") đ</td>
+                                            @*<th class="hidden-480">*@
+                                            
+                                            <td>
+                                                <div class="hidden-sm hidden-xs btn-group">
+                                                    
+                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaHDB','@item.MaSanPham')">
+
+                                                        <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                    </a>
+                                                </div>
+
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    setAdminCurrentUrl('@Url.Action("Details", "HoaDonBan")');
+</script>
+<script type="text/javascript">
+    jQuery(function ($) {
+        var oTable1 =
+            $('#dynamic-table')
+                .dataTable({
+                    bAutoWidth: false,
+                    "aoColumns": [
+                        null, null, null,null,
+                        { "bSortable": false }
+                    ],
+                    "aaSorting": [],
+                });
+        $('[data-rel="tooltip"]').tooltip({ placement: tooltip_placement });
+
+
+        function tooltip_placement(context, source) {
+            var $source = $(source);
+            var $parent = $source.closest('table')
+            var off1 = $parent.offset();
+            var w1 = $parent.width();
+            var off2 = $source.offset();
+            if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2)) return 'right';
+            return 'left';
+        }
+
+    });
+    function Delete(orderid, proid) {
+        if (orderid != null || proid!=null) {
+            bootbox.confirm({
+                title: "Thông báo!",
+                message: "Đồng ý xóa chi tiết đơn hàng mã : '" + orderid + "' và mã sản phẩm '" + proid + "' ?",
+                buttons: {
+                    'cancel': {
+                        label: 'Cancel',
+                        className: 'btn mybtn-Button btnButton'
+                    },
+                    'confirm': {
+                        label: 'OK',
+                        className: 'btn mybtn-Button btnButton'
+                    }
+                },
+                callback: function (result) {
+                    //debugger;
+                    if (result) {
+                        var url = '@Url.Action("DeleteDetail", "HoaDonBan")';
+                        //yêu cầu mã xác thực
+                        var __RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                        $.ajax({
+                            url: url,
+                            data: {
+                                orderid: orderid,
+                                proid: proid,
+                                __RequestVerificationToken: __RequestVerificationToken
+                            },
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (data) {
+                                debugger;
+                                if (data.Success) {
+                                    alert(data.Message);
+                                    window.location.href = window.location.href;
+
+                                } else {
+                                    _showErrorMsg123(data.Message);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            alert("Chưa chọn bản ghi cần xóa!");
+            return;
+        }
+    }
+
+</script>

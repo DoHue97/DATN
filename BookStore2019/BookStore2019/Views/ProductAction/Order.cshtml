@@ -60,7 +60,9 @@
                                 </td>
                                 <td>
                                     <div class="item-quanlity">
-                                        <input type="number" min="1" max="10" name="quanlity" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
+                                        <input type="number" min="1" max="10" name="quanlity" pattern="^-?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)$" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
+                                        <br />
+                                        <span class="error" id="msg_@item.ProductId"></span>
                                     </div>
                                 </td>
                                 <td>
@@ -136,12 +138,20 @@
 
         return str.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
     }
+
 </script>
 <script>
     function myFunction(thiz,proid) {
-        //debugger;
+        debugger;
         var quanlity = $(thiz).val();
-
+        
+        var msg = "#msg_" + proid;
+        if (quanlity <= 0) {
+            
+            $(msg).text("Mời bạn nhập lại số lượng!");
+            return false;
+        }
+        $(msg).text("");
             $.ajax({
                 url: '@Url.Action("UpdateCart", "ProductAction")',
                 data: {
@@ -151,30 +161,31 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
-                    //debugger;
+                    debugger;
                     if (data.Success) {
                         var totalItems = 0;
-                        if (data.Flag === "0") {
-                            var totalMoney = 0;
-                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
-                                var Item = data.Cart.ListItem[i];
-                                totalItems += Item.Quantity;
-                                var total = Item.Quantity * Item.Price;
-                                var totalPrice = ".total-value-" + Item.ProductId;
-                                totalMoney += total;
-                                $(totalPrice).text(formatPrice(total) + " đ");
+                        var totalMoney = 0;
+                        for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                            var Item = data.Cart.ListItem[i];
+                            totalItems += Item.Quantity;
+                            var total = Item.Quantity * Item.Price;
+                            var totalPrice = ".total-value-" + Item.ProductId;
+                            totalMoney += total;
+                            $(totalPrice).text(formatPrice(total) + " đ");
 
-                            }
-                            $(".price-value").text(formatPrice(totalMoney) + " đ");
-                            $(".price-total").text(formatPrice(totalMoney) + " đ");
-                            $("#totalItem").text(totalItems);
-                            $(".total-item").text("("+totalItems +" sản phẩm)");
-
-                        } else {
-                            alert("Sản phẩm chỉ còn lại");
                         }
+                        
+                        $(".price-value").text(formatPrice(totalMoney) + " đ");
+                        $(".price-total").text(formatPrice(totalMoney) + " đ");
+                        $("#totalItem").text(totalItems);
+                        //document.getElementById("totalItem").innerHTML = totalItems;
+                        $(".total-item").text("(" + totalItems + " sản phẩm)");
                     } else {
-                        alert("Thêm sản phẩm thất bại");
+                        if (data.Flag === "0") {
+                            alert("Thêm sản phẩm thất bại");
+                        } else {
+                            alert(data.Message);
+                        }
                     }
                 }
             });

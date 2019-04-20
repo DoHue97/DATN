@@ -161,6 +161,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Area\AreaAreaRegistration.cs" />
     <Compile Include="Areas\Area\Controllers\DefaultController.cs" />
+    <Compile Include="Areas\Area\Controllers\HoaDonBanController.cs" />
+    <Compile Include="Areas\Area\Controllers\HoaDonNhapController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLyNguoiDungController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLyNXBController.cs" />
     <Compile Include="Areas\Area\Controllers\QuanLySanPhamController.cs" />
@@ -172,10 +174,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HtmlController.cs" />
-    <Compile Include="Controllers\NhaXuatBanController.cs" />
     <Compile Include="Controllers\ProductActionController.cs" />
     <Compile Include="Controllers\SachController.cs" />
-    <Compile Include="Controllers\TacGiaController.cs" />
     <Compile Include="Controllers\TinTucController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -192,6 +192,7 @@
     <Compile Include="Services\CTHDBService.cs" />
     <Compile Include="Services\HDBService.cs" />
     <Compile Include="Services\HtmlPageService.cs" />
+    <Compile Include="Services\ImagesService.cs" />
     <Compile Include="Services\KhachHangService.cs" />
     <Compile Include="Services\LoaiTinService.cs" />
     <Compile Include="Services\LoaiTrangTinhService.cs" />
@@ -3036,7 +3037,12 @@
     <Content Include="Areas\Area\Views\QuanLyTacGia\Search.cshtml" />
     <Content Include="Areas\Area\Views\QuanLyTacGia\Update.cshtml" />
     <Content Include="Areas\Area\Views\QuanLyNguoiDung\Search.cshtml" />
+    <Content Include="Areas\Area\Views\HoaDonBan\Search.cshtml" />
+    <Content Include="Areas\Area\Views\HoaDonBan\Details.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLySanPham\Images.cshtml" />
+    <Content Include="Areas\Area\Views\QuanLySanPham\UpdateImage.cshtml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
+    <Content Include="Scripts\function.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
     <Content Include="Scripts\jquery-3.3.1.slim.js" />
@@ -3055,7 +3061,9 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -3083,11 +3091,7 @@
     <Content Include="Views\Account\Shipping.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Sach\GetByCate.cshtml" />
-    <Content Include="Views\TinTuc\SearchCate.cshtml" />
-    <Content Include="Views\TinTuc\UpdateCate.cshtml" />
     <Content Include="Views\Sach\Cart.cshtml" />
-    <Content Include="Views\Html\GetById.cshtml" />
-    <Content Include="Views\TinTuc\GetAll.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
     <Content Include="Scripts\umd\popper-utils.min.js.map" />
@@ -3097,20 +3101,24 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
-    <Content Include="Views\TinTuc\Search.cshtml" />
-    <Content Include="Views\TinTuc\Update.cshtml" />
     <Content Include="Views\ProductAction\Order.cshtml" />
-    <Content Include="Views\TinTuc\GetByCate.cshtml" />
-    <Content Include="Views\Html\Detail.cshtml" />
-    <Content Include="Views\TinTuc\Detail.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Html\Detail.cshtml" />
+    <Content Include="Views\Html\GetById.cshtml" />
+    <Content Include="Views\TinTuc\Detail.cshtml" />
+    <Content Include="Views\TinTuc\GetAll.cshtml" />
+    <Content Include="Views\TinTuc\GetByCate.cshtml" />
+    <Content Include="Views\TinTuc\Search.cshtml" />
+    <Content Include="Views\TinTuc\SearchCate.cshtml" />
+    <Content Include="Views\TinTuc\Update.cshtml" />
+    <Content Include="Views\TinTuc\UpdateCate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Area\Models\" />
-    <Folder Include="Views\NhaXuatBan\" />
+    <Folder Include="Areas\Area\Views\HoaDonNhap\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

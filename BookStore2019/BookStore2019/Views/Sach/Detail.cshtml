@@ -99,14 +99,17 @@
                 <h4 class="">Giá bán: @String.Format("{0:#,##0.##}", Model.GiaBan) VND</h4>
             }
 
-            <div class="form-inline quality">
-                <input type="hidden" name="idpro" value="@Model.MaSanPham" />
-                <input type="number" name="quality" value="1" min="1" max="100" class=" form-control" />
-                <button type="button" class="btn btn-danger" id="addToCart" onclick="updateCart()">
-                    <i class="fas fa-cart-plus"></i>
-                    Chọn mua
-                </button>
-            </div>
+                <div class="form-inline quality">
+                    <input type="hidden" name="idpro" value="@Model.MaSanPham" />
+                    <input type="number" name="quality" value="1" min="1" max="100" pattern="^-?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)$" class=" form-control" />
+                    <br />
+
+                    <button type="button" class="btn btn-danger" id="addToCart" onclick="updateCart()">
+                        <i class="fas fa-cart-plus"></i>
+                        Chọn mua
+                    </button>
+                    <span class="error" id="mssg_@Model.MaSanPham"></span>
+                </div>
             <hr />
 
         </div>
@@ -181,10 +184,18 @@
 </script>
 <script>
     function updateCart() {
-        //debugger;
+        debugger;
         var quanlity = $("input[name='quality']").val();
-        var idpro = $("input[name='idpro']").val();
         
+        
+        var idpro = $("input[name='idpro']").val();
+        var msg = "#mssg_" + idpro;
+        if (quanlity <= 0) {
+
+            $(msg).text("Mời bạn nhập lại số lượng!");
+            return false;
+        }
+        $(msg).text("");
             $.ajax({
                 url: '@Url.Action("AddToCart", "ProductAction")',
                 data: {
@@ -196,20 +207,19 @@
                 success: function (data) {
                     debugger;
                     if (data.Success) {
-                        if (data.Flag === "0") {
-                            var totalItems = 0;
-                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
-                                var Item = data.Cart.ListItem[i];
-                                totalItems += Item.Quantity;
-                            }
-                            $("#totalItem").text(totalItems);
-                            $("#totalItem").load(window.location.href + " #totalItem");
-                            //alert("Đã thêm sản phẩm vào giỏ hàng!");
-                        } else {
-                            alert("Sản phẩm chỉ còn lại");
+                        var totalItems = 0;
+                        for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                            var Item = data.Cart.ListItem[i];
+                            totalItems += Item.Quantity;
                         }
+                        $("#totalItem").text(totalItems);
+                        $("#totalItem").load(window.location.href + " #totalItem");
                     } else {
-                        alert("Thêm sản phẩm thất bại");
+                        if (data.Flag === "0") {
+                            alert(data.Message);
+                        } else {
+                            alert(data.Message);
+                        }
                     }
                 }
             });

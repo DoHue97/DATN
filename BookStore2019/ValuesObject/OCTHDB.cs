@@ -10,7 +10,11 @@ namespace ValuesObject
     {
         public int MaHDB { get; set; }
         public int MaSanPham { get; set; }
-        public Nullable<int> SoLuong { get; set; }
-        public Nullable<decimal> ThanhTien { get; set; }
+        public int SoLuong { get; set; }
+        public decimal ThanhTien { get; set; }
+
+        public string TenSanPham { get; set; }
+        public decimal GiaBan { get; set; }
+        public string ShortName { get; set; }
     }
 }

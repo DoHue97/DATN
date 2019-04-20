@@ -5,7 +5,8 @@
     ChuDeService chuDeService = new ChuDeService();
     SanPhamService sachService = new SanPhamService();
     LoaiTinService loaiTinService = new LoaiTinService();
-    var listCate = chuDeService.GetAllParent();
+    var listBooks = chuDeService.GetAllByParentName("sach");
+    var listOrther = chuDeService.GetAllByParentName("do-dung-hoc-tap");
     var listNewCates = loaiTinService.GetAllActive();
 }
 <div class="back-to-top">
@@ -91,11 +92,11 @@
                     </li>
 
                     <li class="dropdown">
-                        <a href="@Url.Action("GetAll","Sach")" class="hover-pa">Danh  mục sản phẩm</a>
+                        <a href="#" class="hover-pa">Sách</a>
                         <ul class="dropdown-menu" role="menu">
-                            @if (listCate.Count > 0 && listCate != null)
+                            @if (listBooks.Count > 0 && listBooks != null)
                             {
-                                foreach (var item in listCate)
+                                foreach (var item in listBooks.OrderBy(m => m.Ten))
                                 {
                                     var list2 = chuDeService.GetAllByParentId(new OChuDe { ParentId = item.MaChuDe });
                                     if (list2.Count > 0 && list2 != null)
@@ -124,7 +125,40 @@
                             }
                         </ul>
                     </li>
+                    <li class="dropdown">
+                        <a href="#" class="hover-pa">Đồ dùng học tập</a>
+                        <ul class="dropdown-menu" role="menu">
+                            @if (listOrther.Count > 0 && listOrther != null)
+                            {
+                                foreach (var item in listOrther.OrderBy(m=>m.Ten))
+                                {
+                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { ParentId = item.MaChuDe });
+                                    if (list2.Count > 0 && list2 != null)
+                                    {
+                                        <li class="dropdown-level-2">
+                                            <a href="" class="item-li ">@item.Ten</a>
+                                            <ul class="dropdown-menu sub-menu-2">
+                                                @foreach (var item2 in list2)
+                                                {
+                                                    <li>
+                                                        <a href="@Url.Action("GetByCate", "Sach", new { id = item2.MaChuDe })">@item2.Ten</a>
+                                                    </li>
 
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="dropdown-level-2">
+                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li">@item.Ten</a>
+                                        </li>
+                                    }
+
+                                }
+                            }
+                        </ul>
+                    </li>
                     <li class=" dropdown">
                         <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức</a>
 

@@ -13,6 +13,7 @@ using System.Net;
 
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class ProductActionController : Controller
     {
         SanPhamService sachService = new SanPhamService();
@@ -36,7 +37,7 @@ namespace BookStore2019.Controllers
                 var product = sachService.Get(new OSanPham { MaSanPham = proid });
                 if (product.SoLuong >= quanlity)
                 {
-                    if(product.Sale>0)
+                    if (product.Sale > 0)
                     {
                         product.GiaBan = product.GiaBan - product.GiaBan * product.Sale / 100;
                     }
@@ -46,7 +47,7 @@ namespace BookStore2019.Controllers
                         Session["Cart"] = objCart;
                     }
 
-                    return Json(new { Success = true, Flag = "0", Cart = objCart });
+                    return Json(new { Success = true, Cart = objCart });
 
                 }
                 else
@@ -56,7 +57,7 @@ namespace BookStore2019.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Success = false, Message = ex.StackTrace.ToString() });
+                return Json(new { Success = false,Flag="0", Message = ex.StackTrace.ToString() });
             }
 
 
@@ -70,7 +71,7 @@ namespace BookStore2019.Controllers
                 var product = sachService.Get(new OSanPham { MaSanPham = proid });
                 if (product != null && product.SoLuong >= quanlity)
                 {
-                    
+
                     if (objCart == null)
                     {
                         objCart = new Carts();
@@ -91,7 +92,7 @@ namespace BookStore2019.Controllers
                     };
                     objCart.AddToCart(cartItem);
                     Session["Cart"] = objCart;
-                    return Json(new { Success = true, Flag = "0", Cart = objCart });
+                    return Json(new { Success = true, Cart = objCart });
 
                 }
                 else
@@ -101,7 +102,7 @@ namespace BookStore2019.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { Success = false, Message = ex.StackTrace.ToString() });
+                return Json(new { Success = false,Flag="0", Message = ex.StackTrace.ToString() });
             }
 
 
@@ -122,32 +123,33 @@ namespace BookStore2019.Controllers
         {
             string strChuoi = "";
             decimal total = 0;
-            
+
             ShoppingCartModels model = new ShoppingCartModels();
             model.Cart = (Carts)Session["Cart"];
-            
+
             if (Session["Account"] == null || Session["Account"].ToString() == "")
             {
                 //return RedirectToAction("Login", "Account");
-                return Json(new { Success = false, Url=Url.Action("Login","Account")});
+                return Json(new { Success = false, Url = Url.Action("Login", "Account") });
             }
-           
+
             OAccount account = (OAccount)Session["Account"];
             OAccount kh = accountService.Get(account.UserName, account.PassWord);
             OHoaDonBan ddh = new OHoaDonBan
             {
-                MaKhach =kh.MaKhach,
-                TrangThai=false,
+                MaKhach = kh.MaKhach,
+                TrangThai = 0,
             };
             hdbService.Add(ddh);
             int idHdb = hdbService.GetLastId();
             foreach (var item in model.Cart.ListItem)
             {
-                cTHDBService.Add(new OCTHDB {
-                    MaHDB=idHdb,
-                    MaSanPham=item.ProductId,
-                    SoLuong=item.Quantity,
-                    ThanhTien=item.Total,
+                cTHDBService.Add(new OCTHDB
+                {
+                    MaHDB = idHdb,
+                    MaSanPham = item.ProductId,
+                    SoLuong = item.Quantity,
+                    ThanhTien = item.Total,
 
                 });
 
@@ -155,12 +157,19 @@ namespace BookStore2019.Controllers
                 strChuoi += "<li> Giá: " + item.Price.ToString("#,##") + " đ</li> ";
                 strChuoi += "<li> Số lượng: " + item.Quantity + "</li> ";
                 total += item.Total;
+                var product = sachService.Get(new OSanPham { MaSanPham = item.ProductId });
+                var newproduct = sachService.Get(new OSanPham { MaSanPham = item.ProductId });
+                if (product != null)
+                {
+                    newproduct.SoLuong = product.SoLuong - item.Quantity;
+                    sachService.Update(newproduct);
+                }
             }
             strChuoi += "<li>Tổng tiền: " + total.ToString("#,##") + " đ </li>";
             //SendEmail(kh.Email,strChuoi);
             Session["Cart"] = null;
-            
-            return Json(new { Success = true,Message= "Đặt hàng thành công. Bạn hãy check email nhé !" });
+
+            return Json(new { Success = true, Message = "Đặt hàng thành công. Bạn hãy check email nhé !" });
         }
 
         [HttpPost]
@@ -197,10 +206,23 @@ namespace BookStore2019.Controllers
                 client.Send(mail);
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
+        }
+        [HttpPost]
+        public ActionResult Delete(int mahdb, int masp, int soluong)
+        {
+            if (cTHDBService.Delete(new OCTHDB { MaHDB = mahdb, MaSanPham = masp }))
+            {
+                if (sachService.UpdateQuantity(masp, soluong))
+                {
+                    return Json(new { Success = true, Message = "Xóa sản phẩm khỏi đơn hàng thành công!" });
+                }
+
+            }
+            return Json(new { Success = false, Message = "Xóa sản phẩm khỏi đơn hàng thất bại!" });
         }
     }
 }

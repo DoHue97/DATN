@@ -9,10 +9,12 @@ namespace ValuesObject
    public class OHoaDonBan
     {
         public int MaHDB { get; set; }
-        public Nullable<System.DateTime> NgayBan { get; set; }
+        public DateTime NgayBan { get; set; }
         public Nullable<int> MaKhach { get; set; }
         public string GhiChu { get; set; }
-        public Nullable<bool> TrangThai { get; set; }
-        public Nullable<System.DateTime> NgayGiao { get; set; }
+        public int TrangThai { get; set; }
+        public DateTime NgayGiao { get; set; }
+
+        public string TenKhach { get; set; }
     }
 }

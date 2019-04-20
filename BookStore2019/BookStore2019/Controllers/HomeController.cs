@@ -12,10 +12,12 @@ using System.Net;
 
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class HomeController : Controller
     {
         SanPhamService sachService = new SanPhamService();
         SlideService slideService = new SlideService();
+     
         public ActionResult Index()
         {
             int total = 0;

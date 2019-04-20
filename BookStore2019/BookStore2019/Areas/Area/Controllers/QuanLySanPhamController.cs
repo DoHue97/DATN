@@ -8,14 +8,16 @@ using ValuesObject;
 
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLySanPhamController : Controller
     {
         ChuDeService chuDeService = new ChuDeService();
-        SanPhamService sachService = new SanPhamService();
+        SanPhamService sanphamService = new SanPhamService();
         NhaXuatBanService nxbService = new NhaXuatBanService();
         TacGiaService tacGiaService = new TacGiaService();
         Sach_TacGiaService sach_TacGiaService = new Sach_TacGiaService();
         NhaCungCapService nccService = new NhaCungCapService();
+        ImagesService imgService = new ImagesService();
         #region admin
         // GET: Default
         
@@ -46,7 +48,7 @@ namespace BookStore2019.Areas.Area.Controllers
             try
             {
                 chuDeService.Add(model);
-                var idSach = sachService.GetLastId();
+                var idSach = sanphamService.GetLastId();
                 
                 return RedirectToAction("SearchCate", "QuanLySanPham");
             }
@@ -68,7 +70,7 @@ namespace BookStore2019.Areas.Area.Controllers
             {
                 var obj = chuDeService.Get(new OChuDe { MaChuDe = (int)id });
                 var categories = chuDeService.GetByParentId();
-                var listCate = new SelectList(categories, "ParentId", "Ten");
+                var listCate = new SelectList(categories, "MaChuDe", "Ten");
                 ViewBag.ListCate = listCate;
                 
                 ViewBag.IsEdit = true;
@@ -117,7 +119,7 @@ namespace BookStore2019.Areas.Area.Controllers
         [HttpGet]
         public ActionResult Search(bool isSach)
         {
-            var listSach = sachService.GetAll(isSach);
+            var listSach = sanphamService.GetAll(isSach);
             ViewBag.IsSach = isSach;
             return View(listSach);
         }
@@ -148,8 +150,8 @@ namespace BookStore2019.Areas.Area.Controllers
                 try
                 {
                     model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
-                    sachService.Add(model);
-                    var idSach = sachService.GetLastId();
+                    sanphamService.Add(model);
+                    var idSach = sanphamService.GetLastId();
                     if(model.MaTacGia.ToList() !=null && model.MaTacGia.ToList().Count > 0)
                     {
                         foreach (int item in model.MaTacGia)
@@ -183,7 +185,7 @@ namespace BookStore2019.Areas.Area.Controllers
         {
             if (id.HasValue)
             {
-                var obj = sachService.Get(new OSanPham { MaSanPham = (int)id });
+                var obj = sanphamService.Get(new OSanPham { MaSanPham = (int)id });
                 List<OChuDe> listCate = chuDeService.GetAll();
                 ViewBag.ListCate = new SelectList(listCate, "MaChuDe", "Ten");
                 List<ONhaXuatBan> listNXB = nxbService.GetAll();
@@ -205,14 +207,14 @@ namespace BookStore2019.Areas.Area.Controllers
         {
             if (ModelState.IsValid)
             {
-                var pro = sachService.Get(new OSanPham { MaSanPham = model.MaSanPham });
+                var pro = sanphamService.Get(new OSanPham { MaSanPham = model.MaSanPham });
                 if (pro != null)
                 {
                     try
                     {
                         model.TenVanTat = Help.Helper.convertToUnSign3(model.TenSanPham);
                         //model.CreateBy = CurrentUser.Name;
-                        sachService.Update(model);
+                        sanphamService.Update(model);
                         sach_TacGiaService.Delete(model.MaSanPham);
                         if(model.MaTacGia!=null && model.MaTacGia.ToList().Count > 0)
                         {
@@ -248,13 +250,95 @@ namespace BookStore2019.Areas.Area.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            var pro = sachService.Get(new OSanPham { MaSanPham = id });
+            var pro = sanphamService.Get(new OSanPham { MaSanPham = id });
             bool isSach = (bool)pro.IsSach;
-            sachService.Delete(new OSanPham { MaSanPham = id });
+            sanphamService.Delete(new OSanPham { MaSanPham = id });
             return RedirectToAction("Search", "QuanLySanPham", new { isSach = isSach });
         }
 
+        [HttpGet]
+        public ActionResult Images(int masp)
+        {
+            var list = imgService.GetAll(masp);
+            var product = sanphamService.Get(new OSanPham { MaSanPham = masp });
+            ViewBag.Product = product;
+            return View(list);
+        }
+        [HttpGet]
+        public ActionResult CreateImage(int masp)
+        {
+            OImageSach data = new OImageSach();
+            data.IsActive = false;
+            data.MaSanPham = masp;
+            var product = sanphamService.Get(new OSanPham { MaSanPham = masp });
+            ViewBag.Product = product;
+            return View("UpdateImage", data);
+        }
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateImage(OImageSach model)
+        {
 
+            try
+            {
+                imgService.Add(model);
+                
+                return RedirectToAction("Images", "QuanLySanPham", new { masp = model.MaSanPham });
+            }
+            catch (Exception e)
+            {
+
+            }
+            
+            ViewBag.IsEdit = true;
+            return View("UpdateImage", model);
+        }
+
+        [HttpGet]
+        public ActionResult UpdateImage(int? id)
+        {
+            if (id.HasValue)
+            {
+                var obj = imgService.Get(new OImageSach { IdImage = (int)id });
+                
+                ViewBag.IsEdit = true;
+                return View(obj);
+            }
+            
+            return View();
+        }
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult UpdateImage(OImageSach model)
+        {
+            if (ModelState.IsValid)
+            {
+                var pro = imgService.Get(new OImageSach { IdImage = model.IdImage });
+                if (pro != null)
+                {
+                    try
+                    {
+
+                        imgService.Update(model);
+                        return RedirectToAction("Images", "QuanLySanPham",new { masp = model.MaSanPham});
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+           
+            ViewBag.IsEdit = true;
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteImage(int id,int masp)
+        {
+            imgService.Delete(id);
+            return RedirectToAction("Images", "QuanLySanPham",new { masp = masp});
+        }
         [HttpPost]
         public ActionResult AddAuthor(string tacgia)
         {
@@ -271,6 +355,7 @@ namespace BookStore2019.Areas.Area.Controllers
                     {
                         Ten = tacgia,
                         TenVanTat = Help.Helper.convertToUnSign3(tacgia),
+                        IsActive=true,
                     });
                     return Json(new { Success = true });
                 }

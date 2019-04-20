@@ -13,61 +13,24 @@
     @*  <link rel="stylesheet" href="~/Content/color/bootstrap-3.0.0.min.css">*@
     <link rel="stylesheet" href="~/Content/admin/Css/bootstrap.min.css" />
 
+    <link href="~/Content/fontawesome/css/all.css" rel="stylesheet" />
 
-    <link href="~/Content/font-awesome/css/fontawesome.min.css" rel="stylesheet" />
+    @*<link rel="icon" href="@Url.Content("~/images/favicon.ico")" type="image/x-icon" />*@
 
-    <link rel="icon" href="@Url.Content("~/images/favicon.ico")" type="image/x-icon" />
-
-
-    @*<link rel="stylesheet" href="@Url.Content("~/Content/color/pick-a-color-1.2.3.min.css")">*@
-    <!-- page specific plugin styles -->
-    <!-- text fonts -->
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
 
-    <!-- ace styles -->
-    @*<link rel="stylesheet" href="~/Content/admin/Css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />*@
-
-    <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/admin/Css/ace.min.css")" rel="stylesheet" id="main-ace-style" />
-
-    <!--[if lte IE 9]>
-            <link rel="stylesheet" href="~/Content/admin/Css/ace-part2.min.css" class="ace-main-stylesheet" />
-        <![endif]-->
-    <!--[if lte IE 9]>
-          <link rel="stylesheet" href="~/Content/admin/Css/ace-ie.min.css" />
-        <![endif]-->
-    <!-- inline styles related to this page -->
-    <!--[if !IE]> -->
     <script src="~/Content/fontawesome/js/all.js"></script>
 
     <script src="~/Content/admin/Script/jquery.min.js"></script>
 
-    @*<script src="~/Content/admin/Script/jquery2.1.1/jquery.min.js"></script>*@
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script src="~/Content/admin/Script/jquery1.11.1/jquery.min.js"></script>
-    <![endif]-->
-    <!--[if !IE]> -->
     <script type="text/javascript">
         window.jQuery || document.write("<script src='~/Content/admin/Script/jquery.min.js'>" + "<" + "/script>");
     </script>
 
-    <!-- <![endif]-->
-    <!--[if IE]>
-    <script type="text/javascript">
-     window.jQuery || document.write("<script src='/Content/admin/Script/jquery1x.min.js'>"+"<"+"/script>");
-    </script>
-    <![endif]-->
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/admin/Script/jquery.mobile.custom.min.js'>" + "<" + "/script>");
     </script>
-    <!-- ace settings handler -->
-    @*<script src="~/Content/color/jquery-1.9.1.min.js"></script>
-        <script src="~/Content/color/tinycolor-0.9.15.min.js"></script>
-        <script src="~/Content/color/pick-a-color-1.2.3.min.js"></script>*@
-
-
-
+    
     <script src="~/Content/admin/Script/ace-extra.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.bootstrap.min.js"></script>
@@ -117,7 +80,10 @@
                         Administrators
                     </small>
                 </a>
-                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="/" title="Go to front site"><i class="ace-icon fa fa-external-link-square  bigger-120"></i></a>
+                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="@Url.Action("Index","Home")" title="Go to front site">
+                    @*<i class="ace-icon fas fa-external-link-square-alt"></i>*@
+                    <i class="ace-icon fas fa-external-link-square-alt"></i>
+                </a>
             </div>
             <div class="navbar-buttons navbar-header pull-right" role="navigation">
                 <ul class="nav ace-nav">

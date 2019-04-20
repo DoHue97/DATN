@@ -7,6 +7,7 @@ using BookStore2019.Services;
 using ValuesObject;
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class HtmlController : Controller
     {
         HtmlPageService htmlPageService = new HtmlPageService();

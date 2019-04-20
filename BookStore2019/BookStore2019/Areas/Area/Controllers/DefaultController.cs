@@ -6,10 +6,9 @@ using System.Web.Mvc;
 
 namespace BookStore2019.Areas.Area.Controllers
 {
+    //[Authorize]
     public class DefaultController : Controller
     {
-        // GET: Area/Default
-        [Authorize]
         public ActionResult Index()
         {
             return View();

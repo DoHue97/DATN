@@ -11,10 +11,13 @@ using BookStore2019.Models;
 
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class AccountController : Controller
     {
         AccountService accountService = new AccountService();
         KhachHangService khService = new KhachHangService();
+        HDBService hdbService = new HDBService();
+        CTHDBService cthdbService = new CTHDBService();
         // GET: Account
         public ActionResult Shipping()
         {
@@ -28,15 +31,12 @@ namespace BookStore2019.Controllers
         [HttpPost]
         public ActionResult Login(Login model)
         {
-            //string usename = f["UserName"].ToString();
-            //string pass = f["Password"].ToString();
-            //bool isRemember = Boolean.Parse(f["IsRemember"].ToString());
-
+            
             var account = accountService.Login(model.UserName, model.Password);
             if (account != null)
             {
                 Session["Account"] = account;
-                //FormsAuthentication.SetAuthCookie(model.UserName, model.IsRemember);
+                FormsAuthentication.SetAuthCookie(model.UserName, model.IsRemember);
                 
                 if (account.MaQuyen == 1)
                 {
@@ -79,22 +79,19 @@ namespace BookStore2019.Controllers
                 UserName=model.UserName,
                 MaQuyen=3,
             };
-            if (ModelState.IsValid)
+            if (accountService.Register(account))
             {
-                if (accountService.Register(account))
-                {
-                    Session["Account"] = account;
-                    return View("Index", "Home");
-                }
-                
+                Session["Account"] = account;
+                return RedirectToAction("Index", "Home");
             }
             return View("Login");
         }
         [HttpGet]
         public ActionResult Info(string username)
-        {
-            
+        {            
             var model = accountService.GetByUserName(username);
+            var listOrder = hdbService.GetByMaKhach((int)model.MaKhach);
+            ViewBag.ListOrders = listOrder;
             return View(model);
         }
         [HttpPost]

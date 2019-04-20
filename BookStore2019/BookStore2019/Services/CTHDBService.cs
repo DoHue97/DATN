@@ -43,5 +43,19 @@ namespace BookStore2019.Services
            
             comm.ExecuteNonQuery();
         }
+        public bool Delete(OCTHDB item)
+        {
+            conn.connect();
+            var comm = new SqlCommand("CTHDB_Delete", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+            if (comm == null) return false;
+            comm.Parameters.Add("@MaHDB", SqlDbType.Int).Value = item.MaHDB;
+            comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = item.MaSanPham;
+            if (comm.ExecuteNonQuery() != 0)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

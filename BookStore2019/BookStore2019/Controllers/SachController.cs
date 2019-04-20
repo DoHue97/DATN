@@ -11,6 +11,7 @@ using ValuesObject;
 
 namespace BookStore2019.Controllers
 {
+    [AllowAnonymous]
     public class SachController : Controller
     {
         int pageSize = 20;
