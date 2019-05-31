@@ -1,8 +1,10 @@
 ﻿@using ValuesObject
+@using BookStore2019.Services
 @model List<OHoaDonBan>
 @{
     ViewBag.Title = "Danh sách đơn hàng";
     Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+    CTHDBService cthdbService = new CTHDBService();
 }
 
 
@@ -42,8 +44,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (OHoaDonBan item in Model)
+                                    @foreach (OHoaDonBan item in Model.OrderBy(m => m.NgayBan))
                                     {
+                                        var listDetails = cthdbService.GetAll(item.MaHDB);
                                         <tr role="row" class="odd">
 
                                             <td>@item.MaHDB</td>
@@ -67,13 +70,29 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("Details", "HoaDonBan", new { id = item.MaHDB })" title="Chi tiết" class="btn btn-xs btn-info">
-                                                        <i class="ace-icon fas fa-list bigger-120"></i>
-                                                    </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaHDB')">
+                                                    @if (item.TrangThai != 2 && listDetails.Count > 0)
+                                                    {
+                                                        <a href="@Url.Action("Details", "HoaDonBan", new { id = item.MaHDB })" title="Chi tiết" class="btn btn-xs btn-info">
+                                                            <i class="ace-icon fas fa-list bigger-120"></i>
+                                                        </a>
+                                                        <a href="@Url.Action("Update", "HoaDonBan", new { id = item.MaHDB })" title="Sửa" class="btn btn-xs btn-info">
+                                                            <i class="ace-icon fas fa-pen-alt bigger-120"></i>
+                                                        </a>
+                                                    }
+                                                    else if (listDetails.Count <= 0)
+                                                    {
+                                                        <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaHDB')">
 
-                                                        <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                            <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                        </a>
+                                                    }
+                                                    else if (item.TrangThai == 2)
+                                                    {
+                                                        <a href="@Url.Action("Details", "HoaDonBan", new { id = item.MaHDB })" title="Chi tiết" class="btn btn-xs btn-info">
+                                                            <i class="ace-icon fas fa-list bigger-120"></i>
+                                                        </a>
+                                                    }
+
                                                 </div>
 
                                             </td>

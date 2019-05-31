@@ -68,7 +68,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@DiaChi", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@DienThoai", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.ExecuteNonQuery();
         }
         public void Update(OTacGia item)
@@ -83,7 +83,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@DiaChi", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@DienThoai", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.ExecuteNonQuery();
         }
         public void Delete(int id)

@@ -151,7 +151,7 @@
                                 <div class="row item_row">
                                     <div class="col-sm-8 no-padding">
                                         <span>@item.Quantity x </span>
-                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">@item.ProductName</a>
+                                        <a href="@Url.Action("Detail","SanPham",new { shortname=item.ShortName})">@item.ProductName</a>
                                     </div>
                                     <div class="col-sm-4 no-padding">
                                         <p class="price">@String.Format("{0:#,##0.##}", item.Total) đ</p>

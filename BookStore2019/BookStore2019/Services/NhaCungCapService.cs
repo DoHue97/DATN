@@ -51,7 +51,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@TenNCC", SqlDbType.NVarChar).Value = item.TenNCC;
             comm.Parameters.Add(new SqlParameter("@DiaChi", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@SDT", item.SDT ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@IsActive", item.IsActive ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@IsActive", item.TrangThai ?? (object)DBNull.Value));
             comm.ExecuteNonQuery();
             conn.Close();
         }
@@ -65,7 +65,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@TenNCC", SqlDbType.NVarChar).Value = item.TenNCC;
             comm.Parameters.Add(new SqlParameter("@DiaChi", item.DiaChi ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@SDT", item.SDT ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@IsActive", item.IsActive ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@IsActive", item.TrangThai ?? (object)DBNull.Value));
             comm.ExecuteNonQuery();
             conn.Close();
         }

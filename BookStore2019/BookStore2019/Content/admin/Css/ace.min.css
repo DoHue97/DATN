@@ -25798,3 +25798,23 @@ textarea{
 .col-xs-12 select {
     width: 50%;
 }
+i.glyphicon-search:before{
+    content: "\f002" !important;
+    font-weight: 700;
+    font-family: 'Font Awesome 5 Free';
+}
+i.glyphicon-remove-circle:before{
+    content: "\f057" !important;
+    font-weight: 700;
+    font-family: 'Font Awesome 5 Free';
+}
+.multiselect-search{
+    height: 36px!important;
+}
+.multiselect-container {
+    height: 200px;
+    overflow: auto;
+}
+    .multiselect-container > li{
+        height:30px;
+    }

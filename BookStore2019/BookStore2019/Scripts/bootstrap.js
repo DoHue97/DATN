@@ -1609,11 +1609,11 @@
 
       var parent = Dropdown._getParentFromElement(this._element);
 
-      var isActive = $(this._menu).hasClass(ClassName$4.SHOW);
+      var TrangThai = $(this._menu).hasClass(ClassName$4.SHOW);
 
       Dropdown._clearMenus();
 
-      if (isActive) {
+      if (TrangThai) {
         return;
       }
 
@@ -1943,9 +1943,9 @@
 
       var parent = Dropdown._getParentFromElement(this);
 
-      var isActive = $(parent).hasClass(ClassName$4.SHOW);
+      var TrangThai = $(parent).hasClass(ClassName$4.SHOW);
 
-      if (!isActive || isActive && (event.which === ESCAPE_KEYCODE || event.which === SPACE_KEYCODE)) {
+      if (!TrangThai || TrangThai && (event.which === ESCAPE_KEYCODE || event.which === SPACE_KEYCODE)) {
         if (event.which === ESCAPE_KEYCODE) {
           var toggle = parent.querySelector(Selector$4.DATA_TOGGLE);
           $(toggle).trigger('focus');
@@ -3830,9 +3830,9 @@
       var offsetLength = this._offsets.length;
 
       for (var i = offsetLength; i--;) {
-        var isActiveTarget = this._activeTarget !== this._targets[i] && scrollTop >= this._offsets[i] && (typeof this._offsets[i + 1] === 'undefined' || scrollTop < this._offsets[i + 1]);
+        var TrangThaiTarget = this._activeTarget !== this._targets[i] && scrollTop >= this._offsets[i] && (typeof this._offsets[i + 1] === 'undefined' || scrollTop < this._offsets[i + 1]);
 
-        if (isActiveTarget) {
+        if (TrangThaiTarget) {
           this._activate(this._targets[i]);
         }
       }

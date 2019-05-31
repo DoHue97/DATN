@@ -8,6 +8,7 @@ using ValuesObject;
 using BookStore2019.Services;
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLyNXBController : Controller
     {
         NhaXuatBanService nxbService = new NhaXuatBanService();
@@ -21,7 +22,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Create()
         {
             ONhaXuatBan data = new ONhaXuatBan();
-            data.IsActive = false;
+            data.TrangThai = false;
             
             return View("Update", data);
         }

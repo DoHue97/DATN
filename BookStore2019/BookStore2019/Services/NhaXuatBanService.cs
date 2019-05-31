@@ -53,7 +53,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@SDT", item.SDT ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@Email", item.Email ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@GhiChu", item.GhiChu ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@IsActive", item.IsActive ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@TrangThai", item.TrangThai ?? (object)DBNull.Value));
             comm.ExecuteNonQuery();
             conn.Close();
         }
@@ -69,7 +69,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@SDT", item.SDT ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@Email", item.Email ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@GhiChu", item.GhiChu ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@IsActive", item.IsActive ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@TrangThai", item.TrangThai ?? (object)DBNull.Value));
             comm.ExecuteNonQuery();
             conn.Close();
         }

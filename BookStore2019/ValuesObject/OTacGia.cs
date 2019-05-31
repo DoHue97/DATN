@@ -13,6 +13,6 @@ namespace ValuesObject
         public string DiaChi { get; set; }
         public string DienThoai { get; set; }
         public string TenVanTat { get; set; }
-        public bool IsActive { get; set; }
+        public bool TrangThai { get; set; }
     }
 }

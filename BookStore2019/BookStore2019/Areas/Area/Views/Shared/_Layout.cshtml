@@ -18,18 +18,23 @@
     <link href="~/Content/fontawesome/css/all.min.css" rel="stylesheet" />
     <link href="@Url.Content("~/Content/admin/Css/ace.min.css")" rel="stylesheet" id="main-ace-style" />
 
+
+
     <script src="~/Content/fontawesome/js/all.js"></script>
+
+
+
+
+    @*<script type="text/javascript">
+            window.jQuery || document.write("<script src='~/Content/admin/Script/jquery.min.js'>" + "<" + "/script>");
+        </script>
+
+        <script type="text/javascript">
+            if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/admin/Script/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+        </script>*@
 
     <script src="~/Content/admin/Script/jquery.min.js"></script>
 
-    <script type="text/javascript">
-        window.jQuery || document.write("<script src='~/Content/admin/Script/jquery.min.js'>" + "<" + "/script>");
-    </script>
-
-    <script type="text/javascript">
-        if ('ontouchstart' in document.documentElement) document.write("<script src='~/Content/admin/Script/jquery.mobile.custom.min.js'>" + "<" + "/script>");
-    </script>
-    
     <script src="~/Content/admin/Script/ace-extra.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.min.js"></script>
     <script src="~/Content/admin/Script/jquery.dataTables.bootstrap.min.js"></script>
@@ -39,6 +44,8 @@
     <script src="~/Content/admin/Script/jquery.validate.min.js"></script>
     <script src="~/Content/admin/Script/jquery.inputlimiter.1.3.1.min.js"></script>
     <script src="~/Content/admin/Script/jquery.autosize.min.js"></script>
+    @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
+    @*<script src="~/Content/admin/Script/bootstrap.min.js"></script>*@
 
     <script type="text/javascript">
 
@@ -72,7 +79,7 @@
                         Administrators
                     </small>
                 </a>
-                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="@Url.Action("Index","Home", new { area=""})" title="Go to front site">
+                <a style="color: #eee; font-size: 16px; width: 16px; float: left;" target="_blank" href="@Url.Action("Index", "Home",new { area=""})" title="Go to front site">
                     <i class="ace-icon fas fa-external-link-square-alt"></i>
                 </a>
             </div>
@@ -82,10 +89,10 @@
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                             <span class="user-info">
                                 <small>Welcome,</small>
-                                @if (Session["Account"] != null)
+                                @if (Session["Admin"] != null)
                                 {
-                                    var account = (OAccount)Session["Account"];
-                                    <span>@account.UserName</span>
+                                    var account = (OAccount)Session["Admin"];
+                                    <span>@account.TenDN</span>
                                 }
                             </span>
 
@@ -93,28 +100,25 @@
                         </a>
 
                         <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="#">
-                                    <i class="ace-icon fa fa-cog"></i>
-                                    Settings
-                                </a>
-                            </li>
+                            @if (Session["Admin"] != null)
+                            {
+                                var admin = (OAccount)Session["Admin"];
+                                <li>
+                                    <a href="@Url.Action("Info", "Default", new { matk=admin.MaTK,username=admin.TenDN})">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        Thông tin
+                                    </a>
+                                </li>
 
-                            <li>
-                                <a href="#">
-                                    <i class="ace-icon fa fa-user"></i>
-                                    Profile
-                                </a>
-                            </li>
+                                <li class="divider"></li>
 
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="@Url.Action("LogOff", "Account",new { area=""})">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    Logout
-                                </a>
-                            </li>
+                                <li>
+                                    <a href="@Url.Action("LogOff", "Account", new { area = "" })">
+                                        <i class="ace-icon fa fa-power-off"></i>
+                                        Đăng xuất
+                                    </a>
+                                </li>
+                            }
                         </ul>
                     </li>
                 </ul>
@@ -268,6 +272,17 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="">
+                    <a href="@Url.Action("Search", "QuanLyNCC")">
+                        @*<i class="menu-icon far fa-image"></i>*@
+                        <i class="menu-icon fas fa-building"></i>
+                        <span class="menu-text">
+                            Nhà cung cấp
+                        </span>
+                    </a>
+
+                    <b class="arrow"></b>
+                </li>
+                <li class="">
                     <a href="@Url.Action("Search", "QuanLyTacGia")">
                         @* <i class="menu-icon far fa-image"></i>*@
                         <i class="menu-icon fas fa-user-shield"></i>
@@ -279,7 +294,7 @@
                     <b class="arrow"></b>
                 </li>
                 <li class="">
-                    <a href="@Url.Action("Search", "HoaDonBan")" >
+                    <a href="@Url.Action("Search", "HoaDonBan")">
                         <i class="menu-icon fa fa-newspaper"></i>
 
                         <span class="menu-text">

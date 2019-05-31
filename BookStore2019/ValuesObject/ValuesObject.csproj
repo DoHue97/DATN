@@ -52,6 +52,7 @@
     <Compile Include="OLoaiTrangTinh.cs" />
     <Compile Include="ONhaCungCap.cs" />
     <Compile Include="ONhaXuatBan.cs" />
+    <Compile Include="ONhomQuyen.cs" />
     <Compile Include="OSanPham.cs" />
     <Compile Include="OSach_TacGia.cs" />
     <Compile Include="OSlide.cs" />

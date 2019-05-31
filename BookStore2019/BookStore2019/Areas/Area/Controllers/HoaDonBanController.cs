@@ -17,12 +17,52 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Search()
         {
             var list = hdbService.GetAll();
+
             return View(list);
         }
         public ActionResult Details(int id)
         {
             var listDetails = cthdbService.GetAll(id);
             return View(listDetails);
+        }
+        [HttpGet]
+        public ActionResult Update(int? id)
+        {
+            if (id.HasValue)
+            {
+                var obj = hdbService.GetById((int)id);
+
+                ViewBag.IsEdit = true;
+                return View(obj);
+            }
+
+
+            return View();
+        }
+        [HttpPost, ValidateInput(false)]
+        [ValidateAntiForgeryToken]
+        public ActionResult Update(OHoaDonBan model)
+        {
+            if (ModelState.IsValid)
+            {
+                var pro = hdbService.GetById(model.MaHDB);
+                if (pro != null)
+                {
+                    try
+                    {
+
+                        hdbService.Edit(model);
+                        return RedirectToAction("Search", "HoaDonBan");
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+                }
+            }
+
+            ViewBag.IsEdit = true;
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

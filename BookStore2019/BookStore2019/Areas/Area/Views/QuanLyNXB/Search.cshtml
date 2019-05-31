@@ -42,7 +42,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (ONhaXuatBan item in Model)
+                                    @foreach (ONhaXuatBan item in Model.OrderBy(m=>m.TenNXB))
                                     {
                                         <tr role="row" class="odd">
 
@@ -52,7 +52,7 @@
                                             <td>@item.Email</td>
                                             <td>@item.GhiChu</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -66,10 +66,10 @@
                                                     <a href="@Url.Action("Update", "QuanLyNXB", new { id = item.MaNXB })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaNXB')">
+                                                    @*<a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaNXB')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                    </a>*@
                                                 </div>
 
                                             </td>

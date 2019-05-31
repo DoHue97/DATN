@@ -20,11 +20,11 @@ namespace ValuesObject
         public string TenVanTat { get; set; }
         
         
-        public Nullable<bool> IsHot { get; set; }
+        public Nullable<bool> SanPhamHot { get; set; }
         
-        public Nullable<bool> IsActive { get; set; }
-        public string Keyword { get; set; }
-        public Nullable<int> Sale { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
+        public string TuKhoa { get; set; }
+        public Nullable<int> KhuyenMai { get; set; }
         public Nullable<bool> IsSach { get; set; }
         public Nullable<int> MaNXB { get; set; }
         public string TenTacGia { get; set; }
@@ -36,6 +36,13 @@ namespace ValuesObject
         public Nullable<int>  NamXB { get; set; }
         public Nullable<int> MaNCC { get; set; }
         public string TenNCC { get; set; }
+
+        public DateTime NgayTao { get; set; }
+        public DateTime NgaySua { get; set; }
+
+        public Guid NguoiTao { get; set; }
+        public string UserName { get; set; }
+        public string TenChuDeVanTat { get; set; }
 
         public List<OTacGia> ListTacGia { get; set; }
         public int[] MaTacGia { get; set; }

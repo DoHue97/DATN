@@ -37,9 +37,9 @@ namespace BookStore2019.Controllers
                 var product = sachService.Get(new OSanPham { MaSanPham = proid });
                 if (product.SoLuong >= quanlity)
                 {
-                    if (product.Sale > 0)
+                    if (product.KhuyenMai > 0)
                     {
-                        product.GiaBan = product.GiaBan - product.GiaBan * product.Sale / 100;
+                        product.GiaBan = product.GiaBan - product.GiaBan * product.KhuyenMai / 100;
                     }
                     if (objCart != null)
                     {
@@ -76,9 +76,9 @@ namespace BookStore2019.Controllers
                     {
                         objCart = new Carts();
                     }
-                    if (product.Sale > 0)
+                    if (product.KhuyenMai > 0)
                     {
-                        product.GiaBan = product.GiaBan - product.GiaBan * product.Sale / 100;
+                        product.GiaBan = product.GiaBan - product.GiaBan * product.KhuyenMai / 100;
                     }
                     CartItem cartItem = new CartItem
                     {
@@ -134,7 +134,11 @@ namespace BookStore2019.Controllers
             }
 
             OAccount account = (OAccount)Session["Account"];
-            OAccount kh = accountService.Get(account.UserName, account.PassWord);
+            OAccount kh = accountService.Get(account.TenDN, account.MatKhau);
+            if (kh == null)
+            {
+                return Redirect("Error");
+            }
             OHoaDonBan ddh = new OHoaDonBan
             {
                 MaKhach = kh.MaKhach,
@@ -166,7 +170,7 @@ namespace BookStore2019.Controllers
                 }
             }
             strChuoi += "<li>Tổng tiền: " + total.ToString("#,##") + " đ </li>";
-            //SendEmail(kh.Email,strChuoi);
+            SendEmail(kh.Email,strChuoi);
             Session["Cart"] = null;
 
             return Json(new { Success = true, Message = "Đặt hàng thành công. Bạn hãy check email nhé !" });

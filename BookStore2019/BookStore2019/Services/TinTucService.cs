@@ -79,10 +79,10 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@NoiDung", SqlDbType.NVarChar).Value = item.NoiDung;
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = item.Anh;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.Int).Value = item.MaLoaiTin;
             
-            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.ShortName;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.TenVanTat;
 
             comm.ExecuteNonQuery();
             conn.Close();
@@ -98,10 +98,10 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@NoiDung", SqlDbType.NVarChar).Value = item.NoiDung;
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = item.Anh;
-            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.TrangThai;
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.NVarChar).Value = item.MaLoaiTin;
             
-            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.ShortName;
+            comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = item.TenVanTat;
 
             comm.ExecuteNonQuery();
             conn.Close();

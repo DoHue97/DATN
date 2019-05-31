@@ -50,8 +50,8 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@TenTrang", SqlDbType.NVarChar).Value = item.TenTrang;
             
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
-            comm.Parameters.Add("@Body", SqlDbType.NVarChar).Value = item.Body;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@Body", SqlDbType.NVarChar).Value = item.NoiDung;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.TenTrang);
             comm.Parameters.Add("@MaLoai", SqlDbType.Int).Value = item.MaLoai;
             SqlDataReader reader = comm.ExecuteReader();
@@ -67,9 +67,9 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@TenTrang", SqlDbType.NVarChar).Value = item.TenTrang;
 
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
-            comm.Parameters.Add("@Body", SqlDbType.NVarChar).Value = item.Body;
+            comm.Parameters.Add("@Body", SqlDbType.NVarChar).Value = item.NoiDung;
             //comm.Parameters.Add("@NgayTao", SqlDbType.DateTime).Value = item.NgayTao;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.TenTrang);
             comm.Parameters.Add("@MaLoai", SqlDbType.Int).Value = item.MaLoai;
             SqlDataReader reader = comm.ExecuteReader();

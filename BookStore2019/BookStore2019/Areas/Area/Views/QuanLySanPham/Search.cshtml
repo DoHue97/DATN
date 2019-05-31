@@ -35,97 +35,106 @@
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục: activate to sort column ascending">Tên sách</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Ảnh bìa</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Số lượng</th>
+                                        <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Người tạo</th>
 
                                         <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
                                         <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Hết hàng</th>
+                                        <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Ngày tạo</th>
+                                        <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Ngày sửa</th>
                                         <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (OSanPham item in Model)
+                                    @foreach (OSanPham item in Model.OrderByDescending(m=>m.NgayTao))
                                     {
-                                        <tr role="row" class="odd">
-                                            <td>@item.TenSanPham</td>
-                                            <td style="text-align:center"><img src="@Url.Content(item.Anh)" height="150" alt="Alternate Text" class="img-fluid" /></td>
-                                            <td>@item.SoLuong</td>
+                                    <tr role="row" class="odd">
+                                        <td width="25%">@item.TenSanPham</td>
+                                        <td style="text-align:center"><img src="@Url.Content(item.Anh)" height="150" alt="Alternate Text" class="img-fluid" /></td>
+                                        <td>@item.SoLuong</td>
+                                        <td>@item.UserName</td>
+                                        <th class="hidden-480">
+                                            @if (item.TrangThai == true)
+                                            {
+                                                <span class="label label-sm label-success">Active</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-sm label-danger">UnActive</span>
+                                            }
+                                        </th>
+                                        <th class="hidden-480">
+                                            @if (item.SoLuong > 0)
+                                            {
+                                                <span class="label label-sm label-success">Còn hàng</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label label-sm label-danger">Hết hàng</span>
+                                            }
+                                        </th>
+                                        <th>
+                                            @item.NgayTao.ToString("dd/MM/yyyy")
+                                        </th>
+                                        <th>
+                                            @item.NgaySua.ToString("dd/MM/yyyy")
+                                        </th>
+                                        <td>
+                                            <div class="hidden-sm hidden-xs btn-group">
+                                                <a href="@Url.Action("Update", "QuanLySanPham", new { id = item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
+                                                    <i class="ace-icon fas fa-pen-alt bigger-120"></i>
+                                                </a>
+                                                <a href="@Url.Action("Images", "QuanLySanPham", new { masp = item.MaSanPham })" title="Images" class="btn btn-xs btn-info">
+                                                    <i class="ace-icon fas fa-list bigger-120"></i>
+                                                </a>
+                                                <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSanPham')">
 
-                                            <th class="hidden-480">
-                                                @if (item.IsActive == true)
-                                                {
-                                                    <span class="label label-sm label-success">Active</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="label label-sm label-danger">UnActive</span>
-                                                }
-                                            </th>
-                                            <th class="hidden-480">
-                                                @if (item.SoLuong > 0)
-                                                {
-                                                    <span class="label label-sm label-success">Còn hàng</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="label label-sm label-danger">Hết hàng</span>
-                                                }
-                                            </th>
-                                            <td>
-                                                <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("Update", "QuanLySanPham", new { id = item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
-                                                        <i class="ace-icon fas fa-pen-alt bigger-120"></i>
-                                                    </a>
-                                                    <a href="@Url.Action("Images", "QuanLySanPham", new { masp = item.MaSanPham })" title="Images" class="btn btn-xs btn-info">
-                                                        <i class="ace-icon fas fa-list bigger-120"></i>
-                                                    </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSanPham')">
+                                                    <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                </a>
+                                            </div>
+                                            <div class="hidden-md hidden-lg">
+                                                <div class="inline pos-rel dropup">
+                                                    <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto" aria-expanded="false">
+                                                        <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+                                                    </button>
 
-                                                        <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                    <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+                                                        <li>
+                                                            <a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="Promote">
+                                                                <span class="green">
+                                                                    <i class="ace-icon fa fa-arrow-circle-up bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+
+                                                        <li>
+                                                            <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Demote">
+                                                                <span class="yellow">
+                                                                    <i class="ace-icon fa fa-arrow-circle-down bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="ChangePass">
+                                                                <span class="blue">
+                                                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Lock">
+                                                                <span class="red">
+
+                                                                    <i class="ace-icon fa fa-lock bigger-120"></i>
+
+                                                                </span>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
-                                                <div class="hidden-md hidden-lg">
-                                                    <div class="inline pos-rel dropup">
-                                                        <button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto" aria-expanded="false">
-                                                            <i class="ace-icon fa fa-cog icon-only bigger-110"></i>
-                                                        </button>
+                                            </div>
+                                        </td>
 
-                                                        <ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-                                                            <li>
-                                                                <a href="#" class="tooltip-info" data-rel="tooltip" title="" data-original-title="Promote">
-                                                                    <span class="green">
-                                                                        <i class="ace-icon fa fa-arrow-circle-up bigger-120"></i>
-                                                                    </span>
-                                                                </a>
-                                                            </li>
-
-                                                            <li>
-                                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="Demote">
-                                                                    <span class="yellow">
-                                                                        <i class="ace-icon fa fa-arrow-circle-down bigger-120"></i>
-                                                                    </span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" class="tooltip-success" data-rel="tooltip" title="" data-original-title="ChangePass">
-                                                                    <span class="blue">
-                                                                        <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                                                    </span>
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="#" class="tooltip-error" data-rel="tooltip" title="" data-original-title="Lock">
-                                                                    <span class="red">
-
-                                                                        <i class="ace-icon fa fa-lock bigger-120"></i>
-
-                                                                    </span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </td>
-
-                                        </tr>
+                                    </tr>
                                     }
                                 </tbody>
                             </table>
@@ -144,7 +153,7 @@
 </div>
 
 <script type="text/javascript">
-    setAdminCurrentUrl('@Url.Action("Search", "QuanLySanPham")');
+    setAdminCurrentUrl('@Url.Action("Search", "QuanLySanPham", new { isSach = isSach })');
 </script>
 <script type="text/javascript">
     jQuery(function ($) {
@@ -153,7 +162,7 @@
                 .dataTable({
                     bAutoWidth: false,
                     "aoColumns": [
-                        null, null, null,null,null,
+                        null, null, null,null,null,null,null,null,
                         { "bSortable": false }
                     ],
                     "aaSorting": [],

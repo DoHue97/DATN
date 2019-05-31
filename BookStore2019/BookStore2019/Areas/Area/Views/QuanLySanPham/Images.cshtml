@@ -53,7 +53,7 @@
                                                 <img src="@Url.Content(item.DuongDan)" alt="Alternate Text" width="100" />
                                             </td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -64,10 +64,10 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("UpdateImage", "QuanLySanPham", new { id = item.IdImage,masp=item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
+                                                    <a href="@Url.Action("UpdateImage", "QuanLySanPham", new { id = item.MaAnh,masp=item.MaSanPham })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.IdImage','@item.MaSanPham')">
+                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaAnh','@item.MaSanPham')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
                                                     </a>

@@ -47,7 +47,7 @@
                                             <td>@item.TenLoai</td>
                                             <td>@item.MoTa</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -61,10 +61,10 @@
                                                     <a href="@Url.Action("UpdateCate", "QuanLyTrangTinh", new { id = item.MaLoai })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaLoai')">
+                                                    @*<a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaLoai')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                    </a>*@
                                                 </div>
 
                                             </td>

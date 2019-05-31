@@ -8,6 +8,7 @@ using ValuesObject;
 
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLyTacGiaController : Controller
     {
 
@@ -22,7 +23,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Create()
         {
             OTacGia data = new OTacGia();
-            data.IsActive = false;
+            data.TrangThai = false;
 
             return View("Update", data);
         }

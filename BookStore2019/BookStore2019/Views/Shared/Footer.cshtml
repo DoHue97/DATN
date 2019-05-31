@@ -1,17 +1,18 @@
 ﻿@using ValuesObject
 @using BookStore2019.Services
-@{ 
+@{
     HtmlPageService htmlPageService = new HtmlPageService();
+    LoaiTrangTinhService loaiTrangTinhService = new LoaiTrangTinhService();
     var listDichVu = htmlPageService.GetByCateShortName("dich-vu");
     var listHoTro = htmlPageService.GetByCateShortName("ho-tro");
 }
 <div class="email-footer clearfix">
     <div class="container">
-        <div class="col-4 img-email">
+        <div class="col-12 col-sm-4 img-email">
             <img src="@Url.Content("/Images/icon_email.png")" alt="Alternate Text" height="40" />
             Đăng ký nhận tin từ chúng tôi
         </div>
-        <div class=" col-8 form-inline divFormMail">
+        <div class="col-12 col-sm-8 form-inline divFormMail">
             <input type="email" name="email" id="email" value="" placeholder="Email " class="form-control col-6" />
             <button type="submit" class="btn btn-success" onclick="_send()">Gửi</button>
         </div>
@@ -29,18 +30,19 @@
                         {
                             foreach (var item in listDichVu)
                             {
+                                var category = loaiTrangTinhService.Get(item.MaLoai);
                                 <li>
-                                    <a href="@Url.Action("Detail","Html",new { shortname=item.TenVanTat})">@item.TenTrang</a>
+                                    <a href="@Url.Action("Detail","Html",new {shortnamecate=category.TenVanTat, shortname=item.TenVanTat})">@item.TenTrang</a>
                                 </li>
                             }
                         }
 
                         @*<li>
-                            <a href="@Url.Action("Detail","Html")">Điều khoản sử dụng</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("Detail","Html")">Giới thiệu SachHay</a>
-                        </li>*@
+                                <a href="@Url.Action("Detail","Html")">Điều khoản sử dụng</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Detail","Html")">Giới thiệu SachHay</a>
+                            </li>*@
                     </ul>
                 </div>
             </div>
@@ -52,17 +54,18 @@
                         {
                             foreach (var item in listHoTro)
                             {
+                                var category = loaiTrangTinhService.Get(item.MaLoai);
                                 <li>
-                                    <a href="@Url.Action("Detail","Html",new { shortname=item.TenVanTat})">@item.TenTrang</a>
+                                    <a href="@Url.Action("Detail","Html",new {shortnamecate=category.TenVanTat, shortname=item.TenVanTat})">@item.TenTrang</a>
                                 </li>
                             }
                         }
                         @*<li>
-                            <a href="@Url.Action("GetById","Html")">Chính sách đổi - trả - hoàn tiền</a>
-                        </li>
-                        <li>
-                            <a href="@Url.Action("GetById","Html")">Hình thức vận chuyển</a>
-                        </li>*@
+                                <a href="@Url.Action("GetById","Html")">Chính sách đổi - trả - hoàn tiền</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("GetById","Html")">Hình thức vận chuyển</a>
+                            </li>*@
 
                     </ul>
                 </div>

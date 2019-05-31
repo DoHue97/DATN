@@ -27,7 +27,7 @@ namespace BookStore2019.Services
             conn.Close();
             return list;
         }
-        public List<OHoaDonBan> GetByMaKhach(int makhach)
+        public List<OHoaDonBan> GetByMaKhach(int makhach,int startIndex, int length, ref int totals)
         {
             List<OHoaDonBan> list = new List<OHoaDonBan>();
             conn.connect();
@@ -35,10 +35,22 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             if (comm == null) return null;
             comm.Parameters.Add("@MaKhach",SqlDbType.Int).Value=makhach;
+
+            comm.Parameters.Add("@StartIndex", SqlDbType.Int).Value = startIndex;
+            comm.Parameters.Add("@Length", SqlDbType.Int).Value = length;
+            comm.Parameters.Add("@TotalItems", SqlDbType.Int).Direction = ParameterDirection.Output;
+
+            
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
-
             list = Help.DAL.ConvertDataTable<OHoaDonBan>(dt);
+            int output = Convert.ToInt32(comm.Parameters["@TotalItems"].Value);
+            totals = output;
+
+            //DataTable dt = new DataTable();
+            //dt.Load(comm.ExecuteReader());
+
+            //list = Help.DAL.ConvertDataTable<OHoaDonBan>(dt);
 
             conn.Close();
             return list;
@@ -63,6 +75,20 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@MaHDB", SqlDbType.Int).Value = item.MaHDB;
             comm.Parameters.Add("@NgayGiao", SqlDbType.DateTime).Value = item.NgayGiao;
             
+            comm.Parameters.Add("@IsActive", SqlDbType.Int).Value = item.TrangThai;
+
+            comm.ExecuteNonQuery();
+        }
+        public void Edit(OHoaDonBan item)
+        {
+            conn.connect();
+            var comm = new SqlCommand("HDB_Edit", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+            if (comm == null) return;
+
+            comm.Parameters.Add("@MaHDB", SqlDbType.Int).Value = item.MaHDB;
+            comm.Parameters.Add("@NgayGiao", SqlDbType.DateTime).Value = item.NgayGiao;
+
             comm.Parameters.Add("@TrangThai", SqlDbType.Int).Value = item.TrangThai;
 
             comm.ExecuteNonQuery();
@@ -83,6 +109,21 @@ namespace BookStore2019.Services
                 id = dt.Rows[i].Field<int>("LastId");
             }
             return id;
+        }
+        public OHoaDonBan GetById(int mahdb)
+        {
+            conn.connect();
+            var comm = new SqlCommand("HDB_Get", conn.db);
+            comm.CommandType = CommandType.StoredProcedure;
+            if (comm == null) return null;
+            comm.Parameters.Add("@mahdb", SqlDbType.Int).Value = mahdb;
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            OHoaDonBan item = new OHoaDonBan();
+            item = Help.DAL.ConvertDataTable<OHoaDonBan>(dt).FirstOrDefault();
+
+            conn.Close();
+            return item;
         }
     }
 }

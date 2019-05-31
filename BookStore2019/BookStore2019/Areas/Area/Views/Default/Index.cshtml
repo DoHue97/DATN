@@ -3,6 +3,87 @@
     Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Index";
 }
+<link href="~/Content/higtcharts/code/css/highcharts.css" rel="stylesheet" />
+<script src="~/Content/higtcharts/code/highcharts.js"></script>
+<script src="~/Content/higtcharts/code/modules/exporting.js"></script>
+<script src="~/Content/higtcharts/code/modules/export-data.js"></script>
 
 <h2>Admin</h2>
+<div class="container">
+    <div class="form-inline">
+        <input list="years" class="form-control" placeholder="Chọn năm để xem biểu đồ doanh thu"> 
+        <button class="btn btn-success" id="btnViewChart" onclick="changeYears();">Xem biểu đồ</button>
+    </div>
 
+    <datalist id="years">
+        @for (int i = 1919; i <= 2119; i++)
+        {
+            <option value="@i">@i</option>
+        }
+    </datalist>
+
+    <div class="clearfix"></div>
+    <div id="charts">
+
+    </div>
+
+</div>
+<script>
+    function changeYears() {
+        //debugger;
+        var year = $("input[list='years']").val();
+        var list = [];
+        var listYears = [];
+        if (year == 0 || year == '') {
+            alert("Bạn cần chọn năm");
+            return false;
+        }
+        //alert(year);
+        $.post('@Url.Action("DoanhThu","Default")', {
+                        year: year,
+                    },
+                        function (data) {
+                            //debugger;
+                            
+                            //var json = JSON.parse(data);
+                            //$('#districtid').html(json.option);
+                            for (var i = 0; i < data.ListDoanhThus.length; i++) {
+                                list.push(data.ListDoanhThus[i].TienLai);
+                                listYears.push(data.ListDoanhThus[i].Thang);
+                            }
+                            
+                            Highcharts.chart('charts', {
+                                chart: {
+                                    type: 'line'
+                                },
+                                title: {
+                                    text: 'Doanh thu các tháng của năm ' + year
+                                },
+                                subtitle: {
+                                    text: 'Biểu đồ doanh thu các tháng của năm '+ year
+                                },
+                                xAxis: {
+                                    categories: listYears
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: 'VND'
+                                    }
+                                },
+                                plotOptions: {
+                                    line: {
+                                        dataLabels: {
+                                            enabled: true
+                                        },
+                                        enableMouseTracking: false
+                                    }
+                                },
+                                series: [{
+                                    name: ''+year,
+                                    data: list
+                                }]
+                            });
+                        });
+                    return false;
+                }
+</script>

@@ -36,15 +36,15 @@
                             <tr>
                                 <td>
                                     <div class="img-item">
-                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">
-                                            <img src="@Url.Content(item.ProductImage)" height="150" alt="Alternate Text" />
+                                        <a href="@Url.Action("Detail","SanPham",new { shortname=item.ShortName})">
+                                            <img src="@Url.Content(item.ProductImage)" height="100" alt="Alternate Text" />
                                         </a>
 
                                     </div>
                                 </td>
                                 <td>
                                     <div class="item-name">
-                                        <a href="@Url.Action("Detail","Sach",new { shortname=item.ShortName})">@item.ProductName</a>
+                                        <a href="@Url.Action("Detail","SanPham",new { shortname=item.ShortName})">@item.ProductName</a>
                                         <br />
                                         <br />
                                         <a href="@Url.Action("Remove","ProductAction",new { id=item.ProductId})" class="delete-item">
@@ -53,14 +53,14 @@
                                         </a>
                                     </div>
                                 </td>
-                                <td>
+                                <td width="15%">
                                     <div class="item-price">
                                         <span class="price-value-@item.ProductId">@String.Format("{0:#,##0.##}", item.Price) đ</span>
                                     </div>
                                 </td>
-                                <td>
+                                <td width="20%">
                                     <div class="item-quanlity">
-                                        <input type="number" min="1" max="10" name="quanlity" pattern="^-?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)$" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
+                                        <input type="number" min="1" max="10" name="quanlity"  class="form-control " pattern="^-?([0-9]*\.?[0-9]+|[0-9]+\.?[0-9]*)$" value="@item.Quantity" onchange="myFunction(this,@item.ProductId)" />
                                         <br />
                                         <span class="error" id="msg_@item.ProductId"></span>
                                     </div>
@@ -81,27 +81,27 @@
                 <div class="col-md-3 box-total">
                     <div class="totals">
                         <div class="row sum-price">
-                            <div class="col-md-6">
+                            <div class="col-6 col-md-6">
                                 Tạm tính:
                             </div>
-                            <div class="col-md-6 price-value">
+                            <div class="col-6 col-md-6 price-value">
                                 @String.Format("{0:#,##0.##}", totalMoney) đ
                             </div>
                         </div>
                         <div class="row sale-value">
-                            <div class="col-md-6">
-                                Giảm giá:
+                            <div class="col-6 col-md-6">
+                                Tổng tiền(có VAT):
                             </div>
-                            <div class="col-md-6 price-sale">
-                                0 đ
+                            <div class="col-6 col-md-6 price-sale">
+                                @String.Format("{0:#,##0.##}", totalMoney) đ
                             </div>
                         </div>
                         <hr />
                         <div class="row total-money">
-                            <div class="col-md-6">
+                            <div class="col-6 col-md-6">
                                 Thành tiền:
                             </div>
-                            <div class="col-md-6 price-total">
+                            <div class="col-6 col-md-6 price-total">
                                 @String.Format("{0:#,##0.##}", totalMoney) đ
                             </div>
                         </div>
@@ -142,7 +142,7 @@
 </script>
 <script>
     function myFunction(thiz,proid) {
-        debugger;
+        //debugger;
         var quanlity = $(thiz).val();
         
         var msg = "#msg_" + proid;
@@ -161,7 +161,7 @@
                 type: 'post',
                 dataType: 'json',
                 success: function (data) {
-                    debugger;
+                    //debugger;
                     if (data.Success) {
                         var totalItems = 0;
                         var totalMoney = 0;
@@ -177,8 +177,9 @@
                         
                         $(".price-value").text(formatPrice(totalMoney) + " đ");
                         $(".price-total").text(formatPrice(totalMoney) + " đ");
+                        $(".price-sale").text(formatPrice(totalMoney) + " đ");
                         $("#totalItem").text(totalItems);
-                        //document.getElementById("totalItem").innerHTML = totalItems;
+                        
                         $(".total-item").text("(" + totalItems + " sản phẩm)");
                     } else {
                         if (data.Flag === "0") {

@@ -1,8 +1,11 @@
 ﻿@using ValuesObject
+@using BookStore2019.Services
 @model List<OCTHDB>
 @{
     ViewBag.Title = "Chi tiết đơn hàng";
     Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+    HDBService hdbService = new HDBService();
+    
 }
 
 <div class="main-content-inner">
@@ -43,6 +46,7 @@
                                 <tbody id="myTable">
                                     @foreach (OCTHDB item in Model)
                                     {
+                                        var hdb = hdbService.GetById(item.MaHDB);
                                         <tr role="row" class="odd">
 
                                             <td>@item.MaHDB</td>
@@ -53,11 +57,14 @@
                                             
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaHDB','@item.MaSanPham')">
+                                                    @if (hdb.TrangThai != 2)
+                                                    {
+                                                        <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaHDB','@item.MaSanPham')">
 
-                                                        <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                            <i class="ace-icon fa fa-trash bigger-120"></i>
+                                                        </a>
+                                                    }
+
                                                 </div>
 
                                             </td>

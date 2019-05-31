@@ -11,7 +11,7 @@ namespace ValuesObject
         public int MaLoai { get; set; }
         public string TenLoai { get; set; }
         public string MoTa { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
         public string TenVanTat { get; set; }
     }
 }

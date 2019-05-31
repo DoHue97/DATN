@@ -1,0 +1,151 @@
+﻿@using BookStore2019.Services
+@using ValuesObject
+@model OAccount
+@{
+    ViewBag.Title = "Tạo mới tài khoản";
+    Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content-inner">
+    <div class="breadcrumbs" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li><a href="@Url.Action("Index", "Default")">Dashboard</a></li>
+            <li><a href="@Url.Action("Search", "QuanLyNguoiDung")">Danh sách tài khoản</a></li>
+            <li class="active">Tạo mới tài khoản </li>
+        </ul>
+
+    </div>
+
+    <div class="page-content">
+
+
+        <div class="page-header">
+            <h1>
+                Tạo mới tài khoản
+
+            </h1>
+        </div>
+        <!-- /.page-header -->
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="row">
+                    <div class="col-xs-12">
+                        @using (Html.BeginForm(null, null, FormMethod.Post, new { @id = "manageForm", @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
+                            {
+                                @Html.HiddenFor(mbox => mbox.MaTK)
+                            }
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Tên đăng nhập:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="text" name="TenDN" id="TenDN" class="col-xs-12 col-sm-6" value="@Model.TenDN" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Mật khẩu</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="password" name="MatKhau" id="MatKhau" class="col-xs-12 col-sm-6" value="@Model.MatKhau" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Email:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        <input type="email" name="Email" id="Email" class="col-xs-12 col-sm-6" value="@Model.Email" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Nhóm quyền:</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.DropDownList("MaQuyen", (IEnumerable<SelectListItem>)ViewBag.ListRoles, htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="HtmlPageTitle">Khách hàng(nếu là khách hàng):</label>
+
+                                <div class="col-xs-12 col-sm-10">
+                                    <div class="clearfix">
+                                        @Html.DropDownList("MaKhach", (IEnumerable<SelectListItem>)ViewBag.Customers,"-----Không chọn----", htmlAttributes: new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @{var check = (bool)Model.TrangThai ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="TrangThai">Trạng thái:</label>
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input name="TrangThai" type="checkbox" class="ace" value="true" @check>
+
+                                        <span class="lbl"> Ẩn/Hiện danh mục</span>
+                                        <input name="TrangThai" type="hidden" value="false" />
+                                    </label>
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-success" value="Lưu" />
+                        }
+                    </div>
+                </div>
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+    </div>
+    <!-- /.page-content -->
+</div>
+<script type="text/javascript">
+    $('textarea[class*=autosize]').autosize({ append: "\n" });
+    $('textarea.limited').inputlimiter({
+        remText: '%n character%s remaining...',
+        limitText: 'max allowed : %n.'
+    });
+</script>
+
+<script type="text/javascript">
+    setAdminCurrentUrl('@Url.Action("Update", "QuanLyNguoiDung")');
+</script>
+
+<style type="text/css">
+
+
+    .pick-a-color-markup {
+        margin: 0px 0px;
+    }
+</style>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $(".pick-a-color").pickAColor({
+            showSpectrum: true,
+            showSavedColors: true,
+            saveColorsPerElement: true,
+            fadeMenuToggle: true,
+            showAdvanced: true,
+            showBasicColors: true,
+            showHexInput: true,
+            allowBlank: true,
+            inlineDropdown: true
+        });
+
+    });
+
+</script>

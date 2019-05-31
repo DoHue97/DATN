@@ -12,6 +12,6 @@ namespace ValuesObject
         public string TenNCC { get; set; }
         public string DiaChi { get; set; }
         public string SDT { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
     }
 }

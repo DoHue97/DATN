@@ -9,6 +9,7 @@
     var listOrther = chuDeService.GetAllByParentName("do-dung-hoc-tap");
     var listNewCates = loaiTinService.GetAllActive();
 }
+@*<a href="@Url.Action("VerificationEmail","Account",new { strRandom="abc"})">Verification</a>*@
 <div class="back-to-top">
     <button type="button" class="btn btn-dark scrolltop" id="goTop" style="bottom:-50px;">
         <i class="fas fa-chevron-up scroll"></i>
@@ -19,9 +20,10 @@
         <div class="container">
             <div class="row">
                 <div class="search col-8">
-                    @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form-inline" }))
+                    @using (Html.BeginForm("Search", "Home", FormMethod.Get, new { @class = "form-inline" }))
                     {
-                        <input type="text" name="Search" id="Search" placeholder="Tìm theo tên sách,tác giả" class="form-control" />
+                        @*<input type="text" name="key" id="key" placeholder="Tìm theo tên sách,tác giả" class="form-control" />*@
+                        @Html.TextBox("key",null,new { @class="form-control",@placeholder= "Nhập tên sách,tác giả" })
                         <button type="submit" id="btnSearch" name="btnSearch" value="Go" class="btn btn-success">Go</button>
                     }
                     @*<form class="form-inline" id="form-search"></form>*@
@@ -32,7 +34,7 @@
                         @if (Session["Account"] != null)
                         {
                             OAccount account = (OAccount)Session["Account"];
-                            <li><a href="@Url.Action("Info", "Account",new { username=account.UserName})">@account.UserName</a></li>
+                            <li><a href="@Url.Action("Info", "Account",new { username=account.TenDN})">@account.TenDN</a></li>
                             <li><a href="@Url.Action("LogOff", "Account")">Đăng xuất</a></li>
                         }
                         else
@@ -40,37 +42,38 @@
                             <li><a href="@Url.Action("Login","Account")">Đăng nhập</a></li>
                             <li><a href="@Url.Action("Register","Account")">Đăng ký</a></li>
                         }
+                        
+                        <li>
+                            <a href="@Url.Action("Order","ProductAction")">
+                                <i class="fas fa-cart-plus"></i>
 
-                            <li>
-                                <a href="@Url.Action("Order","ProductAction")">
-                                    <i class="fas fa-cart-plus"></i>
+                            </a>
+                            @{
 
-                                </a>
-                                @{
+                                ShoppingCartModels modelCarts = new ShoppingCartModels();
+                                modelCarts.Cart = (Carts)Session["Cart"];
+                                if (modelCarts.Cart != null)
+                                {
 
-                                    ShoppingCartModels modelCarts = new ShoppingCartModels();
-                                    modelCarts.Cart = (Carts)Session["Cart"];
-                                    if (modelCarts.Cart != null)
+                                    if (modelCarts.Cart.ListItem.Count > 0 && modelCarts.Cart.ListItem != null)
                                     {
-
-                                        if (modelCarts.Cart.ListItem.Count > 0 && modelCarts.Cart.ListItem != null)
+                                        var i = 0;
+                                        foreach (var item in modelCarts.Cart.ListItem)
                                         {
-                                            var i = 0;
-                                            foreach (var item in modelCarts.Cart.ListItem)
-                                            {
-                                                i += item.Quantity;
-                                            }
-                                            <span id="totalItem">@i </span>
+                                            i += item.Quantity;
                                         }
-                                        else
-                                        {
-                                            <span id="totalItem">0 </span>
-                                            
-                                        }
+                                        <span id="totalItem">@i </span>
                                     }
+                                    else
+                                    {
+                                        <span id="totalItem">0 </span>
 
+                                    }
                                 }
-                            </li>
+
+                            }
+                        </li>
+
                     </ul>
                     <button type="button" class="navbar-toggle d-lg-none btnMenu" data-toggle="collapse" data-target=".h-menu">
                         <span class="sr-only">Toggle navigation</span>
@@ -92,13 +95,15 @@
                     </li>
 
                     <li class="dropdown">
-                        <a href="#" class="hover-pa">Sách</a>
+                        <a href="@Url.Action("GetAllBook","SanPham")" class="hover-pa">Sách
+                            <span class="d-lg-none has-subnav">▼</span>
+                        </a>
                         <ul class="dropdown-menu" role="menu">
                             @if (listBooks.Count > 0 && listBooks != null)
                             {
                                 foreach (var item in listBooks.OrderBy(m => m.Ten))
                                 {
-                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { ParentId = item.MaChuDe });
+                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { MaChuDeCha = item.MaChuDe });
                                     if (list2.Count > 0 && list2 != null)
                                     {
                                         <li class="dropdown-level-2">
@@ -107,7 +112,7 @@
                                                 @foreach (var item2 in list2)
                                                 {
                                                     <li>
-                                                        <a href="@Url.Action("GetByCate", "Sach", new { id = item2.MaChuDe })">@item2.Ten</a>
+                                                        <a href="@Url.Action("GetByCate", "SanPham", new { shortnamecate = item.TenVanTat, isSach=true })"  class="item-li">@item2.Ten</a>
                                                     </li>
 
                                                 }
@@ -117,7 +122,7 @@
                                     else
                                     {
                                         <li class="dropdown-level-2">
-                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li">@item.Ten</a>
+                                            <a href="@Url.Action("GetByCate", "SanPham", new { shortnamecate = item.TenVanTat, isSach=true })" class="item-li">@item.Ten</a>
                                         </li>
                                     }
 
@@ -125,14 +130,17 @@
                             }
                         </ul>
                     </li>
-                    <li class="dropdown">
-                        <a href="#" class="hover-pa">Đồ dùng học tập</a>
+                    <li class="dropdown dropdown-sub">
+                        <a href="@Url.Action("GetAllDoDung","SanPham")" class="hover-pa">
+                            Đồ dùng học tập
+                            <span class="d-lg-none has-subnav">▼</span>
+                        </a>
                         <ul class="dropdown-menu" role="menu">
                             @if (listOrther.Count > 0 && listOrther != null)
                             {
                                 foreach (var item in listOrther.OrderBy(m=>m.Ten))
                                 {
-                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { ParentId = item.MaChuDe });
+                                    var list2 = chuDeService.GetAllByParentId(new OChuDe { MaChuDeCha = item.MaChuDe });
                                     if (list2.Count > 0 && list2 != null)
                                     {
                                         <li class="dropdown-level-2">
@@ -141,7 +149,7 @@
                                                 @foreach (var item2 in list2)
                                                 {
                                                     <li>
-                                                        <a href="@Url.Action("GetByCate", "Sach", new { id = item2.MaChuDe })">@item2.Ten</a>
+                                                        <a href="@Url.Action("GetByCate", "SanPham", new { shortnamecate = item.TenVanTat, isSach=false})"  class="item-li">@item2.Ten</a>
                                                     </li>
 
                                                 }
@@ -151,7 +159,7 @@
                                     else
                                     {
                                         <li class="dropdown-level-2">
-                                            <a href="@Url.Action("GetByCate", "Sach", new { id = item.MaChuDe })" class="item-li">@item.Ten</a>
+                                            <a href="@Url.Action("GetByCate", "SanPham", new { shortnamecate = item.TenVanTat, isSach=false })" class="item-li">@item.Ten</a>
                                         </li>
                                     }
 
@@ -160,7 +168,10 @@
                         </ul>
                     </li>
                     <li class=" dropdown">
-                        <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức</a>
+                        <a href="@Url.Action("GetAll","TinTuc")" class="hover-pa">Tin tức
+                        
+                            <span class="d-lg-none has-subnav">▼</span>
+                        </a>
 
                         @if (listNewCates.Count > 0 && listNewCates != null)
                         {
@@ -169,7 +180,7 @@
                                 @foreach (var item in listNewCates)
                                 {
                                     <li class="dropdown-level-2">
-                                        <a href="@Url.Action("GetByCate", "TinTuc", new {shortname=item.ShortName })" class="item-li">@item.Ten</a>
+                                        <a href="@Url.Action("GetByCate", "TinTuc", new {shortname=item.TenVanTat })" class="item-li">@item.Ten</a>
                                     </li>
                                 }
                             </ul>
@@ -186,5 +197,14 @@
     </div>
     <div class="clearfix"></div>
 </div>
-
-
+<script>
+    $(document).ready(function () {
+        $('.dropdown a .has-subnav').on("click", function (e) {
+            //debugger;
+            var parent = $(this).offsetParent();
+            parent.next('ul').toggle();            
+            e.stopPropagation();
+            e.preventDefault();
+        });
+    });
+</script>

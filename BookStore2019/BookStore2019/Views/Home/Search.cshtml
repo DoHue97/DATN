@@ -1,82 +1,113 @@
 ﻿@using ValuesObject
 @using BookStore2019.Services
 @using BookStore2019.Help;
+@using BookStore2019.Models;
 @model List<OSanPham>
 @{
-    //Layout = "~/Views/Shared/_Layout.csthml";
-    int pages = ViewBag.Page;
-    int pageCount = ViewBag.PageCount;
-    int pageSize = ViewBag.PageSize;
-    int fromAt = ViewBag.FromAt;
-    int total = (int)(Math.Ceiling(pageCount / (double)pageSize));
+    Pager pager = ViewBag.Pager;
     var key = ViewBag.Key;
     ViewBag.Title = "Kết quả tìm kiếm với từ khóa " + key;
     var list = ViewBag.ListChuDe as List<OChuDe>;
     var listHot = ViewBag.ListHot as List<OSanPham>;
+    var totals = ViewBag.ToTals;
 
 }
 
 @if (Model.Count > 0 && Model != null)
 {
-<div class="content-top">
-    @Html.Partial("Categories")
-    
-    <div class="col-sm-9 body-content">
-        <h1>Có @Model.Count kết quả</h1>
-        @*<div class="row">*@
-        @if (Model.Count > 0 && Model != null)
-        {
-            var i = 1;
-            foreach (var item in Model)
+
+    <div class="content-top">
+        @Html.Partial("Categories")
+
+        <div class="col-sm-9 body-content">
+            <h1>Có @totals kết quả</h1>
+            @*<div class="row">*@
+            @if (Model.Count > 0 && Model != null)
             {
-                <div class="col-12 col-md-4">
-                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
-                        <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
-                    </a>
-                    <h3 class="title_name">@Helper.CutText(item.TenSanPham)</h3>
-
-                    <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
-                        <i class="fas fa-cart-plus"></i>
-                        @String.Format("{0:#,##0.##}", item.GiaBan) VND
-                    </button>
-                </div>
-            }
-        }
-        else
-        {
-            <div>
-                <p>Đang cập nhật dữ liệu</p>
-            </div>
-        }
-
-
-        @*</div>*@
-
-    </div>
-    <div class="pagination">
-        <ul class="pagination">
-            @if (pageCount > 1)
-            {
-
-                for (int i = 1; i <= total; i++)
+                var i = 1;
+                foreach (var item in Model.OrderBy(m => m.TenSanPham))
                 {
-                    <li class="@(i == pages ? "active" : "")">
-                        <a href="@Url.Action("GetAll","Sach",new { page=i})">@i</a>
-                    </li>
+                    <div class="col-12 col-md-4">
+                        <a href="@Url.Action("Detail","SanPham",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
+                            <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                        </a>
+                        <h3 class="title_name">@Helper.CutText(item.TenSanPham)</h3>
+
+                        @if (item.SoLuong <= 0)
+                        {
+                            <h3 class="color-h3" style="text-transform: uppercase;font-weight: bold;">Hết hàng</h3>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
+                                <i class="fas fa-cart-plus"></i>
+                                @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                            </button>
+                        }
+                    </div>
                 }
             }
+            else
+            {
+                <div>
+                    <p>Đang cập nhật dữ liệu</p>
+                </div>
+            }
 
-        </ul>
+
+            @*</div>*@
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="trang">
+            <div class="pagination">
+                <ul class="pagination">
+                    @if (pager.HasPreviousPage)
+                    {
+                        <li>
+                            @Html.ActionLink("<<", "Search", new { key = key, page = pager.FirstPageIndex })
+                        </li>
+                        <li>
+                            @Html.ActionLink("<", "Search", new { key = key, page = pager.PreviousPageIndex })
+                        </li>
+
+
+                    }
+
+                    @foreach (int page in ViewBag.Pager)
+                    {
+                        <li class="@((pager.CurrentPageIndex==page)?"active":"")">
+                            @Html.ActionLink(page.ToString(), "Search", new { key = key, page = page })
+                        </li>
+
+                    }
+
+                    @if (pager.HasNextPage)
+                    {
+                        <li>
+                            @Html.ActionLink(">", "Search", new { key = key, page = pager.NextPageIndex })
+                        </li>
+                        <li>
+                            @Html.ActionLink(">>", "Search", new { key = key, page = pager.LastPageIndex })
+                        </li>
+
+
+                    }
+                </ul>
+
+
+            </div>
+
+        </div>
     </div>
-</div>
 }
 else
 {
     <h2>Không có kết quả nào!</h2>
 }
-    <div class="clearfix"></div>
+<div class="clearfix"></div>
 
-    <script>
+<script>
     function updateCart(id) {
         //debugger;
         var quanlity = 1;
@@ -116,4 +147,4 @@ else
 
     //}
 
-    </script>
+</script>

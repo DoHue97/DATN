@@ -8,6 +8,7 @@ using ValuesObject;
 
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLyTrangTinhController : Controller
     {
         HtmlPageService htmlPageService = new HtmlPageService();
@@ -23,7 +24,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult CreateCate()
         {
             OLoaiTrangTinh data = new OLoaiTrangTinh();
-            data.IsActive = false;
+            data.TrangThai = false;
 
             return View("UpdateCate", data);
         }
@@ -100,7 +101,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Create()
         {
             OTrangTinh data = new OTrangTinh();
-            data.IsActive = false;
+            data.TrangThai = false;
             ViewBag.LoaiTrangTinh = new SelectList(loaiTrangTinhService.GetAllActive(), "MaLoai", "TenLoai");
 
             return View("Update", data);

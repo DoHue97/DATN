@@ -1,0 +1,215 @@
+﻿@using BookStore2019.Services
+@using ValuesObject
+@model OAccount
+@{
+    ViewBag.Title = "Thông tin tài khoản";
+    Layout = "~/Areas/Area/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container info-user">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>Thông tin </h3>
+            <span class="message"></span>
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Tên đăng nhập</label>
+                <div class="clearfix col-sm-6">
+                    <p>@Model.TenDN</p>
+                </div>
+                <input type="hidden" name="user_name" value="@Model.TenDN" />
+            </div>
+            
+            <div class="form-group row">
+                <label for="UserName" class="col-sm-3">Email</label>
+                <div class="clearfix col-sm-6">
+                    <p>@Model.Email</p>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <button data-target="#password_modal" data-toggle="modal" class="btn btn-success btnChange">Đổi mật khẩu</button>
+                <button data-target="#modal_edit" data-toggle="modal" class="btn btn-primary">Sửa đổi thông tin</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="password_modal" tabindex="-1" role="dialog" aria-labelledby="password_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Đổi mật khẩu</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="control-group">
+                        <label for="current_password" class="control-label">Nhập mật khẩu cũ</label>
+                        <div class="controls">
+                            <input type="password" name="current_password" class="form-control">
+                            <span class="error mess_old"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="new_password" class="control-label">Nhập mật khẩu mới</label>
+                        <div class="controls">
+                            <input type="password" name="new_password" class="form-control">
+                            <span class="error mess_new"></span>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="confirm_password" class="control-label">Nhập lại mật khẩu mới</label>
+                        <div class="controls">
+                            <input type="password" name="confirm_password" class="form-control">
+                            <span class="error mess_con"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveChange()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_edit" tabindex="-1" role="dialog" aria-labelledby="password_modal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin cá nhân</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" name="MaTK" value="@Model.MaTK" />
+
+
+                    <div class="control-group">
+                        <label for="Email" class="control-label">Email</label>
+                        <span class="error mess_email"></span>
+                        <div class="controls">
+                            <input type="email" name="email" class="form-control" value="@Model.Email">
+
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="Email" class="control-label">Tên đăng nhập</label>
+                        <span class="error mess_username"></span>
+                        <div class="controls">
+                            <input type="text" name="username" class="form-control" value="@Model.TenDN">
+
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="saveEdit()">Lưu</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function saveChange() {
+        debugger;
+        var oldpass = $("input[name='current_password']").val();
+        var new_password = $("input[name='new_password']").val();
+        var comfirmpass = $("input[name='confirm_password']").val();
+        var username = $("input[name='user_name']").val();
+
+        if (oldpass == null || oldpass=="") {
+            $(".mess_old").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (new_password == null || new_password == "") {
+            $(".mess_new").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (comfirmpass == null || comfirmpass == "") {
+            $(".mess_con").text("Bạn phải nhập trường này");
+            return false;
+        }
+        if (new_password != comfirmpass) {
+            alert("Mật khẩu và xác thực mật khẩu không khớp nhau!");
+            return false;
+        }
+        $.ajax({
+            url: '@Url.Action("ChangePass", "Default")',
+            data: {
+                oldpass: oldpass,
+                newpass: new_password,
+                username: username,
+                makhach: 0,
+            },
+            type: 'post',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+
+                if (data.Success) {
+
+                    //$(".message").text(data.Message);
+                    alert(data.Message);
+                    window.location.href = window.location.href;
+                } else {
+                    //$(".message").text(data.Message);
+                    alert(data.Message);
+                    window.location.href = window.location.href;
+                }
+            },
+        });
+    }
+</script>
+<script>
+
+    function saveEdit() {
+        debugger;
+        var email = $("input[name='email']").val();
+        var username = $("input[name='username']").val();
+        var matk = $("input[name='MaTK']").val();
+
+       // var reg = /^([A-Za-z0-9_\-\.])+\@@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        
+        if (username == null || username == "") {
+            $(".mess_username").text("Bạn phải nhập trường này");
+            return false;
+        }
+
+        if (email == null || email == "") {
+            $(".mess_email").text("Bạn phải nhập trường này");
+            return false;
+        }
+        //if (reg.test(email)) {
+        //    $(".mess_email").text("Email sai định dạng!");
+        //}
+        
+        $.ajax({
+            url: '@Url.Action("Update", "Default")',
+            data: {
+                matk: matk,
+                username: username,
+                email: email,
+            },
+            type: 'post',
+            dataType: 'json',
+            traditional: true,
+            success: function (data) {
+
+                if (data.Success) {
+                    alert(data.Message);
+                    window.location.href = window.location.href;
+                } else {
+                    alert(data.Message);
+                    window.location.href = window.location.href;
+                }
+            },
+        });
+    }
+</script>

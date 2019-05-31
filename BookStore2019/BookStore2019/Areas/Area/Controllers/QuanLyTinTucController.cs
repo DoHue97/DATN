@@ -8,6 +8,7 @@ using ValuesObject;
 
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLyTinTucController : Controller
     {
         LoaiTinService loaiTinService = new LoaiTinService();
@@ -25,7 +26,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult CreateCate()
         {
             OLoaiTin data = new OLoaiTin();
-            data.IsActive = false;
+            data.TrangThai = false;
 
             return View("UpdateCate", data);
         }
@@ -38,7 +39,7 @@ namespace BookStore2019.Areas.Area.Controllers
                 // var pro = ServiceFactory.NewsgoryManager.Get(new Newsgories { NewsgoryId = model.NewsgoryId });
                 try
                 {
-                    model.ShortName = Help.Helper.convertToUnSign3(model.Ten);
+                    model.TenVanTat = Help.Helper.convertToUnSign3(model.Ten);
                     loaiTinService.Add(model);
                     return RedirectToAction("SearchCate", "QuanLyTinTuc");
                 }
@@ -114,7 +115,7 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Create()
         {
             OTinTuc data = new OTinTuc();
-            data.IsActive = false;
+            data.TrangThai = false;
             var listCate = loaiTinService.GetAllActive();
             ViewBag.ListCates = new SelectList(listCate, "MaLoaiTin", "Ten");
             return View("Update", data);
@@ -128,7 +129,7 @@ namespace BookStore2019.Areas.Area.Controllers
                 // var pro = ServiceFactory.NewsgoryManager.Get(new Newsgories { NewsgoryId = model.NewsgoryId });
                 try
                 {
-                    model.ShortName = Help.Helper.convertToUnSign3(model.TieuDe);
+                    model.TenVanTat = Help.Helper.convertToUnSign3(model.TieuDe);
                     tinTucService.Add(model);
                     return RedirectToAction("Search", "QuanLyTinTuc");
                 }
@@ -168,7 +169,7 @@ namespace BookStore2019.Areas.Area.Controllers
                 {
                     try
                     {
-                        model.ShortName = Help.Helper.convertToUnSign3(model.TieuDe);
+                        model.TenVanTat = Help.Helper.convertToUnSign3(model.TieuDe);
                         tinTucService.Update(model);
                         return RedirectToAction("Search", "QuanLyTinTuc");
                     }

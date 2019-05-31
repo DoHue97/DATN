@@ -43,11 +43,11 @@
                                     {
                                         <tr role="row" class="odd">
 
-                                            <td>@item.SlideName</td>
-                                            <td>@item.SlideImage</td>
-                                            <td>@item.SlideDescription</td>
+                                            <td>@item.Ten</td>
+                                            <td><img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" width="500"/></td>
+                                            <td>@item.MoTa</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -58,10 +58,10 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="@Url.Action("Update", "QuanLySlide", new { id = item.SlideId })" title="Update" class="btn btn-xs btn-info">
+                                                    <a href="@Url.Action("Update", "QuanLySlide", new { id = item.MaSlide })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.SlideId')">
+                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaSlide')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
                                                     </a>

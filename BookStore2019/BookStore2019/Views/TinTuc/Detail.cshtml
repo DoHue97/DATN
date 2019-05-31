@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = Model.TieuDe;
     var listHot = ViewBag.ListHot as List<OTinTuc>;
+    var category = ViewBag.Category as OLoaiTin;
 }
 <div class="container news">
     
@@ -31,12 +32,12 @@
                     {
                         <div class="row new-box">
                             <div class="hot-img">
-                                <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                <a href="@Url.Action("Detail","TinTuc",new {shortnamecate=item.TenLoaiVanTat,shortname=item.TenVanTat })">
                                     <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
                                 </a>
                             </div>
                             <div class="new-summary">
-                                <a href="@Url.Action("Detail","TinTuc",new {shortname=item.ShortName })">
+                                <a href="@Url.Action("Detail","TinTuc",new {shortnamecate=item.TenLoaiVanTat,shortname=item.TenVanTat })">
                                     <div class="title_new">
                                         @item.TieuDe
                                     </div>

@@ -13,17 +13,81 @@ namespace BookStore2019
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //routes.MapRoute(
-            //    name: "admin",
-            //    url: "admin",
-            //    defaults: new { controller = "Default", action = "Index"}
-            //);
+            
             routes.MapRoute(
                name: "login",
-               url: "login",
+               url: "dang-nhap",
                defaults: new { controller = "Account", action = "Login" }
            );
+            routes.MapRoute(
+               name: "register",
+               url: "dang-ky",
+               defaults: new { controller = "Account", action = "Register" }
+           );
+            routes.MapRoute(
+               name: "info",
+               url: "thong-tin/{username}",
+               defaults: new { controller = "Account", action = "Info", username=UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "search",
+               url: "tim-kiem/{key}",
+               defaults: new { controller = "Home", action = "Search", key=UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "contact",
+               url: "lien-he",
+               defaults: new { controller = "Home", action = "Contact" }
+           );
+            routes.MapRoute(
+               name: "about",
+               url: "gioi-thieu",
+               defaults: new { controller = "Home", action = "About" }
+           );
+            #region san pham
 
+            routes.MapRoute(
+               name: "detail-product",
+               url: "san-pham/{shortname}",
+               defaults: new { controller = "SanPham", action = "Detail", shortname=UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "get-by-cate-product",
+               url: "san-pham/{shortnamecate}/{isSach}",
+               defaults: new { controller = "SanPham", action = "GetByCate", shortnamecate = UrlParameter.Optional, isSach = UrlParameter.Optional}
+           );
+            #endregion
+            #region tin tuc
+            routes.MapRoute(
+               name: "getall",
+               url: "tin-tuc",
+               defaults: new { controller = "TinTuc", action = "GetAll" }
+           );
+            routes.MapRoute(
+               name: "get-by-cate",
+               url: "tin-tuc/{shortname}",
+               defaults: new { controller = "TinTuc", action = "GetByCate", shortname=UrlParameter.Optional }
+           );
+            routes.MapRoute(
+               name: "detail-new",
+               url: "tin-tuc/{shortnamecate}/{shortname}",
+               defaults: new { controller = "TinTuc", action = "Detail", shortnamecate = UrlParameter.Optional,shortname=UrlParameter.Optional }
+           );
+            #endregion
+            #region trang tinh
+            routes.MapRoute(
+               name: "detail-html",
+               url: "trang-tinh/{shortnamecate}/{shortname}",
+               defaults: new { controller = "Html", action = "Detail", shortnamecate = UrlParameter.Optional, shortname = UrlParameter.Optional }
+           );
+            #endregion
+            #region dat hang
+            routes.MapRoute(
+               name: "order",
+               url: "gio-hang",
+               defaults: new { controller = "ProductAction", action = "Order" }
+           );
+            #endregion
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

@@ -38,7 +38,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@DuongDan", SqlDbType.NVarChar).Value = item.DuongDan;
             comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = item.MaSanPham;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
 
             comm.ExecuteNonQuery();
         }
@@ -51,8 +51,8 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@DuongDan", SqlDbType.NVarChar).Value = item.DuongDan;
             comm.Parameters.Add("@MaSanPham", SqlDbType.Int).Value = item.MaSanPham;
-            comm.Parameters.Add("@IdImage", SqlDbType.Int).Value = item.IdImage;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IdImage", SqlDbType.Int).Value = item.MaAnh;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
 
             comm.ExecuteNonQuery();
         }
@@ -73,7 +73,7 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("Image_SanPham_Get", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
             if (comm == null) return null;
-            comm.Parameters.Add("@IdImage", SqlDbType.Int).Value = item.IdImage;
+            comm.Parameters.Add("@IdImage", SqlDbType.Int).Value = item.MaAnh;
 
             DataTable dt = new DataTable();
             OImageSach model = new OImageSach();

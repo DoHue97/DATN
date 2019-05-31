@@ -45,7 +45,7 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenLoai", SqlDbType.NVarChar).Value = item.TenLoai;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.TenLoai);
             comm.ExecuteNonQuery();
             conn.Close();
@@ -58,7 +58,7 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@MaLoai", SqlDbType.Int).Value = item.MaLoai;
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenLoai", SqlDbType.NVarChar).Value = item.TenLoai;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.TenLoai);
             comm.ExecuteNonQuery();
             conn.Close();

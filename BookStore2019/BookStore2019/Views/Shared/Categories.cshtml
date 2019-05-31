@@ -3,7 +3,7 @@
 @{
     SanPhamService sachService = new SanPhamService();
     ChuDeService chuDeService = new ChuDeService();
-    var listCate = chuDeService.GetAllByParentId(new OChuDe { ParentId = 1 });
+    var listCate = chuDeService.GetAllByParentId(new OChuDe { MaChuDeCha = 1 });
     //var listCateDD = chuDeService.GetAllByParentName("do-dung-hoc-tap");
     var listHot = sachService.GetHot(true);
     Layout = null;
@@ -39,14 +39,14 @@
         </div>*@
     <div class="pro-hot">
         <div class="titleCate">
-            <h4>Sản phẩm HOT</h4>
+            <h4>Sản phẩm giảm giá</h4>
         </div>
         @if (listHot.Count > 0 && listHot != null)
         {
-            foreach (var item in listHot.Take(3))
+            foreach (var item in listHot.Take(6))
             {
                 <div class="pro-item">
-                    <a href="@Url.Action("Detail","Sach",new { shortname=item.TenVanTat})">
+                    <a href="@Url.Action("Detail","SanPham",new { shortname=item.TenVanTat})">
                         <div class="pro-item">
                             <img src="@item.Anh" alt="Alternate Text" height="100" />
                         </div>
@@ -56,7 +56,7 @@
                             <h4 class="price-sale">
                                 <strong>
                                   
-                                    @String.Format("{0:#,##0.##}",item.GiaBan- item.GiaBan * item.Sale / 100) VND
+                                    @String.Format("{0:#,##0.##}",item.GiaBan- item.GiaBan * item.KhuyenMai / 100) VND
                                 </strong>
                             </h4>
                         </div>

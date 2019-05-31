@@ -7,6 +7,7 @@ using ValuesObject;
 using BookStore2019.Services;
 namespace BookStore2019.Areas.Area.Controllers
 {
+    [Authorize]
     public class QuanLySlideController : Controller
     {
         SlideService slideService = new SlideService();
@@ -20,9 +21,9 @@ namespace BookStore2019.Areas.Area.Controllers
         public ActionResult Create()
         {
             OSlide data = new OSlide();
-            data.IsActive = false;
-            
+            data.TrangThai = false;
 
+            data.ThuTu = 0;
             return View("Update", data);
         }
         [HttpPost, ValidateInput(false)]
@@ -68,7 +69,7 @@ namespace BookStore2019.Areas.Area.Controllers
         {
             if (ModelState.IsValid)
             {
-                var pro = slideService.Get(model.SlideId);
+                var pro = slideService.Get(model.MaSlide);
                 if (pro != null)
                 {
                     try
@@ -91,7 +92,7 @@ namespace BookStore2019.Areas.Area.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            slideService.Delete(new OSlide { SlideId = id });
+            slideService.Delete(new OSlide { MaSlide = id });
             return RedirectToAction("Search", "QuanLySlide");
         }
     }

@@ -42,11 +42,11 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("Slide_Insert", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add(new SqlParameter("@SlideName", slide.SlideName ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@SlideDescription", slide.SlideDescription ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@SlideImage", slide.SlideImage ?? (object)DBNull.Value));
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = slide.IsActive;
-            comm.Parameters.Add("@OrderNo", SqlDbType.Int).Value = slide.OrderNo;
+            comm.Parameters.Add(new SqlParameter("@SlideName", slide.Ten ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@SlideDescription", slide.MoTa ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@SlideImage", slide.Anh ?? (object)DBNull.Value));
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = slide.TrangThai;
+            comm.Parameters.Add("@OrderNo", SqlDbType.Int).Value = slide.ThuTu;
             
 
             SqlDataReader reader = comm.ExecuteReader();
@@ -57,12 +57,12 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("Slide_Update", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@SlideId", SqlDbType.NVarChar).Value = slide.SlideId;
-            comm.Parameters.Add(new SqlParameter("@SlideName", slide.SlideName ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@SlideDescription", slide.SlideDescription ?? (object)DBNull.Value));
-            comm.Parameters.Add(new SqlParameter("@SlideImage", slide.SlideImage ?? (object)DBNull.Value));
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = slide.IsActive;
-            comm.Parameters.Add("@OrderNo", SqlDbType.Int).Value = slide.OrderNo;
+            comm.Parameters.Add("@SlideId", SqlDbType.NVarChar).Value = slide.MaSlide;
+            comm.Parameters.Add(new SqlParameter("@SlideName", slide.Ten ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@SlideDescription", slide.MoTa ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@SlideImage", slide.Anh ?? (object)DBNull.Value));
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = slide.TrangThai;
+            comm.Parameters.Add("@OrderNo", SqlDbType.Int).Value = slide.ThuTu;
 
             comm.ExecuteNonQuery();
         }
@@ -71,7 +71,7 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("Slide_Delete", conn.db);
             comm.CommandType = CommandType.StoredProcedure;
-            comm.Parameters.Add("@SlideId", SqlDbType.Int).Value = slide.SlideId;
+            comm.Parameters.Add("@SlideId", SqlDbType.Int).Value = slide.MaSlide;
             comm.ExecuteNonQuery();
         }
 

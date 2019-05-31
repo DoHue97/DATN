@@ -12,11 +12,12 @@ namespace ValuesObject
         public string TenVanTat { get; set; }
         public string TenTrang { get; set; }
         public string MoTa { get; set; }
-        public string Body { get; set; }
-        public Nullable<System.DateTime> NgayTao { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public string NoiDung { get; set; }
+        public DateTime NgayTao { get; set; }
+        public bool TrangThai { get; set; }
 
         public string TenLoai { get; set; }
         public int MaLoai { get; set; }
+        public string TenLoaiVanTat { get; set; }
     }
 }

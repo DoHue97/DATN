@@ -9,18 +9,18 @@ namespace ValuesObject
 {
   public class OSlide
     {
-        public int SlideId { get; set; }
+        public int MaSlide { get; set; }
 
         [Display(Name = "Tên slide")]
-        public string SlideName { get; set; }
+        public string Ten { get; set; }
 
         [Display(Name = "Ảnh")]
-        public string SlideImage { get; set; }
+        public string Anh { get; set; }
         [Display(Name = "Mô tả")]
-        public string SlideDescription { get; set; }
+        public string MoTa { get; set; }
         [Display(Name = "Trạng thái")]
-        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
 
-        public Nullable<int> OrderNo { get; set; }
+        public Nullable<int> ThuTu { get; set; }
     }
 }

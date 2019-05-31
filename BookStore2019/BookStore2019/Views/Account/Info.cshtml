@@ -1,5 +1,9 @@
 ﻿@using ValuesObject
 @using BookStore2019.Services
+
+@using BookStore2019.Help
+@using BookStore2019.Models
+
 @model OAccount
 @{
     ViewBag.Title = "Thông tin tài khoản";
@@ -7,6 +11,8 @@
     var customer = khachHangService.GetById((int)Model.MaKhach);
     var list = ViewBag.ListOrders as List<OHoaDonBan>;
     CTHDBService cTHDBService = new CTHDBService();
+
+    Pager pager = ViewBag.Pager;
 }
 
 <div class="container info-user">
@@ -17,9 +23,9 @@
             <div class="form-group row">
                 <label for="UserName" class="col-sm-3">Tên đăng nhập</label>
                 <div class="clearfix col-sm-6">
-                    <p>@Model.UserName</p>
+                    <p>@Model.TenDN</p>
                 </div>
-                <input type="hidden" name="user_name" value="@Model.UserName" />
+                <input type="hidden" name="user_name" value="@Model.TenDN" />
             </div>
             <div class="form-group row">
                 <label for="UserName" class="col-sm-3">Tên khách</label>
@@ -47,7 +53,7 @@
                 </div>
             </div>
             <div class="form-group row">
-                <button data-target="#password_modal" data-toggle="modal" class="btn btn-primary btnChange">Đổi mật khẩu</button>
+                <button data-target="#password_modal" data-toggle="modal" class="btn btn-success btnChange">Đổi mật khẩu</button>
                 <button data-target="#modal_edit" data-toggle="modal" class="btn btn-primary">Sửa đổi thông tin</button>
             </div>
         </div>
@@ -59,7 +65,7 @@
                 <span class="mess_detail"></span>
                 <table class="table">
                     <tr class="header_name">
-                        <td>Mã hóa đơn</td>
+                        <td>Ngày đặt</td>
                         <td>Tên sản phẩm</td>
                         <td>Số lượng</td>
                         <td>Giá</td>
@@ -68,7 +74,7 @@
                         <td></td>
                     </tr>
 
-                    @foreach (var item in list.OrderBy(m => m.TrangThai))
+                    @foreach (var item in list.OrderBy(m => m.NgayBan))
                     {
                         var listDetail = cTHDBService.GetAll(item.MaHDB) as List<OCTHDB>;
                         if (listDetail.Count > 0 && listDetail != null)
@@ -76,13 +82,13 @@
                             foreach (var detail in listDetail)
                             {
                                 <tr>
-                                    <td>@detail.MaHDB</td>
+                                    <td>@item.NgayBan.ToString("dd/MM/yy")</td>
                                     <td>
                                         <a href="@Url.Action("Detail","Product",new { shortname=detail.ShortName})">@detail.TenSanPham</a>
                                     </td>
                                     <td>@detail.SoLuong</td>
-                                    <td>@detail.GiaBan.ToString("#,##") đ</td>
-                                    <td>@detail.ThanhTien.ToString("#,##") đ</td>
+                                    <td width="20%">@detail.GiaBan.ToString("#,##") đ</td>
+                                    <td width="20%">@detail.ThanhTien.ToString("#,##") đ</td>
                                     <td>
                                         @if (item.TrangThai == 0)
                                         {
@@ -99,7 +105,9 @@
 
                                     </td>
                                     <td>
-                                        <a href="" onclick="delete_detail('@item.MaHDB','@detail.MaSanPham','@detail.SoLuong')">Xóa mặt hàng</a>
+                                        <a href="javascript:" onclick="delete_detail('@item.MaHDB','@detail.MaSanPham','@detail.SoLuong')">
+                                            <i class="fas fa-trash-alt trash-icon"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 total += detail.ThanhTien;
@@ -109,10 +117,50 @@
                     }
 
                     <tr class="red_total">
-                        <td>Tổng tiền</td>
-                        <td colspan="6">@total.ToString("#,##") đ</td>
+                        <td colspan="3">Tổng tiền</td>
+                        <td colspan="7">@total.ToString("#,##") đ</td>
                     </tr>
                 </table>
+                <div class="trang">
+                    <div class="pagination">
+                        <ul class="pagination">
+                            @if (pager.HasPreviousPage)
+                            {
+                                <li>
+                                    @Html.ActionLink("<<", "Info", new { username=Model.TenDN, page = pager.FirstPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("<", "Info", new { username = Model.TenDN, page = pager.PreviousPageIndex })
+                                </li>
+
+
+                            }
+
+                            @foreach (int page in ViewBag.Pager)
+                            {
+                                <li class="@((pager.CurrentPageIndex==page)?"active":"")">
+                                    @Html.ActionLink(page.ToString(), "Info", new { username = Model.TenDN, page = page })
+                                </li>
+
+                            }
+
+                            @if (pager.HasNextPage)
+                            {
+                                <li>
+                                    @Html.ActionLink(">", "Info", new { username = Model.TenDN, page = pager.NextPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink(">>", "Info", new { username = Model.TenDN, page = pager.LastPageIndex })
+                                </li>
+
+
+                            }
+                        </ul>
+
+
+                    </div>
+
+                </div>
             }
 
         </div>
@@ -327,7 +375,7 @@
 <script>
     function delete_detail(mahdb, masp, soluong) {
         if (mahdb != null && masp != null && soluong != null) {
-            //debugger;
+            debugger;
             bootbox.confirm({
                 title: "Thông báo!",
                 message: "Đồng ý xóa đơn hàng có mã : '" + mahdb + "' và mã sản phẩm '" + masp + "' ?",
@@ -342,7 +390,7 @@
                     }
                 },
                 callback: function (result) {
-                    //debugger;
+                    debugger;
                     if (result) {
                         $.ajax({
                             url: '@Url.Action("Delete", "ProductAction")',
@@ -360,6 +408,7 @@
 
                                     //$(".mess_detail").text(data.Message);
                                     alert(data.Message);
+                                    window.location.href = window.location.href;
                                 } else {
                                     alert(data.Message);
                                 }

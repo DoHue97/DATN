@@ -47,7 +47,7 @@ namespace BookStore2019.Services
             conn.connect();
             var comm = new SqlCommand("ChuDe_GetAllParent", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
-            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = oChuDe.ParentId;
+            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = oChuDe.MaChuDeCha;
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
@@ -70,7 +70,20 @@ namespace BookStore2019.Services
             conn.Close();
             return list;
         }
+        public OChuDe GetByShortName(string shortname)
+        {
+            OChuDe chuDe = new OChuDe();
+            conn.connect();
+            var comm = new SqlCommand("ChuDe_GetByShortName", conn.db);
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+            comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = shortname;
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            chuDe = Help.DAL.ConvertDataTable<OChuDe>(dt).FirstOrDefault();
 
+            conn.Close();
+            return chuDe;
+        }
         public List<OChuDe> GetAllParent()
         {
             List<OChuDe> list = new List<OChuDe>();
@@ -92,8 +105,8 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@name", SqlDbType.NVarChar).Value = chuDe.Ten;
             comm.Parameters.Add(new SqlParameter("@ghichu", chuDe.GhiChu ?? (object)DBNull.Value));
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.IsActive;
-            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.ParentId;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.TrangThai;
+            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.MaChuDeCha;
             comm.Parameters.Add("@TenVanTat",SqlDbType.NVarChar).Value=Helper.convertToUnSign3(chuDe.Ten);
             SqlDataReader reader = comm.ExecuteReader();
             conn.Close();
@@ -106,8 +119,8 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@ma", SqlDbType.Int).Value = chuDe.MaChuDe;
             comm.Parameters.Add("@name", SqlDbType.NVarChar).Value = chuDe.Ten;
             comm.Parameters.Add(new SqlParameter("@ghichu", chuDe.GhiChu ?? (object)DBNull.Value));
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.IsActive;
-            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.ParentId;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = chuDe.TrangThai;
+            comm.Parameters.Add("@ParentId", SqlDbType.Int).Value = chuDe.MaChuDeCha;
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Helper.convertToUnSign3(chuDe.Ten);
             comm.ExecuteNonQuery();
             conn.Close();

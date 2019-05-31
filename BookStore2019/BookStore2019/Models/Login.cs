@@ -19,5 +19,6 @@ namespace BookStore2019.Models
         public string Password { get; set; }
 
         public bool IsRemember { get; set; }
+        
     }
 }

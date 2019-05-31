@@ -14,6 +14,6 @@ namespace ValuesObject
         public string SDT { get; set; }
         public string Email { get; set; }
         public string GhiChu { get; set; }
-        public Nullable<bool> IsActive { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
     }
 }

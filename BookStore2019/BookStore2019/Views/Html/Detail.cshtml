@@ -1,12 +1,12 @@
 ﻿@using ValuesObject
 @model OTrangTinh
 @{
-    
+    ViewBag.Title = Model.TenTrang;
 }
 <div class="container">
     <h1>@Model.TenTrang</h1>
 
     <div class="body-html">
-        @MvcHtmlString.Create(Model.Body)
+        @MvcHtmlString.Create(Model.NoiDung)
     </div>
 </div>

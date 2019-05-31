@@ -36,6 +36,7 @@
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tên</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tên loại</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Ghi chú</th>
+                                        <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Ngày tạo</th>
                                         <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
                                         <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
                                     </tr>
@@ -48,8 +49,9 @@
                                             <td>@item.TenTrang</td>
                                             <td>@item.TenLoai</td>
                                             <td>@item.MoTa</td>
+                                            <td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }

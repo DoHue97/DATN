@@ -45,7 +45,7 @@ namespace BookStore2019.Services
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Ten", SqlDbType.NVarChar).Value = item.Ten;
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = item.TrangThai;
             comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
             comm.ExecuteNonQuery();
             conn.Close();
@@ -59,7 +59,7 @@ namespace BookStore2019.Services
             //comm.Parameters.Add("@MoTa", SqlDbType.NVarChar).Value = item.MoTa;
             comm.Parameters.Add(new SqlParameter("@MoTa", item.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Ten", SqlDbType.NVarChar).Value = item.Ten;
-            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.IsActive;
+            comm.Parameters.Add("@IsActive", SqlDbType.NVarChar).Value = item.TrangThai;
             comm.Parameters.Add("@ShortName", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(item.Ten);
             comm.ExecuteNonQuery();
             conn.Close();
@@ -67,7 +67,7 @@ namespace BookStore2019.Services
         public void Delete(OLoaiTin item)
         {
             conn.connect();
-            var comm = new SqlCommand("LoaiTin_Add", conn.db);
+            var comm = new SqlCommand("LoaiTin_Delete", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@MaLoaiTin", SqlDbType.NVarChar).Value = item.MaLoaiTin;
             

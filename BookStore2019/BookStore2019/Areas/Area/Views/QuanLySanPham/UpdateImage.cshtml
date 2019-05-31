@@ -31,7 +31,7 @@
             <li><a href="@Url.Action("Images", "QuanLySanPham",new { masp=Model.MaSanPham})">Danh sách ảnh</a></li>
             @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
             {
-                <li class="active">Edit @Model.IdImage</li>
+                <li class="active">Edit @Model.MaAnh</li>
             }
             else
             {
@@ -49,7 +49,7 @@
             @if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
             {
                 <h1>
-                    Sửa  slide id @Model.IdImage
+                    Sửa  slide id @Model.MaAnh
 
                 </h1>
             }
@@ -73,7 +73,7 @@
                             @Html.AntiForgeryToken()
                             if (ViewBag.IsEdit != null && ViewBag.IsEdit == true)
                             {
-                                @Html.HiddenFor(mbox => mbox.IdImage)
+                                @Html.HiddenFor(mbox => mbox.MaAnh)
 
                             }
                         <input type="hidden" name="MaSanPham" value="@Model.MaSanPham" />
@@ -99,15 +99,15 @@
                             </div>
 
                             <div class="form-group">
-                                @{var check = (bool)Model.IsActive ? "checked" : "";}
-                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="IsActive">Trạng thái:</label>
+                                @{var check = (bool)Model.TrangThai ? "checked" : "";}
+                                <label class="control-label col-xs-12 col-sm-2 no-padding-right" for="TrangThai">Trạng thái:</label>
 
                                 <div class="checkbox">
                                     <label>
-                                        <input name="IsActive" type="checkbox" class="ace" value="true" @check>
+                                        <input name="TrangThai" type="checkbox" class="ace" value="true" @check>
 
                                         <span class="lbl"> Ẩn/Hiện danh mục</span>
-                                        <input name="IsActive" type="hidden" value="false" />
+                                        <input name="TrangThai" type="hidden" value="false" />
                                     </label>
                                 </div>
                             </div>

@@ -13,8 +13,8 @@ namespace ValuesObject
         
         public string Ten { get; set; }
         public string GhiChu { get; set; }
-        public Nullable<bool> IsActive { get; set; }
-        public int ParentId { get; set; }
+        public Nullable<bool> TrangThai { get; set; }
+        public int MaChuDeCha { get; set; }
         public string TenVanTat { get; set; }
     }
 }

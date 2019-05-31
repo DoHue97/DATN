@@ -35,13 +35,14 @@
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tiêu đề</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Tên loại tin</th>
                                         <th class="sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Tên danh mục cha: activate to sort column ascending">Mô tả</th>
-                                        
+                                        <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Ngày tạo</th>
                                         <th class="hidden-480 sorting" tabindex="0" aria-controls="dynamic-table" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+
                                         <th class="sorting_disabled" rowspan="1" colspan="1" aria-label=""></th>
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (OTinTuc item in Model)
+                                    @foreach (OTinTuc item in Model.OrderBy(m=>m.NgayTao))
                                     {
                                         <tr role="row" class="odd">
 
@@ -49,8 +50,9 @@
                                             <td>@item.TenLoai</td>
                                             
                                             <td>@item.MoTa</td>
+                                            <td>@item.NgayTao.ToString("dd/MM/yyyy")</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }

@@ -43,13 +43,13 @@
                                     @foreach (OAccount item in Model)
                                     {
                                         <tr role="row" class="odd">
-
-                                            <td>@item.UserName</td>
+                                            
+                                            <td>@item.TenDN</td>
                                             <td>@item.Email</td>
                                             <td>@item.TenQuyen</td>
                                             <td>@item.TenKhach</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -60,13 +60,22 @@
                                             </th>
                                             <td>
                                                 <div class="hidden-sm hidden-xs btn-group">
-                                                    <a href="#password_modal" title="Update" class="btn btn-xs btn-info" >
-                                                        <i class="ace-icon fas fa-pen-alt bigger-120"></i>
-                                                    </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaTK')">
+                                                    @*<a href="javascript:" title="Lock" class="btn btn-xs btn-info" onclick="Lock('@item.MaTK')>
+                                                            <i class="ace-icon fas fa-pen-alt bigger-120"></i>
+                                                        </a>*@
+                                                    @if (item.TrangThai == true && item.MaQuyen!=1)
+                                                    {
+                                                        <a href="javascript:" title="Khóa" class="btn btn-xs btn-danger" onclick="Lock('@item.MaTK','@item.TenDN')">
+                                                            <i class="ace-icon fas fa-lock bigger-120"></i>
+                                                        </a>
+                                                    }
+                                                    else if(item.TrangThai == false)
+                                                    {
+                                                        <a href="javascript:" title="Khóa" class="btn btn-xs btn-danger" onclick="UnLock('@item.MaTK','@item.TenDN')">
+                                                            <i class="ace-icon fas fa-lock-open bigger-120"></i>
+                                                        </a>
+                                                    }
 
-                                                        <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
                                                 </div>
 
                                             </td>
@@ -118,11 +127,11 @@
         }
 
     });
-    function Delete(id) {
+    function Lock(id,username) {
     if (id!=null) {
             bootbox.confirm({
                 title: "Thông báo!",
-                message: "Đồng ý xóa tài khoản: '" + id + "' ?",
+                message: "Đồng ý khóa tài khoản: '" + username + "' ?",
                 buttons: {
                     'cancel': {
                         label: 'Cancel',
@@ -136,7 +145,7 @@
                 callback: function (result) {
                     //debugger;
                     if (result) {
-                        var url = '@Url.Action("Delete", "QuanLyNguoiDung")';
+                        var url = '@Url.Action("Lock", "QuanLyNguoiDung")';
                         //yêu cầu mã xác thực
                         var __RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
                         $.ajax({
@@ -146,10 +155,10 @@
                                 __RequestVerificationToken: __RequestVerificationToken
                             },
                             type: 'post',
-                            //dataType: 'json',
+                            dataType: 'json',
                             success: function (data) {
-                                debugger;
-                                if (data) {
+                                //debugger;
+                                if (data.Success) {
                                     alert("Success!!!");
                                     window.location.href = window.location.href;
 
@@ -166,6 +175,53 @@
             return;
         }
     }
+    function UnLock(id,username) {
+    if (id!=null) {
+            bootbox.confirm({
+                title: "Thông báo!",
+                message: "Đồng ý mở khóa tài khoản: '" + username + "' ?",
+                buttons: {
+                    'cancel': {
+                        label: 'Cancel',
+                        className: 'btn mybtn-Button btnButton'
+                    },
+                    'confirm': {
+                        label: 'OK',
+                        className: 'btn mybtn-Button btnButton'
+                    }
+                },
+                callback: function (result) {
+                    //debugger;
+                    if (result) {
+                        var url = '@Url.Action("UnLock", "QuanLyNguoiDung")';
+                        //yêu cầu mã xác thực
+                        var __RequestVerificationToken = $('input[name=__RequestVerificationToken]').val();
+                        $.ajax({
+                            url: url,
+                            data: {
+                                id: id,
+                                __RequestVerificationToken: __RequestVerificationToken
+                            },
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (data) {
+                                //debugger;
+                                if (data.Success) {
+                                    alert("Success!!!");
+                                    window.location.href = window.location.href;
 
+                                } else {
+                                    _showErrorMsg123("Lỗi!",data.Detail);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            alert("Chưa chọn bản ghi cần xóa!");
+            return;
+        }
+    }
 </script>
 

@@ -1,0 +1,186 @@
+﻿@using ValuesObject
+@using PagedList.Mvc
+@using BookStore2019.Services
+@using BookStore2019.Help
+@using BookStore2019.Models
+@model List<OSanPham>
+@{
+
+    ViewBag.Title = "Danh sách sản phẩm";
+
+    ChuDeService chuDeService = new ChuDeService();
+    var listCate = chuDeService.GetAllActive();
+
+    Pager pager = ViewBag.Pager;
+}
+<div class="show-menu">
+    <div class="container">
+        <ul class="menu-category">
+            <li>
+                <a href="@Url.Action("Index","Home")">Trang chủ</a>
+            </li>
+            <li>
+                <a href="@Url.Action("GetAllDoDung", "SanPham")">Đồ dùng học tập</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="product content-top">
+    <div class="container">
+        <div class="row">
+            @Html.Partial("Categories")
+
+            <div class="col-12 col-sm-9 all-pro">
+                @if (Model.Count > 0 && Model != null)
+                {
+                    var i = 1;
+                    foreach (var item in Model.OrderBy(m => m.TenSanPham))
+                    {
+                        if (i % 4 == 0)
+                        {
+                            <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
+                                <a href="@Url.Action("Detail","SanPham",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
+                                    <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                </a>
+                                <div class="info_item">
+                                    <h3>@Helper.CutText(item.TenSanPham)</h3>
+
+                                    @if (item.SoLuong <= 0)
+                                    {
+                                        <h3 class="color-h3" style="text-transform: uppercase;font-weight: bold;">Hết hàng</h3>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
+                                            <i class="fas fa-cart-plus"></i>
+                                            @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
+                        }
+                        else
+                        {
+                            <div class="col-12 col-sm-6 col-md-3 col-sm-3 img_item">
+                                <a href="@Url.Action("Detail","SanPham",new { shortname=item.TenVanTat})" title="@item.TenSanPham">
+                                    <img src="@Url.Content(item.Anh)" alt="Alternate Text" class="img-fluid" />
+                                </a>
+                                <div class="info_item">
+                                    <h3>@Helper.CutText(item.TenSanPham)</h3>
+
+                                    @if (item.SoLuong <= 0)
+                                    {
+                                        <h3 class="color-h3" style="text-transform: uppercase;font-weight: bold;">Hết hàng</h3>
+                                    }
+                                    else
+                                    {
+                                        <button type="button" class="btn btn-success" onclick="updateCart('@item.MaSanPham')">
+                                            <i class="fas fa-cart-plus"></i>
+                                            @String.Format("{0:#,##0.##}", item.GiaBan) VND
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        i++;
+                    }
+                }
+                else
+                {
+                    <div>
+                        <p>Đang cập nhật dữ liệu</p>
+                    </div>
+                }
+                <div class="clearfix"></div>
+                <div class="trang">
+                    <div class="pagination">
+                        <ul class="pagination">
+                            @if (pager.HasPreviousPage)
+                            {
+                                <li>
+                                    @Html.ActionLink("<<", "GetAllDoDung", new { page = pager.FirstPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink("<", "GetAllDoDung", new { page = pager.PreviousPageIndex })
+                                </li>
+
+
+                            }
+
+                            @foreach (int page in ViewBag.Pager)
+                            {
+                                <li class="@((pager.CurrentPageIndex==page)?"active":"")">
+                                    @Html.ActionLink(page.ToString(), "GetAllDoDung", new { page = page })
+                                </li>
+
+                            }
+
+                            @if (pager.HasNextPage)
+                            {
+                                <li>
+                                    @Html.ActionLink(">", "GetAllDoDung", new { page = pager.NextPageIndex })
+                                </li>
+                                <li>
+                                    @Html.ActionLink(">>", "GetAllDoDung", new { page = pager.LastPageIndex })
+                                </li>
+
+
+                            }
+                        </ul>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<script>
+    setAdminCurrentUrl('@Url.Action("GetAllDoDung", "SanPham")', '@Url.Action("GetAllDoDung", "SanPham")');
+</script>
+<script>
+    function updateCart(id) {
+        //debugger;
+        var quanlity = 1;
+        var idpro = id;
+
+            $.ajax({
+                url: '@Url.Action("AddToCart", "ProductAction")',
+                data: {
+                    proid: idpro,
+                    quanlity: quanlity
+                },
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    debugger;
+                    if (data.Success) {
+                        if (data.Flag === "0") {
+                            var totalItems = 0;
+                            for (var i = 0; i < data.Cart.ListItem.length; i++) {
+                                var Item = data.Cart.ListItem[i];
+                                totalItems += Item.Quantity;
+                            }
+                            $("#totalItem").text(totalItems);
+                            $("#totalItem").load(window.location.href + " #totalItem");
+                            window.location.href = window.location.href;
+                            //alert("Đã thêm sản phẩm vào giỏ hàng!");
+                        } else {
+                            alert("Sản phẩm chỉ còn lại");
+                        }
+                    } else {
+                        alert("Thêm sản phẩm thất bại");
+                    }
+                }
+            });
+        }
+    //$(document).ready(function () {
+    //    debugger;
+
+    //}
+
+</script>

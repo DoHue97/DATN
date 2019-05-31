@@ -1,4 +1,5 @@
 ﻿using BookStore2019.ConnectDb;
+using BookStore2019.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -38,12 +39,12 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@GhiChu", sach.GhiChu ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(sach.TenVanTat);
 
-            comm.Parameters.Add("@IsHot", SqlDbType.Bit).Value = sach.IsHot;
+            comm.Parameters.Add("@IsHot", SqlDbType.Bit).Value = sach.SanPhamHot;
 
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.IsActive;
-            comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.Keyword;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.TrangThai;
+            comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.TuKhoa;
             //comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
-            comm.Parameters.Add(new SqlParameter("@Sale", sach.Sale ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@Sale", sach.KhuyenMai ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = sach.IsSach;
             //comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
             comm.Parameters.Add(new SqlParameter("@MaNXB", sach.MaNXB ?? (object)DBNull.Value));
@@ -55,6 +56,7 @@ namespace BookStore2019.Services
             //comm.Parameters.Add("@NamXB", SqlDbType.Int).Value = sach.NamXB;
             comm.Parameters.Add(new SqlParameter("@NamXB", sach.NamXB ?? (object)DBNull.Value));
             comm.Parameters.Add(new SqlParameter("@SoTrang", sach.SoTrang ?? (object)DBNull.Value));
+            comm.Parameters.Add("@NguoiTao", SqlDbType.UniqueIdentifier).Value = sach.NguoiTao;
 
             comm.ExecuteNonQuery();
         }
@@ -72,17 +74,18 @@ namespace BookStore2019.Services
             comm.Parameters.Add(new SqlParameter("@MoTa", sach.MoTa ?? (object)DBNull.Value));
             comm.Parameters.Add("@Anh", SqlDbType.NVarChar).Value = sach.Anh;
             comm.Parameters.Add("@GiaBan", SqlDbType.Decimal).Value = sach.GiaBan;
-            comm.Parameters.Add("@GiaNhap", SqlDbType.Decimal).Value = sach.GiaNhap;
+            //comm.Parameters.Add("@GiaNhap", SqlDbType.Decimal).Value = sach.GiaNhap;
+            comm.Parameters.Add(new SqlParameter("@GiaNhap", sach.GiaNhap ?? (object)DBNull.Value));
             comm.Parameters.Add("@SoLuong", SqlDbType.Int).Value = sach.SoLuong;
             comm.Parameters.Add(new SqlParameter("@GhiChu", sach.GhiChu ?? (object)DBNull.Value));
             comm.Parameters.Add("@TenVanTat", SqlDbType.NVarChar).Value = Help.Helper.convertToUnSign3(sach.TenVanTat);
 
-            comm.Parameters.Add("@IsHot", SqlDbType.Bit).Value = sach.IsHot;
+            comm.Parameters.Add("@IsHot", SqlDbType.Bit).Value = sach.SanPhamHot;
 
-            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.IsActive;
-            comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.Keyword;
+            comm.Parameters.Add("@IsActive", SqlDbType.Bit).Value = sach.TrangThai;
+            comm.Parameters.Add("@Keyword", SqlDbType.NVarChar).Value = sach.TuKhoa;
             //comm.Parameters.Add("@Sale", SqlDbType.Int).Value = sach.Sale;
-            comm.Parameters.Add(new SqlParameter("@Sale", sach.Sale ?? (object)DBNull.Value));
+            comm.Parameters.Add(new SqlParameter("@Sale", sach.KhuyenMai ?? (object)DBNull.Value));
             comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = sach.IsSach;
             //comm.Parameters.Add("@MaNXB", SqlDbType.Int).Value = sach.MaNXB;
             comm.Parameters.Add(new SqlParameter("@MaNXB", sach.MaNXB ?? (object)DBNull.Value));
@@ -127,7 +130,7 @@ namespace BookStore2019.Services
             list = Help.DAL.ConvertDataTable<OSanPham>(dt);
             return list;
         }
-        public List<OSanPham> GetAllActive(int startIndex, int length, ref int total)
+        public List<OSanPham> GetAllBook(int startIndex, int length, ref int total)
         {
             conn.connect();
             var comm = new SqlCommand("SanPham_GetAllActive", conn.db);
@@ -139,6 +142,29 @@ namespace BookStore2019.Services
             comm.Parameters.Add("@Length", SqlDbType.Int).Value = length;
 
             comm.Parameters.Add("@TotalItems",SqlDbType.Int).Direction = ParameterDirection.Output;
+
+            List<OSanPham> list = new List<OSanPham>();
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+
+            list = Help.DAL.ConvertDataTable<OSanPham>(dt);
+            int output = Convert.ToInt32(comm.Parameters["@TotalItems"].Value);
+            total = output;
+            return list;
+        }
+        public List<OSanPham> GetAllDoDung(int startIndex, int length, ref int total)
+        {
+            conn.connect();
+            var comm = new SqlCommand("DoDung_GetAllActive", conn.db);
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+
+            //comm.Parameters.Add("@IsSach", SqlDbType.Bit).Value = isSach;
+            comm.Parameters.Add("@StartIndex", SqlDbType.Int).Value = startIndex;
+
+            comm.Parameters.Add("@Length", SqlDbType.Int).Value = length;
+
+            comm.Parameters.Add("@TotalItems", SqlDbType.Int).Direction = ParameterDirection.Output;
 
             List<OSanPham> list = new List<OSanPham>();
 
@@ -182,20 +208,17 @@ namespace BookStore2019.Services
             var comm = new SqlCommand("Search_Product", conn.db);
             comm.CommandType = System.Data.CommandType.StoredProcedure;
             comm.Parameters.Add("@StartIndex", SqlDbType.Int).Value = startIndex;
-            comm.Parameters.Add("@Length", SqlDbType.Int).Value = length;
-
-            var totalItems = comm.Parameters.Add("@TotalItems", DbType.Int32);
-            totalItems.Direction = ParameterDirection.Output;
-            if (totalItems.Value != DBNull.Value)
-            {
-                total = Convert.ToInt32(totalItems.Value);
-            }
+            comm.Parameters.Add("@Length", SqlDbType.Int).Value = length;            
             comm.Parameters.Add("@Key", SqlDbType.NVarChar).Value = key;
+            comm.Parameters.Add("@TotalItems", SqlDbType.Int).Direction = ParameterDirection.Output;
+
             List<OSanPham> list = new List<OSanPham>();
 
             DataTable dt = new DataTable();
             dt.Load(comm.ExecuteReader());
             list = Help.DAL.ConvertDataTable<OSanPham>(dt);
+            int output = Convert.ToInt32(comm.Parameters["@TotalItems"].Value);
+            total = output;
             return list;
         }
         public List<OSanPham> GetAllByCate(int startIndex, int length, ref int total, int id)
@@ -314,6 +337,21 @@ namespace BookStore2019.Services
             }
             return false;
 
+        }
+
+        public List<DataCharts> GetByYear(int year)
+        {
+            conn.connect();
+            var comm = new SqlCommand("sp_DoanhThu", conn.db);
+            comm.CommandType = System.Data.CommandType.StoredProcedure;
+            comm.Parameters.Add("@Year", SqlDbType.Int).Value = year;
+
+            List<DataCharts> list = new List<DataCharts>();
+
+            DataTable dt = new DataTable();
+            dt.Load(comm.ExecuteReader());
+            list = Help.DAL.ConvertDataTable<DataCharts>(dt);
+            return list;
         }
     }
 }

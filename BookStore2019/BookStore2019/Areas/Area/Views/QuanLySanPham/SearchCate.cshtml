@@ -42,15 +42,15 @@
                                     </tr>
                                 </thead>
                                 <tbody id="myTable">
-                                    @foreach (OChuDe item in Model)
+                                    @foreach (OChuDe item in Model.OrderBy(m=>m.Ten))
                                     {
                                         <tr role="row" class="odd">
 
                                             <td>@item.Ten</td>
                                             <td>
-                                                @if (item.ParentId != 0)
+                                                @if (item.MaChuDeCha != 0)
                                                 {
-                                                    var parent = chuDeService.Get(new OChuDe { MaChuDe = item.ParentId });
+                                                    var parent = chuDeService.Get(new OChuDe { MaChuDe = item.MaChuDeCha });
                                                     <span>@parent.Ten</span>
                                                 }
                                                 else
@@ -60,7 +60,7 @@
                                             </td>
                                             <td>@item.GhiChu</td>
                                             <th class="hidden-480">
-                                                @if (item.IsActive == true)
+                                                @if (item.TrangThai == true)
                                                 {
                                                     <span class="label label-sm label-success">Active</span>
                                                 }
@@ -74,10 +74,10 @@
                                                     <a href="@Url.Action("UpdateCate", "QuanLySanPham", new { id = item.MaChuDe })" title="Update" class="btn btn-xs btn-info">
                                                         <i class="ace-icon fas fa-pen-alt bigger-120"></i>
                                                     </a>
-                                                    <a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaChuDe')">
+                                                    @*<a href="javascript:" title="Delete" class="btn btn-xs btn-danger delete-prompt" onclick="Delete('@item.MaChuDe')">
 
                                                         <i class="ace-icon fa fa-trash bigger-120"></i>
-                                                    </a>
+                                                    </a>*@
                                                 </div>
 
                                             </td>

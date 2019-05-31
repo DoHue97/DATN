@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Net.Mail;
 using System.Text;
 using System.Net;
+using BookStore2019.Models;
 
 namespace BookStore2019.Controllers
 {
@@ -43,38 +44,36 @@ namespace BookStore2019.Controllers
 
             return View();
         }
-        [HttpPost]
-        public ActionResult Search(FormCollection f, int? page = 1)
+        //[HttpGet]
+        public ActionResult Search(string key, int? page = 1)
         {
-            string key = f["Search"].ToString();
-            key = Helper.convertLower(key);
-            if (key == null || key == "")
+           if(key!=null && key != "")
             {
-                return RedirectToAction("GetAll", "Sach");
+                key = Helper.convertLower(key);
+                int pageSize = 20;
+                int total = 0;
+                int endAt = (int)page * pageSize;
+                int fromAt = endAt - pageSize;
+
+                var list = sachService.Search((int)fromAt, pageSize, ref total, key);
+                ViewBag.Pager = Pager.Items(total).PerPage(pageSize).Move((int)page).Segment(5).Center();
+                ViewBag.Key = key;
+                ViewBag.ToTals = total;
+                return View(list);
             }
-            int pageSize = 8;
-            int total = 0;
-            int endAt = (int)page * pageSize;
-            int fromAt = endAt - pageSize;
-            var list = sachService.Search((int)fromAt, pageSize, ref total, key);
-            ViewBag.Page = page;
-            ViewBag.PageCount = list.Count;
-            ViewBag.PageSize = pageSize;
-            ViewBag.FromAt = fromAt;
-            ViewBag.Key = key;
-            return View(list);
+           return RedirectToAction("GetAll","Sach");
         }
         [HttpPost]
         public ActionResult SendMail(string email)
         {
-            string emailsend = ConfigurationManager.AppSettings["emailsend"];
-            string pass = ConfigurationManager.AppSettings["pass"];
-            MailAddress mailCompany = new MailAddress("dieuhoanhapkhau.test@gmail.com");
+            string emailsend = ConfigurationManager.AppSettings["email"];
+            string pass = ConfigurationManager.AppSettings["password"];
+            MailAddress mailCompany = new MailAddress("sachhayonline97yp1@gmail.com");
             MailMessage mail = new MailMessage();
             mail.To.Add(mailCompany);
 
             mail.From = new MailAddress(email, "Sách hay");
-            mail.Subject = "Nhận tin từ Điều hòa chính hãng";
+            mail.Subject = "Nhận tin từ sách hay online";
             mail.SubjectEncoding = Encoding.GetEncoding("utf-8");
             mail.BodyEncoding = Encoding.GetEncoding("utf-8");
 
@@ -93,10 +92,11 @@ namespace BookStore2019.Controllers
             client.EnableSsl = true;
             client.UseDefaultCredentials = false;
             client.Credentials = mailAuthentication;
-
+            
             try
             {
                 client.Send(mail);
+                
                 return Json(new { Success = true });
             }
             catch (Exception e)
@@ -104,5 +104,6 @@ namespace BookStore2019.Controllers
                 return Json(new { Success = false, Error = "Lỗi không gửi được mail!" });
             }
         }
+        
     }
 }
